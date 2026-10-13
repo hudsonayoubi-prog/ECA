@@ -400,6 +400,7 @@ def _col(i):
 
 # ---------------------------------------------------------------- writer
 def write_xlsx(model, path):
+    """Write a sheet model (build_export or build_monthly_workbook) to .xlsx. A model without a Dashboard gets no charts."""
     from openpyxl import Workbook
     from openpyxl.chart import BarChart, Reference
     from openpyxl.chart.label import DataLabelList
@@ -444,7 +445,7 @@ def write_xlsx(model, path):
             k += 1
         names.append(n)
         sh['_title'] = n
-    data_name = next(s['_title'] for s in model['sheets'] if s['name'] == 'Chart data')
+    data_name = next((s['_title'] for s in model['sheets'] if s['name'] == 'Chart data'), None)
     for sh in model['sheets']:
         ws = wb.create_sheet(sh['_title'])
         if sh.get('raw'):
@@ -485,9 +486,13 @@ def write_xlsx(model, path):
         cp = CharacterProperties(sz=sz, b=bold, solidFill=color, latin=DFont(typeface='Arial'))
         return RichText(p=[Paragraph(pPr=ParagraphProperties(defRPr=cp), endParaRPr=cp)])
 
-    dash_ws = wb[next(s['_title'] for s in model['sheets'] if s['name'] == 'Dashboard')]
+    dash = next((s for s in model['sheets'] if s['name'] == 'Dashboard'), None)
+    if dash is None:
+        wb.active = 0
+        wb.save(path)
+        return
+    dash_ws = wb[dash['_title']]
     data_ws = wb[data_name]
-    dash = next(s for s in model['sheets'] if s['name'] == 'Dashboard')
     for ch in dash['charts']:
         bc = BarChart()
         bc.type = 'bar' if ch['dir'] == 'bar' else 'col'
@@ -539,7 +544,8 @@ def write_xlsx(model, path):
 
 
 def main(argv=None):
-    """python3 scripts/pp_export.py data.json 2026-09 VIC,NSW out_dir   (states: comma list; data.json holds the records)"""
+    """python3 scripts/pp_export.py data.json 2026-09 VIC,NSW out_dir     audit export (states: comma list)
+python3 scripts/pp_export.py data.json 2026-09 --summary VIC,ALL out_dir   monthly summary workbooks (ALL = national)"""
     import json, os, sys
     from datetime import datetime
     a = argv if argv is not None else sys.argv[1:]
@@ -548,10 +554,22 @@ def main(argv=None):
         return 2
     data = json.load(open(a[0], encoding='utf-8'))
     month, states, out = a[1], a[2].split(','), a[3]
+    summary = False
+    if a[2] == '--summary':
+        summary, states, out = True, a[3].split(','), a[4] if len(a) > 4 else None
+        if out is None:
+            print(main.__doc__)
+            return 2
     data.setdefault('today', date.today().isoformat())
     stamp = datetime.now().strftime('%d %b %Y, %I:%M %p').lstrip('0').replace('AM', 'am').replace('PM', 'pm')
-    model = build_export(data, month, states, data.get('by', 'ECA flow'), stamp)
     os.makedirs(out, exist_ok=True)
+    if summary:
+        for st in states:
+            model = build_monthly_workbook(data, month, None if st == 'ALL' else st, data.get('by', 'ECA flow'), stamp)
+            write_xlsx(model, os.path.join(out, model['filename']))
+            print('Wrote', os.path.join(out, model['filename']))
+        return 0
+    model = build_export(data, month, states, data.get('by', 'ECA flow'), stamp)
     path = os.path.join(out, model['filename'])
     write_xlsx(model, path)
     print('Wrote', path)
@@ -561,3 +579,90 @@ def main(argv=None):
 if __name__ == '__main__':
     import sys
     sys.exit(main())
+
+
+# ---------------------------------------------------------------- monthly summary workbooks (BR-53)
+def _one(n):
+    return '%.1f' % (math.floor(n * 10 + 0.5) / 10)
+
+
+def build_monthly_workbook(d, month, st, by, generated):
+    """The Excel download for a state summary (st = 'VIC') or the national breakdown (st = None). Same sheets as `monthlyWorkbook`."""
+    locs = M.derive_locs(d['locations'], d['unis'])
+    locs_by = {l['id']: l for l in locs}
+    sm = M.state_monthly(d, month, st) if st else M.national_monthly(d, month)
+    x = sm['x']
+    ml = month_label(month)
+    today = d['today']
+    if month < today[:7]:
+        status = 'Month closed · leaderboard final' if sm['final'] else 'Month closed · leaderboard in review'
+    else:
+        status = 'Month to date at %s' % fmt_date(today)
+    notes = ['%s. Generated %s by %s.' % (status, generated, by),
+             'Counts Completed audits; rejected and duplicate audits are excluded. Coverage = active locations visited at least once in the month.']
+    R = lambda cells, bold=False: {'cells': cells, 'bold': bold}
+
+    kpi = [('Audits completed', x['audits']), ('Active locations', x['active']), ('Locations visited', x['visited']), ('Coverage', x['coverage']),
+           ('Student Marketeers auditing', x['auditors']), ('Distribution points added', x['dpAdded']), ('Distribution points lost', x['dpLost']),
+           ('Net distribution points', x['net']), ('Editions sold in', x['editions']), ('POS placed', x['pos']), ('Coolers in', x['coolersIn']),
+           ('Coolers out', x['coolersOut']), ('Share of shelf', pct_or(x['share'])), ('Red Bull front facings', x['rbFacings']),
+           ('Competitor front facings', x['compFacings']), ('Red Bull ranging (audited locations)', pct_or(x['ranging'])),
+           ('Competitor POS seen', x['compPos']), ('Competitor coolers seen', x['compCoolers']), ('Issues flagged', x['issues']), ('Awaiting approval', x['pending'])]
+
+    def kpi_sheet(title, extra):
+        rows = [R([k, (pct0(v) if x['active'] else '—') if k == 'Coverage' else _clean(v)]) for k, v in kpi] + [R(e) for e in extra]
+        return {'name': 'Summary', 'title': title, 'notes': notes, 'header': ['Measure', 'Value'], 'rows': rows, 'widths': [34, 40]}
+
+    def audit_sheet(vs):
+        rows = []
+        for v in sorted(vs, key=lambda v: v['date'] + (v.get('time') or '')):
+            l = locs_by.get(v['loc'])
+            cf, rbf = v.get('compFacings'), v.get('rbFacings')
+            sh = shelf_share(rbf, cf) if rbf is not None else None
+            rows.append(R([v['date'], v.get('staff') or '', (l or {}).get('state') or '', (l or {}).get('uniName') or v.get('uni'), (l or {}).get('campus') or '',
+                           (l or {}).get('name') or v['loc'], (store_type_of(l) or '') if l else '', M.approval_of(v),
+                           _num0(v.get('dpAdded')), _num0(v.get('dpLost')), _num0(v.get('editions')), _num0(v.get('posPlaced')), _num0(v.get('coolersIn')), _num0(v.get('coolersOut')),
+                           '' if rbf is None else rbf, _num0(comp_total(cf)) if cf is not None else '', pct0(sh) if sh is not None else '',
+                           '' if v.get('compPos') is None else v['compPos'], '' if v.get('compCoolers') is None else v['compCoolers'],
+                           '; '.join(comp_detail_text(cf, v.get('compDetail'), (l or {}).get('type') == 'Vending')) if cf is not None else '',
+                           v.get('contactName') or '', v.get('issue') or '', 'Demo' if v.get('demo') else 'Live']))
+        return {'name': 'Audits', 'header': ['Date', 'Student Marketeer', 'State', 'University or TAFE', 'Campus', 'Location', 'Store type', 'Approval', 'DPs added', 'DPs lost',
+                                             'Editions', 'POS', 'Coolers in', 'Coolers out', 'Red Bull facings', 'Competitor facings', 'Share of shelf', 'Competitor POS',
+                                             'Competitor coolers', 'Competitor detail', 'Spoke to', 'Issue', 'Source'], 'rows': rows}
+
+    def inst_sheet(insts):
+        return {'name': 'Institutions', 'header': ['University or TAFE', 'Type', 'State', 'Active locations', 'Visited', 'Coverage', 'Audits', 'Net DPs', 'Editions', 'POS'], 'pct': [5],
+                'rows': [R([i['u']['name'], i['u']['kind'], i['u']['state'], i['active'], i['visited'], i['coverage'] if i['active'] else None, i['audits'],
+                            _n(i['net']), _n(i['editions']), _n(i['pos'])]) for i in insts]}
+
+    def sm_sheet(sms):
+        return {'name': 'Student Marketeers', 'header': ['Student Marketeer', 'State', 'Reports to', 'Audits', 'Locations', 'Net DPs', 'Editions', 'POS', 'Coolers in', 'Last audit'],
+                'rows': [R([r['p']['name'], r['p']['state'], r['p'].get('reportsTo') or 'Not set', r['audits'], r['locations'], _n(r['net']), _n(r['editions']), _n(r['pos']),
+                            _n(r['coolers']), r['last'] or '']) for r in sms]}
+
+    tot_f = x['rbFacings'] + x['compFacings']
+    brand_sheet = {'name': 'Share of shelf', 'header': ['Brand', 'Front facings', 'Share', 'Locations seen at'],
+                   'rows': [R([b, _n(n), pct0(n / tot_f) if tot_f else '', x['shelfLocs'] if b == 'Red Bull' else x['ex']['present'].get(b, 0)])
+                            for b, n in sorted(x['ex']['brands'].items(), key=lambda kv: (0 if kv[0] == 'Red Bull' else 1, -kv[1]))]}
+    top_rows = [['Leaderboard #%d' % r['rank'], '%s (%s)' % (r['name'], _one(r['total']))] for r in sm['top']]
+    if st:
+        summary = kpi_sheet('%s · monthly summary · %s' % (sm['stName'], ml), top_rows + [['Sent to', ', '.join(sm['to']) or 'No managers set']])
+        return {'filename': file_safe('ECA %s monthly summary %s.xlsx' % (st, ml)),
+                'sheets': [summary, brand_sheet, inst_sheet(sm['insts']), sm_sheet(sm['sms']), audit_sheet(x['vs'])]}
+    summary = kpi_sheet('National breakdown · %s' % ml, top_rows)
+    rows = [R([r['st']['name'], r['insts'], r['y']['active'], r['y']['visited'], r['y']['coverage'] if r['y']['active'] else None, r['y']['audits'], r['sms'], r['activeSms'],
+               _n(r['y']['net']), _n(r['y']['editions']), _n(r['y']['pos']), _n(r['y']['coolersIn']), pct_or(r['y']['share'], ''), pct_or(r['y']['ranging'], ''),
+               r['y']['issues'], r['y']['pending'], ', '.join(r['managers'])]) for r in sm['states']]
+    rows.append(R(['National', sum(r['insts'] for r in sm['states']), x['active'], x['visited'], x['coverage'] if x['active'] else None, x['audits'],
+                   sum(r['sms'] for r in sm['states']), sum(r['activeSms'] for r in sm['states']), _n(x['net']), _n(x['editions']), _n(x['pos']), _n(x['coolersIn']),
+                   pct_or(x['share'], ''), pct_or(x['ranging'], ''), x['issues'], x['pending'], ''], True))
+    by_state = {'name': 'By state', 'header': ['State', 'Universities & TAFEs', 'Active locations', 'Visited', 'Coverage', 'Audits', 'Student Marketeers', 'SMs auditing', 'Net DPs',
+                                               'Editions', 'POS', 'Coolers in', 'Share of shelf', 'Ranging', 'Issues', 'Awaiting approval', 'Managers'], 'pct': [4], 'rows': rows}
+    all_insts = [i for z in d['states'] for i in M.state_monthly(d, month, z['code'])['insts']]
+    all_sms = [r for z in d['states'] for r in M.state_monthly(d, month, z['code'])['sms']]
+    return {'filename': file_safe('ECA national breakdown %s.xlsx' % ml),
+            'sheets': [summary, by_state, brand_sheet, inst_sheet(all_insts), sm_sheet(all_sms), audit_sheet(x['vs'])]}
+
+
+def _clean(v):
+    return _n(v) if isinstance(v, float) and v.is_integer() else v

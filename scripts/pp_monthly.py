@@ -157,6 +157,14 @@ def _by(*keys):
     return keys
 
 
+def board_for(d, month):
+    """(rows, final). A finalised month uses its locked snapshot rows (d['snapshots'][month]); otherwise the live score."""
+    snap = (d.get('snapshots') or {}).get(month)
+    if snap is not None:
+        return snap, True
+    return S.score_month(d['visits'], d['people'], d['locations'], d['rules'], month)['rows'], False
+
+
 def state_monthly(d, month, st):
     """d: {visits, people, locations, unis, states, leads, today, rules, products?}"""
     locs = derive_locs(d['locations'], d['unis'])
@@ -183,8 +191,8 @@ def state_monthly(d, month, st):
                         'editions': sum(_num(v.get('editions')) for v in vs), 'pos': sum(_num(v.get('posPlaced')) for v in vs),
                         'coolers': sum(_num(v.get('coolersIn')) for v in vs), 'last': max([v['date'] for v in vs], default=None)})
     sms.sort(key=lambda r: (-r['audits'], r['p']['name']))
-    board = S.score_month(d['visits'], d['people'], d['locations'], d['rules'], month)
-    top = [r for r in board['rows'] if r['state'] == st and r['rank']][:3]
+    board_rows, final = board_for(d, month)
+    top = [r for r in board_rows if r['state'] == st and r['rank']][:3]
     h = []
     if any(i['audits'] for i in insts):
         h.append('Most active: %s (%s)' % (insts[0]['u']['name'], plural(insts[0]['audits'], 'audit')))
@@ -207,8 +215,9 @@ def state_monthly(d, month, st):
     if not x['locs']:
         h.append('No audit locations set up in this state yet')
     to = list(dict.fromkeys(managers_for(d['people'], st) + leads_for(d['leads'], d['people'], st)))
-    return {'kind': 'state', 'key': 'MS|%s|%s' % (st, month), 'month': month, 'st': st, 'x': x, 'insts': insts, 'sms': sms,
-            'top': top, 'highlights': h, 'to': to}
+    return {'kind': 'state', 'key': 'MS|%s|%s' % (st, month), 'month': month, 'st': st,
+            'stName': next((z['name'] for z in d['states'] if z['code'] == st), st), 'x': x, 'insts': insts, 'sms': sms,
+            'top': top, 'highlights': h, 'to': to, 'final': final}
 
 
 def _n(v):
@@ -226,8 +235,8 @@ def national_monthly(d, month):
         sm = [p for p in d['people'] if p.get('role') == 'marketeer' and p.get('state') == st['code'] and p.get('status') == 'Active']
         states.append({'st': st, 'y': y, 'sms': len(sm), 'activeSms': sum(1 for p in sm if any(v.get('staff') == p['name'] for v in y['vs'])),
                        'insts': sum(1 for u in live if u['state'] == st['code']), 'managers': managers_for(d['people'], st['code'])})
-    board = S.score_month(d['visits'], d['people'], d['locations'], d['rules'], month)
-    top = [r for r in board['rows'] if r['rank']][:3]
+    board_rows, final = board_for(d, month)
+    top = [r for r in board_rows if r['rank']][:3]
     ranked = sorted([r for r in states if r['y']['active']], key=lambda r: -r['y']['coverage'])
     h = []
     by_aud = sorted(states, key=lambda r: -r['y']['audits'])
@@ -249,7 +258,7 @@ def national_monthly(d, month):
         h.append('Best share of shelf: %s (%s)' % (withshare[0]['st']['code'], pct0(withshare[0]['y']['share'])))
     if x['pending']:
         h.append('%s awaiting approval nationally' % plural(x['pending'], 'audit'))
-    return {'kind': 'national', 'key': 'MN|%s' % month, 'month': month, 'x': x, 'states': states, 'top': top, 'highlights': h, 'to': admins(d['people'])}
+    return {'kind': 'national', 'key': 'MN|%s' % month, 'month': month, 'x': x, 'states': states, 'top': top, 'highlights': h, 'to': admins(d['people']), 'final': final}
 
 
 def summary_months(today):

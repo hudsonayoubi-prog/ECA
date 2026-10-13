@@ -60,3 +60,6 @@ See `docs/power-platform/MONTHLY.md`. Open: Excel workbook, schedule and notices
 
 ## Path 2 · Audit export (added 13 Oct 2026)
 See `docs/power-platform/EXPORT.md`. Open: not opened in desktop Excel; chart styling may differ slightly; SharePoint save, schedule and notice not built; BR-53 summary download workbook not built.
+
+## Path 2 · Summary workbooks (added 13 Oct 2026)
+See the second half of `docs/power-platform/EXPORT.md`. Same open items as the audit export: not opened in desktop Excel; SharePoint save and notices not built.

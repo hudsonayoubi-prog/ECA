@@ -22,3 +22,16 @@
 - Ids sort by plain string order; the app uses browser locale sorting.
 - Saving to SharePoint, the 18:00 last-day schedule, the "Audit export ready" notice and the Monthly Report row are flow steps, not built.
 - The Excel for the monthly state summary and national breakdown (BR-53 download) is not built yet; it can reuse the writer.
+
+---
+
+# Monthly summary workbooks (BR-53 download)
+
+`build_monthly_workbook(d, month, st, by, generated)` in `scripts/pp_export.py` builds the Excel download that goes with each monthly summary. `st = 'VIC'` gives a **state summary** workbook; `st = None` gives the **national breakdown**. Same writer, same record shapes.
+
+- **State summary** (`ECA VIC monthly summary September 2026.xlsx`): Summary (20 measures, leaderboard top 3, who it was sent to), Share of shelf, Institutions, Student Marketeers, Audits (23 columns).
+- **National breakdown** (`ECA national breakdown September 2026.xlsx`): Summary, By state (17 columns with a National total row), Share of shelf, Institutions and Student Marketeers for all states, Audits.
+- Month status line: month to date, closed with leaderboard in review, or closed with leaderboard final. A finalised month takes its top 3 from the locked snapshot (`d['snapshots'][month]`), not the live score.
+- Command line: `python3 scripts/pp_export.py data.json 2026-09 --summary VIC,ALL out_dir` (`ALL` = national).
+
+Proof: `tests/pp/test_monthly_wb.py` runs the prototype's own `monthlyWorkbook` for every state and national and requires identical sheets, rows and cells: closed months, month to date, other months, sparse and empty data, and a finalised month with a locked snapshot. A file test opens both workbooks. Same gaps as above (not opened in desktop Excel; en-AU date wording follows Node; no SharePoint save or notice).
