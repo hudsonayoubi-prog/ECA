@@ -1,0 +1,19 @@
+## C1. Excel v3 formulas (Monash tab, row 90 = first location; visits table rows 170–669)
+
+- Last Visit Date (M90): =IF($A90="","",IF(COUNTIFS($B$170:$B$669,$A90,$G$170:$G$669,"Completed")=0,"",_xlfn.MAXIFS($E$170:$E$669,$B$170:$B$669,$A90,$G$170:$G$669,"Completed")))
+- Next Visit Due (N90): =IF($A90="","",IF(M90="",IF(K90="","",K90+N(L90)),M90+N(L90)))
+- Days Until Due (O90): =IF(OR($A90="",N90=""),"",N90-TODAY())
+- Visit Status (P90): =IF($A90="","",IF(J90="Inactive","Inactive",IF(M90="","No Visit Recorded",IF(N90<TODAY(),"Overdue",IF(N90<=TODAY()+3,"Due Soon","On Track")))))
+- Completed Visits (AS90): =IF($A90="","",COUNTIFS($B$170:$B$669,$A90,$G$170:$G$669,"Completed"))
+- DPs Added (AT90): =IF($A90="","",SUMIFS($I$170:$I$669,$B$170:$B$669,$A90,$G$170:$G$669,"Completed"))
+- Net DPs (AV90): =IF($A90="","",AT90-AU90)
+- Helper: list rank for the Show view (BD90): =IF(AND(J90="Active",C90<>"",OR($B$5="All",B90=$B$5)),COUNTIFS($J$90:$J$165,"Active",$C$90:$C$165,"<"&C90,$B$90:$B$165,IF($B$5="All","*",$B$5))+1,"")
+- Helper: view number (BC90): =IF($A90="","",IF($B$5="All",COUNTIFS($A$90:$A90,"?*"),IF(B90=$B$5,COUNTIFS($A$90:$A90,"?*",$B$90:B90,$B$5),"")))
+- Visit ID (A170): =IF(D170="","","MON-V"&TEXT(ROW()-169,"0000"))
+- Location ID lookup (B170): =IF(D170="","",IFERROR(INDEX($A$90:$A$165,MATCH(D170,$C$90:$C$165,0)),"Not found"))
+- Net DPs on a visit (K170): =IF(AND(I170="",J170=""),"",N(I170)-N(J170))
+
+Data validation on each university tab: Show (B5) = "QSR,Vending,All"; Type = "QSR,Vending"; Status = "Active,Inactive"; ranging columns = "1,0"; Bullring = "EYE,RING"; Channel = "OnP,OffP"; Classification = "A,B,C,D"; IND/NKA = "IND,NKA,Vending"; visit Store/Location = {Uni}LocationList; Staff Member = {Uni}StaffList; Visit Status = "Scheduled,Completed,Cancelled"; POS Type = the 9 POS types; dates ≥ 1 Jan 2020; numbers ≥ 0.
+
+Staff Management helpers: F = first row for staff + uni =IF(A2="","",IF(COUNTIFS($A$2:A2,A2,$B$2:B2,B2)=1,1,0)); G = rank within uni for Active staff; H = key =IF(G2="","",B2&"|"&G2); each university's staff list helper looks up "University|n".
+

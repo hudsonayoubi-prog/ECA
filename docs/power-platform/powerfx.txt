@@ -1,0 +1,186 @@
+Power Fx formulas for the Power Apps canvas app (from the Power Apps build guide, tab 4 of the spec).
+Starting point to test in Power Apps Studio, not an export.
+
+// ===== 6.2 Sign-in and role routing =====
+// App.Formulas
+gblMonth = Text(Today(), "yyyy-mm");
+
+// App.OnStart
+Set(gblMe, LookUp('ECA Users', Lower(Email) = Lower(User().Email)));
+If(
+    IsBlank(gblMe) || gblMe.Status = 'Active / Inactive'.Inactive,
+    Navigate(scrNoAccess),
+    Patch('ECA Users', gblMe, {'Last Sign-in': Now()});
+    Navigate(If(gblMe.Role = 'ECA Role'.'Student Marketeer', scrLeaderboard, scrDashboard))
+);
+Set(gblIsAdmin, gblMe.Role = 'ECA Role'.Administrator);
+Set(gblIsMgr, gblMe.Role = 'ECA Role'.Manager);
+Set(gblLeadStates, Filter('Channel Leads', Lead.'ECA User' = gblMe.'ECA User'));
+
+// ===== 6.2 Sign-in and role routing =====
+Lower(Trim(Substitute(Substitute(Substitute(Substitute(txtFirst.Text & " " & txtLast.Text, "-", " "), "'", " "), "’", " "), "  ", " ")))
+
+// ===== 6.3 Submitting an audit =====
+With({
+    rb: Filter(colRanging, IsRedBull),                     // Red Bull SKUs that apply to this location
+    mode: LookUp('Scoring Rule Sets', 'Is Current' = true).'Approval Mode'
+  },
+  Patch('Audit Visits', Defaults('Audit Visits'), {
+    Location: varLoc, Institution: varLoc.Institution,
+    'Visit Date': dpDate.SelectedDate, 'Visit Time': txtTime.Text,
+    'Staff Member': gblMe, 'Visit Status': varStatus,
+    'Reporting Month': Text(dpDate.SelectedDate, "yyyy-mm"),
+    'Approval Status': If(varStatus <> 'Visit Status'.Completed, Blank(),
+        mode = 'Approval Mode'.'Count on submit', 'Approval Status'.Approved, 'Approval Status'.Pending),
+    'DPs Added': Value(txtDpAdded.Text), 'DPs Lost': Value(txtDpLost.Text),
+    'Editions Sold In': Value(txtEditions.Text), 'POS Placed': Value(txtPos.Text),
+    'Coolers Installed': Value(txtCoolIn.Text), 'Coolers Removed': Value(txtCoolOut.Text),
+    'Ranging Answers': JSON(colRanging, JSONFormat.Compact),
+    'Ranging %': If(CountRows(rb) = 0, Blank(), 100 * CountIf(rb, Answer = true) / CountRows(rb)),
+    Notes: txtNotes.Text, 'Next Step': txtNext.Text, Imported: false
+  })
+)
+
+// ===== 6.4 Approvals (Review activity tab) =====
+  Filter('Audit Visits', 'Approval Status' = 'Approval Status'.Pending, 'Visit Status' = 'Visit Status'.Completed, Imported = false)
+
+// ===== 6.4 Approvals (Review activity tab) =====
+  Patch('Audit Visits', ThisItem, {'Approval Status': 'Approval Status'.Approved, 'Approved By': gblMe, 'Approved On': Now()})
+
+// ===== 6.4 Approvals (Review activity tab) =====
+  If(ThisItem.'Staff Member'.'ECA User' = gblMe.'ECA User', DisplayMode.Disabled, DisplayMode.Edit)
+
+// ===== 6.4 Approvals (Review activity tab) =====
+  CountRows(Filter('Audit Visits', Location.Location = ThisItem.Location.Location, 'Visit Date' = ThisItem.'Visit Date', 'Staff Member'.'ECA User' = ThisItem.'Staff Member'.'ECA User')) > 1
+
+// ===== 6.5 Leaderboard calculation =====
+Set(varRules, LookUp('Scoring Rule Sets', 'Is Current' = true));
+ClearCollect(colCounted, Filter('Audit Visits',
+    'Reporting Month' = varMonth, 'Visit Status' = 'Visit Status'.Completed,
+    'Approval Status' = 'Approval Status'.Approved, Imported = false));
+
+ClearCollect(colRaw, ForAll(
+  Filter('ECA Users', Role = 'ECA Role'.'Student Marketeer', Status = 'Active / Inactive'.Active) As u,
+  With({mine: Filter(colCounted, 'Staff Member'.'ECA User' = u.'ECA User')}, {
+    User: u, Name: u.'Full Name', StateCode: u.State.'State Code', Manager: u.'Reports To'.'Full Name',
+    Audits: CountRows(mine),
+    // ranging: latest approved audit per location, averaged
+    Ranging: Coalesce(Average(ForAll(Distinct(mine, Location.Location) As l,
+        First(Sort(Filter(mine, Location.Location = l.Value), 'Visit Date', SortOrder.Descending)).'Ranging %'), Value), 0),
+    TDP: Sum(mine, 'DPs Added'), Editions: Sum(mine, 'Editions Sold In'),
+    POS: Sum(mine, 'POS Placed'), Coolers: Sum(mine, 'Coolers Installed'),
+    LastAt: Max(mine, 'Approved On')
+  })));
+
+Set(varMin, varRules.'Minimum Approved Audits');
+Set(varMax, With({q: Filter(colRaw, Audits >= varMin)},
+    {TDP: Max(q, TDP), Ed: Max(q, Editions), POS: Max(q, POS), Cool: Max(q, Coolers)}));
+Set(varTarget, varRules.Normalisation = 'Normalisation'.'Against targets');
+
+ClearCollect(colScored, ForAll(colRaw As r, With({
+    sT: If(varTarget, Min(100, 100 * r.TDP / Max(1, varRules.'Target TDP')), If(varMax.TDP > 0, 100 * r.TDP / varMax.TDP, 0)),
+    sE: If(varTarget, Min(100, 100 * r.Editions / Max(1, varRules.'Target Editions')), If(varMax.Ed > 0, 100 * r.Editions / varMax.Ed, 0)),
+    sP: If(varTarget, Min(100, 100 * r.POS / Max(1, varRules.'Target POS')), If(varMax.POS > 0, 100 * r.POS / varMax.POS, 0)),
+    sC: If(varTarget, Min(100, 100 * r.Coolers / Max(1, varRules.'Target Coolers')), If(varMax.Cool > 0, 100 * r.Coolers / varMax.Cool, 0))},
+  Patch(r, {Qualified: r.Audits >= varMin, sRanging: r.Ranging, sTDP: sT, sEd: sE, sPOS: sP, sCool: sC,
+    Total: If(r.Audits >= varMin, Round((r.Ranging * varRules.'Weight Ranging' + sT * varRules.'Weight TDP' + sE * varRules.'Weight Editions'
+        + sP * varRules.'Weight POS' + sC * varRules.'Weight Coolers') / 100, 1), 0)}))));
+
+With({s: SortByColumns(colScored, Qualified, SortOrder.Descending, Total, SortOrder.Descending,
+        TDP, SortOrder.Descending, Ranging, SortOrder.Descending, Audits, SortOrder.Descending, LastAt, SortOrder.Ascending, Name, SortOrder.Ascending)},
+  ClearCollect(colBoard, ForAll(Sequence(CountRows(s)) As i,
+    Patch(Index(s, i.Value), {Rank: If(Index(s, i.Value).Qualified, i.Value, Blank())}))));
+
+// ===== 6.6 Finalise and send results (Results tab, Leads and Admins) =====
+Set(varSnap, Patch('Leaderboard Snapshots',
+    Coalesce(LookUp('Leaderboard Snapshots', Month = varMonth), Defaults('Leaderboard Snapshots')),
+    {Month: varMonth, Status: 'Snapshot Status'.Final, 'Finalised By': gblMe, 'Finalised On': Now(), 'Rule Set': varRules,
+     'Unapproved Audits Excluded': CountRows(Filter('Audit Visits', 'Reporting Month' = varMonth, 'Approval Status' = 'Approval Status'.Pending))}));
+ForAll(colBoard As r, Patch('Snapshot Rows', Defaults('Snapshot Rows'), {
+    Name: varMonth & " – " & r.Name, Snapshot: varSnap, 'Student Marketeer': r.User, Rank: r.Rank, 'Total Score': r.Total,
+    Qualified: r.Qualified, 'Approved Audits': r.Audits, 'Ranging %': r.Ranging, 'TDP Added': r.TDP, 'Editions Sold': r.Editions,
+    'POS Placed': r.POS, 'Coolers Added': r.Coolers, 'Score Ranging': r.sRanging, 'Score TDP': r.sTDP,
+    'Score Editions': r.sEd, 'Score POS': r.sPOS, 'Score Coolers': r.sCool}));
+Patch('ECA Audit Logs', Defaults('ECA Audit Logs'), {Action: "Finalised leaderboard", Category: 'Log Category'.Leaderboard,
+    User: gblMe, 'Logged On': Now(), Record: varMonth, 'New Value': "Final"});
+
+// ===== 6.6 Finalise and send results (Results tab, Leads and Admins) =====
+Patch('Results Distributions', Defaults('Results Distributions'), {
+    Name: varMonth, Snapshot: varSnap, 'Generated On': Now(), 'Distributed By': gblMe,
+    Method: drpMethod.Selected.Value, Message: txtMessage.Text})
+
+
+// =====================================================================================
+// ADDED 13 Oct 2026 — features from 9–12 Oct (contact, facings, competitors, step 1)
+// Prototype references: Audit(), validate(), withTopComp(), normCompDetail() in src/app.js
+// =====================================================================================
+
+// ===== Step 1: cascading pickers =====
+// segState.Items  (Admins choose; others fixed)
+If(gblIsAdmin, Distinct(States, 'State Code'), Table({Value: gblMe.State.'State Code'}))
+// segKind.Items: two buttons whose labels show counts
+ForAll(["University","TAFE"], {Kind: ThisRecord.Value,
+    Label: If(ThisRecord.Value = "University", "Universities", "TAFEs") & " · " &
+           CountRows(Filter(Institutions, State.'State Code' = varState && Kind = ThisRecord.Value && Status = 'Active / Removed'.Active))})
+// ddInstitution.Items (with active location counts)
+AddColumns(
+    SortByColumns(Filter(Institutions, State.'State Code' = varState && Kind = varKind && Status <> 'Active / Removed'.Removed), "eca_institutionname"),
+    ActiveLocs, CountRows(Filter(Locations, Institution.Institution = ThisRecord.Institution && Status = 'Location Status'.Active)))
+// ddInstitution display: ThisItem.'Institution Name' & " · " & If(ThisItem.ActiveLocs = 0, "no locations yet", ThisItem.ActiveLocs & " locations")
+// On change of segState or segKind: Reset(ddInstitution); Reset(ddCampus); Reset(ddLocation)
+
+// ===== Step 1: store contact =====
+// Prefill when a location is chosen (phone/email only for Managers/Admins)
+UpdateContext({
+  ctxContactName: varLoc.'Contact Name', ctxContactRole: varLoc.'Contact Role',
+  ctxPhone: If(gblIsAdmin || gblIsMgr, varLoc.'Contact Phone', ""),
+  ctxEmail: If(gblIsAdmin || gblIsMgr, varLoc.'Contact Email', "")
+});
+// Validation
+errContactName = If(varStatus = 'Visit Status'.Completed && IsBlank(Trim(txtContactName.Text)), "Enter the name of the store contact you spoke to.");
+errPhone = If(!IsBlank(txtPhone.Text) && (Len(Substitute(Substitute(Substitute(Substitute(Substitute(txtPhone.Text," ",""),"+",""),"(",""),")",""),"-","")) < 8 || !IsMatch(txtPhone.Text, "^[0-9 +()\-]{8,20}$")),
+    "Enter a phone number with at least 8 digits, e.g. 0412 345 678.");
+errEmail = If(!IsBlank(txtEmail.Text) && !IsMatch(txtEmail.Text, Match.Email), "Enter a valid email address.");
+
+// ===== Step 3: competitors =====
+// colComp: one row per competitor ticked on this audit
+// Pre-tick from the location's last audit
+ClearCollect(colComp, ForAll(Filter('Location Competitors', Location.Location = varLoc.Location),
+    {Brand: Competitor.Name, Facings: 0, Price: Price, POS: 'POS Pieces', Coolers: Coolers}));
+// Chip OnSelect (galCompChips, Items = Filter(Competitors, Active))
+If(ThisItem.Name in colComp.Brand, RemoveIf(colComp, Brand = ThisItem.Name),
+   Collect(colComp, {Brand: ThisItem.Name, Facings: 0, Price: Blank(), POS: 0, Coolers: 0}));
+// "Add competitor" button
+With({b: Proper(Trim(txtNewComp.Text))},
+  If(!IsBlank(b) && !(Lower(b) in ForAll(colComp, Lower(Brand))),
+     If(IsBlank(LookUp(Competitors, Lower(Name) = Lower(b))), Patch(Competitors, Defaults(Competitors), {Name: b, Active: true, 'Added From Field': true}));
+     Collect(colComp, {Brand: b, Facings: 0, Price: Blank(), POS: 0, Coolers: 0})); Reset(txtNewComp));
+// Card steppers: Patch(colComp, ThisItem, {Facings: ThisItem.Facings + 1}) etc. POS/Coolers controls Visible = varLoc.'Store Location Type'.Name <> "Vending"
+// Share of shelf label
+With({rb: Value(txtRbFacings.Text), comp: Sum(colComp, Facings)},
+  If(rb + comp = 0, "—", Text(rb / (rb + comp), "0%")) & "  ·  " & rb & " Red Bull · " & comp & " competitor")
+// Price validation (each competitor): IsBlank(Price) || (Price > 0 && Price < 20)
+
+// ===== Submit additions (after the Audit Visit Patch, varVisit = the new row) =====
+With({top: First(SortByColumns(colComp, "Facings", SortOrder.Descending))},
+  Patch('Audit Visits', varVisit, {
+    'Contact Name': Trim(txtContactName.Text), 'Contact Role': ddContactRole.Selected.Value,
+    'Red Bull Front Facings': Value(txtRbFacings.Text),
+    'Top Competitor': If(IsEmpty(colComp), "None", top.Brand), 'Competitor Price': If(IsEmpty(colComp), Blank(), top.Price) }));
+ForAll(colComp, Patch('Visit Competitors', Defaults('Visit Competitors'), {
+    Name: varVisit.'Visit ID' & " – " & ThisRecord.Brand, 'Audit Visit': varVisit,
+    Competitor: LookUp(Competitors, Name = ThisRecord.Brand), 'Front Facings': ThisRecord.Facings,
+    Price: ThisRecord.Price, 'POS Pieces': ThisRecord.POS, Coolers: ThisRecord.Coolers }));
+// Replace the location's latest competitor picture
+RemoveIf('Location Competitors', Location.Location = varLoc.Location);
+ForAll(colComp, Patch('Location Competitors', Defaults('Location Competitors'), {
+    Name: varLoc.'Location ID' & " – " & ThisRecord.Brand, Location: varLoc,
+    Competitor: LookUp(Competitors, Name = ThisRecord.Brand), 'Front Facings': ThisRecord.Facings,
+    Price: ThisRecord.Price, 'POS Pieces': ThisRecord.POS, Coolers: ThisRecord.Coolers }));
+// Location contact + facings (blank phone/email keep existing values)
+Patch(Locations, varLoc, {
+    'Contact Name': Trim(txtContactName.Text), 'Contact Role': ddContactRole.Selected.Value,
+    'Contact Phone': Coalesce(Trim(txtPhone.Text), varLoc.'Contact Phone'),
+    'Contact Email': Coalesce(Trim(txtEmail.Text), varLoc.'Contact Email'),
+    'Contact Recorded On': dpDate.SelectedDate, 'Contact Recorded By': gblMe,
+    'Red Bull Front Facings': Value(txtRbFacings.Text), 'Facings Recorded On': dpDate.SelectedDate });

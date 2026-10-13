@@ -1,0 +1,719 @@
+{
+ "_comment": "People and reporting lines as seeded by src/app.js (ADMINS, MANAGERS, SM_ROSTERS, LEADS). Internal staff data: keep in an access-controlled location.",
+ "people": [
+  {
+   "name": "Keane Vivas",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Sarah Stirling",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Holiday Chen",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Zane Hudson",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Hudson Ayoubi",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Jarrod Smith",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Jon McCarthy",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Lyndon Hutton",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Lee Imperatrice",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Connor Mahon",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Sophie Ness",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Eilish Hargen",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Nicholas Perman",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Rachel Sullivan",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Georgia Merret",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Makenzie Grant",
+   "role": "admin",
+   "state": null,
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Phillip Petinella",
+   "role": "manager",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Abi James",
+   "role": "manager",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Patrick Blew",
+   "role": "manager",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Josh Blew",
+   "role": "manager",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Hannah Perry",
+   "role": "manager",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Jonathan Chalouhi",
+   "role": "manager",
+   "state": "NSW",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Anthony Alam",
+   "role": "manager",
+   "state": "NSW",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Charlotte Terrell",
+   "role": "manager",
+   "state": "NSW",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Alex Kinloch",
+   "role": "manager",
+   "state": "NSW",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Molly Kenworthy",
+   "role": "manager",
+   "state": "QLD",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Georgia Bakagiannis",
+   "role": "manager",
+   "state": "QLD",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Bronte Stock",
+   "role": "manager",
+   "state": "QLD",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Teneisha Clarisse",
+   "role": "manager",
+   "state": "SA",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Adam Mizzi",
+   "role": "manager",
+   "state": "SA",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Justin Majeks",
+   "role": "manager",
+   "state": "WA",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Anna Minissale",
+   "role": "manager",
+   "state": "WA",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Alex Mozjerin",
+   "role": "marketeer",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Amanda Shen",
+   "role": "marketeer",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Andy Sitch",
+   "role": "marketeer",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Ella Dzielakowski",
+   "role": "marketeer",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "George Johnson",
+   "role": "marketeer",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Kristie Phan",
+   "role": "marketeer",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Lachlan Heath",
+   "role": "marketeer",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Milla Burgess",
+   "role": "marketeer",
+   "state": "VIC",
+   "reportsTo": null,
+   "status": "Active"
+  },
+  {
+   "name": "Brooke Kildey",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Christopher Salem",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Dana Farfan",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Eliza La Greca",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Eva Charles",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Grace Dawson",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Harry Hadley",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Hugo Paddon-Row",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Jack Montague",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "James Whiteing",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Kalipso Nathanael",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Katya Slavin",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Lucinda Whybrow",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Oliver Boyd",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Renee Christison",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Shelley Morton",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Talia Rossi",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Thomas Kuminek",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Charlotte Terrell",
+   "status": "Active"
+  },
+  {
+   "name": "Charlotte Bagnall",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Jonathan Chalouhi",
+   "status": "Active"
+  },
+  {
+   "name": "Georgia McQuillan",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Jonathan Chalouhi",
+   "status": "Active"
+  },
+  {
+   "name": "Jonathan Shabaya",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Jonathan Chalouhi",
+   "status": "Active"
+  },
+  {
+   "name": "Sachman Maini",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Jonathan Chalouhi",
+   "status": "Active"
+  },
+  {
+   "name": "Sarah Bartolo",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Jonathan Chalouhi",
+   "status": "Active"
+  },
+  {
+   "name": "Tamsyn Rose",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Jonathan Chalouhi",
+   "status": "Active"
+  },
+  {
+   "name": "Xanthe Tamayo",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Jonathan Chalouhi",
+   "status": "Active"
+  },
+  {
+   "name": "Yashmin Bucao",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Jonathan Chalouhi",
+   "status": "Active"
+  },
+  {
+   "name": "Zoe Smith",
+   "role": "marketeer",
+   "state": "NSW",
+   "reportsTo": "Jonathan Chalouhi",
+   "status": "Active"
+  },
+  {
+   "name": "Celina Squire",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Molly Kenworthy",
+   "status": "Active"
+  },
+  {
+   "name": "Jadene de Lima",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Molly Kenworthy",
+   "status": "Active"
+  },
+  {
+   "name": "Joshua Lai",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Molly Kenworthy",
+   "status": "Active"
+  },
+  {
+   "name": "Kaitlyn Knowles",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Molly Kenworthy",
+   "status": "Active"
+  },
+  {
+   "name": "Lachlan McBain",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Molly Kenworthy",
+   "status": "Active"
+  },
+  {
+   "name": "Liam Crispe",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Molly Kenworthy",
+   "status": "Active"
+  },
+  {
+   "name": "Summer Toole",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Molly Kenworthy",
+   "status": "Active"
+  },
+  {
+   "name": "Violet Fahy",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Molly Kenworthy",
+   "status": "Active"
+  },
+  {
+   "name": "Caytlan Stephensen",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Georgia Bakagiannis",
+   "status": "Active"
+  },
+  {
+   "name": "Ella Lancini",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Georgia Bakagiannis",
+   "status": "Active"
+  },
+  {
+   "name": "Lachlan Gomersall",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Georgia Bakagiannis",
+   "status": "Active"
+  },
+  {
+   "name": "Lily Lattanzi",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Georgia Bakagiannis",
+   "status": "Active"
+  },
+  {
+   "name": "Pieter Swart",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Georgia Bakagiannis",
+   "status": "Active"
+  },
+  {
+   "name": "Sydney Elder",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Georgia Bakagiannis",
+   "status": "Active"
+  },
+  {
+   "name": "Tyler Dimock",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Georgia Bakagiannis",
+   "status": "Active"
+  },
+  {
+   "name": "William Horton",
+   "role": "marketeer",
+   "state": "QLD",
+   "reportsTo": "Georgia Bakagiannis",
+   "status": "Active"
+  },
+  {
+   "name": "Alex Holt",
+   "role": "marketeer",
+   "state": "SA",
+   "reportsTo": "Teneisha Clarisse",
+   "status": "Active"
+  },
+  {
+   "name": "Caydence Bussenschutt",
+   "role": "marketeer",
+   "state": "SA",
+   "reportsTo": "Teneisha Clarisse",
+   "status": "Active"
+  },
+  {
+   "name": "Chloe Salvemini",
+   "role": "marketeer",
+   "state": "SA",
+   "reportsTo": "Teneisha Clarisse",
+   "status": "Active"
+  },
+  {
+   "name": "Hugh Black",
+   "role": "marketeer",
+   "state": "SA",
+   "reportsTo": "Teneisha Clarisse",
+   "status": "Active"
+  },
+  {
+   "name": "Isabella Drew",
+   "role": "marketeer",
+   "state": "SA",
+   "reportsTo": "Teneisha Clarisse",
+   "status": "Active"
+  },
+  {
+   "name": "Jacob Mackenzie",
+   "role": "marketeer",
+   "state": "SA",
+   "reportsTo": "Teneisha Clarisse",
+   "status": "Active"
+  },
+  {
+   "name": "Lan Pham-Ellickson",
+   "role": "marketeer",
+   "state": "SA",
+   "reportsTo": "Teneisha Clarisse",
+   "status": "Active"
+  },
+  {
+   "name": "Olivia Thompson",
+   "role": "marketeer",
+   "state": "SA",
+   "reportsTo": "Teneisha Clarisse",
+   "status": "Active"
+  },
+  {
+   "name": "Sophie Wigg",
+   "role": "marketeer",
+   "state": "SA",
+   "reportsTo": "Teneisha Clarisse",
+   "status": "Active"
+  },
+  {
+   "name": "William Torode",
+   "role": "marketeer",
+   "state": "SA",
+   "reportsTo": "Teneisha Clarisse",
+   "status": "Active"
+  },
+  {
+   "name": "Amy Ward",
+   "role": "marketeer",
+   "state": "WA",
+   "reportsTo": "Anna Minissale",
+   "status": "Active"
+  },
+  {
+   "name": "Anna Pedersen",
+   "role": "marketeer",
+   "state": "WA",
+   "reportsTo": "Anna Minissale",
+   "status": "Active"
+  },
+  {
+   "name": "Cameron Cassie",
+   "role": "marketeer",
+   "state": "WA",
+   "reportsTo": "Anna Minissale",
+   "status": "Active"
+  },
+  {
+   "name": "Claudia Biddeloo",
+   "role": "marketeer",
+   "state": "WA",
+   "reportsTo": "Anna Minissale",
+   "status": "Active"
+  },
+  {
+   "name": "Keira Clements",
+   "role": "marketeer",
+   "state": "WA",
+   "reportsTo": "Anna Minissale",
+   "status": "Active"
+  },
+  {
+   "name": "Lachlan Lamb",
+   "role": "marketeer",
+   "state": "WA",
+   "reportsTo": "Anna Minissale",
+   "status": "Active"
+  },
+  {
+   "name": "Meg Kimpton",
+   "role": "marketeer",
+   "state": "WA",
+   "reportsTo": "Anna Minissale",
+   "status": "Active"
+  },
+  {
+   "name": "Mitch Miller",
+   "role": "marketeer",
+   "state": "WA",
+   "reportsTo": "Anna Minissale",
+   "status": "Active"
+  },
+  {
+   "name": "Ruthie Ong",
+   "role": "marketeer",
+   "state": "WA",
+   "reportsTo": "Anna Minissale",
+   "status": "Active"
+  }
+ ]
+}

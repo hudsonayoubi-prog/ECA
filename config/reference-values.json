@@ -1,0 +1,250 @@
+{
+  "_comment": "Snapshot of DEFAULT_REF and related constants in src/app.js (source of truth is the code). Admin PIN intentionally omitted: see .env.example.",
+  "states": [
+    {
+      "code": "VIC",
+      "name": "Victoria"
+    },
+    {
+      "code": "NSW",
+      "name": "New South Wales"
+    },
+    {
+      "code": "QLD",
+      "name": "Queensland"
+    },
+    {
+      "code": "SA",
+      "name": "South Australia"
+    },
+    {
+      "code": "WA",
+      "name": "Western Australia"
+    }
+  ],
+  "channelLeads": {
+    "VIC": [
+      "Keane Vivas"
+    ],
+    "QLD": [
+      "Holiday Chen"
+    ],
+    "WA": [
+      "Rachel Sullivan",
+      "Georgia Merret"
+    ],
+    "NSW": [
+      "Makenzie Grant",
+      "Sophie Ness"
+    ],
+    "SA": [
+      "Connor Mahon"
+    ]
+  },
+  "ref": {
+    "products": [
+      {
+        "key": "ed",
+        "label": "Energy Drink",
+        "short": "ED",
+        "qsr": true,
+        "vending": true
+      },
+      {
+        "key": "sf",
+        "label": "Sugarfree",
+        "short": "SF",
+        "qsr": true,
+        "vending": true
+      },
+      {
+        "key": "zero",
+        "label": "Zero",
+        "short": "Zero",
+        "qsr": true,
+        "vending": true
+      },
+      {
+        "key": "editions",
+        "label": "Editions",
+        "short": "Editions",
+        "qsr": true,
+        "vending": true
+      },
+      {
+        "key": "monster",
+        "label": "Monster",
+        "short": "Monster",
+        "qsr": true,
+        "vending": true,
+        "competitor": true
+      },
+      {
+        "key": "monsterUltra",
+        "label": "Monster Ultra",
+        "short": "M. Ultra",
+        "qsr": true,
+        "vending": false,
+        "competitor": true
+      },
+      {
+        "key": "v",
+        "label": "V",
+        "short": "V",
+        "qsr": true,
+        "vending": true,
+        "competitor": true
+      },
+      {
+        "key": "vsf",
+        "label": "V Sugarfree",
+        "short": "V SF",
+        "qsr": true,
+        "vending": false,
+        "competitor": true
+      },
+      {
+        "key": "vblue",
+        "label": "V Blue",
+        "short": "V Blue",
+        "qsr": true,
+        "vending": false,
+        "competitor": true
+      },
+      {
+        "key": "solo",
+        "label": "Solo Energy",
+        "short": "Solo",
+        "qsr": true,
+        "vending": false,
+        "competitor": true
+      }
+    ],
+    "visitStatuses": [
+      "Completed",
+      "Scheduled",
+      "Cancelled"
+    ],
+    "posTypes": [
+      "Price tag",
+      "Wobbler",
+      "Poster",
+      "Shelf strip",
+      "Fridge decal",
+      "Counter unit",
+      "Menu board",
+      "Vending decal",
+      "Other"
+    ],
+    "competitors": [
+      "Monster",
+      "V",
+      "Solo Energy",
+      "Rockstar",
+      "Celsius",
+      "None"
+    ],
+    "contactRoles": [
+      "Owner",
+      "Manager",
+      "Assistant manager",
+      "Supervisor",
+      "Buyer / purchasing",
+      "Staff member",
+      "Other"
+    ],
+    "channels": [
+      "OnP",
+      "OffP"
+    ],
+    "classifications": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "bull": [
+      "EYE",
+      "RING"
+    ],
+    "indNka": [
+      "IND",
+      "NKA",
+      "Vending"
+    ],
+    "vendingCompanies": [
+      "AltaVend",
+      "Coke Vending",
+      "M&M",
+      "Melbourne Vending Co.",
+      "Provender",
+      "Snack Savy",
+      "Vendy",
+      "Other"
+    ],
+    "removalReasons": [
+      "Closed permanently",
+      "No longer stocks Red Bull",
+      "Duplicate entry",
+      "Moved or renamed",
+      "Not accessible to staff",
+      "Other"
+    ],
+    "defaultCycle": 14,
+    "dueSoonDays": 3,
+    "reminderLeadDays": 3,
+    "notifyOverdue": true,
+    "dailySummaryTime": "18:00",
+    "storeTypes": [
+      {
+        "name": "QSR",
+        "active": true
+      },
+      {
+        "name": "Vending",
+        "active": true
+      },
+      {
+        "name": "Student Bar",
+        "active": true
+      },
+      {
+        "name": "Convenience",
+        "active": true
+      },
+      {
+        "name": "NKA",
+        "active": true
+      }
+    ],
+    "scoring": {
+      "weights": {
+        "ranging": 30,
+        "tdp": 25,
+        "editions": 20,
+        "pos": 15,
+        "coolers": 10
+      },
+      "method": "relative",
+      "targets": {
+        "tdp": 12,
+        "editions": 8,
+        "pos": 10,
+        "coolers": 2
+      },
+      "minAudits": 3
+    },
+    "approvalMode": "manager",
+    "results": {
+      "groups": {
+        "leads": true,
+        "admins": true,
+        "sms": true
+      },
+      "extra": [],
+      "method": "Email and in-app",
+      "businessDay": 3,
+      "template": "Congratulations to {first}, {second} and {third}, the {month} podium. Thanks to all {ranked} ranked Student Marketeers for the work on campus this month."
+    }
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "_about": "Terms used in the Education Channel Audit Tool (ECA), Red Bull Australia student marketing. Keys are the terms as written in the app and docs.",
+  "terms": [
+    {
+      "term": "ECA",
+      "definition": "Education Channel Audit Tool: this app.",
+      "aka": [
+        "Education Channel Audit Tool"
+      ]
+    },
+    {
+      "term": "Education channel",
+      "definition": "Red Bull's university and TAFE campus channel: stores, bars and vending machines on or near campuses."
+    },
+    {
+      "term": "Student Marketeer (SM)",
+      "definition": "Student employed by Red Bull to run campus activity and audit stores. Role 'marketeer' in code.",
+      "aka": [
+        "SM",
+        "Field Staff (old name)"
+      ]
+    },
+    {
+      "term": "Manager",
+      "definition": "Red Bull staff member managing Student Marketeers in one state; approves audits."
+    },
+    {
+      "term": "Administrator",
+      "definition": "National user with full access; changes settings, finalises and distributes monthly results.",
+      "aka": [
+        "Admin"
+      ]
+    },
+    {
+      "term": "Education Channel Lead",
+      "definition": "Administrator responsible for a state; decides removal requests and receives daily summaries.",
+      "aka": [
+        "Channel Lead",
+        "Lead"
+      ]
+    },
+    {
+      "term": "Institution",
+      "definition": "A university or TAFE record, one per state.",
+      "aka": [
+        "Uni",
+        "TAFE"
+      ]
+    },
+    {
+      "term": "TAFE",
+      "definition": "Technical and Further Education institute (vocational college). Yellow tag in the app."
+    },
+    {
+      "term": "Location",
+      "definition": "A store (QSR, Student Bar, Convenience, NKA) or vending machine that gets audited. ID like MON-012 or MON-VM-012."
+    },
+    {
+      "term": "QSR",
+      "definition": "Quick Service Restaurant: cafés and food outlets. Also the default store location type and the non-vending location kind in code."
+    },
+    {
+      "term": "NKA",
+      "definition": "National Key Account: chain outlets (e.g. Subway, Guzman y Gomez) managed nationally rather than by the campus team."
+    },
+    {
+      "term": "IND",
+      "definition": "Independent outlet (not a national key account)."
+    },
+    {
+      "term": "Student Bar",
+      "definition": "Campus bar, pub or tavern store location type."
+    },
+    {
+      "term": "Convenience",
+      "definition": "Convenience store location type (none classified yet)."
+    },
+    {
+      "term": "Vending",
+      "definition": "Vending machine location type; has machine fields (company, machine ID, V/Monster SKUs and prices)."
+    },
+    {
+      "term": "Store location type",
+      "definition": "One of QSR, Vending, Student Bar, Convenience, NKA. Admin-managed list."
+    },
+    {
+      "term": "Audit",
+      "definition": "A Completed visit with the six-step form.",
+      "aka": [
+        "Visit (Completed)"
+      ]
+    },
+    {
+      "term": "Visit status",
+      "definition": "Completed, Scheduled or Cancelled. Only Completed resets the visit cycle."
+    },
+    {
+      "term": "Visit cycle",
+      "definition": "Days between required visits; default 14."
+    },
+    {
+      "term": "On Track / Due Soon / Overdue / No Visit Recorded",
+      "definition": "Location statuses from the last Completed visit and cycle. Due Soon = due within 3 days."
+    },
+    {
+      "term": "Ranging",
+      "definition": "Whether a product is stocked (Yes/No) at a location."
+    },
+    {
+      "term": "Ranging %",
+      "definition": "Red Bull SKUs ranged ÷ Red Bull SKUs checked (or applicable, on the leaderboard) at a location, averaged."
+    },
+    {
+      "term": "SKU",
+      "definition": "Stock keeping unit: one product variant (e.g. Red Bull Energy Drink, Sugarfree, Zero, Editions)."
+    },
+    {
+      "term": "ED / SF / Zero",
+      "definition": "Red Bull Energy Drink, Sugarfree, Zero."
+    },
+    {
+      "term": "Editions",
+      "definition": "Red Bull flavoured Editions range; 'Editions sold in' = units/listings of Editions gained on a visit."
+    },
+    {
+      "term": "DP",
+      "definition": "Distribution point: one SKU ranged at one location. Adding ED and Zero to a new fridge = 2 DPs added."
+    },
+    {
+      "term": "TDP",
+      "definition": "Total distribution points; on the leaderboard 'TDP added' = sum of DPs added on approved audits."
+    },
+    {
+      "term": "Net DPs",
+      "definition": "DPs added minus DPs lost."
+    },
+    {
+      "term": "Front facings",
+      "definition": "Number of cans/product faces visible at the front of the shelf or fridge (or vending columns)."
+    },
+    {
+      "term": "Share of shelf",
+      "definition": "Red Bull front facings ÷ (Red Bull + all competitor front facings)."
+    },
+    {
+      "term": "POS",
+      "definition": "Point of sale material: price tags, wobblers, posters, shelf strips, fridge decals, counter units, menu boards, vending decals."
+    },
+    {
+      "term": "Cooler",
+      "definition": "Red Bull branded fridge. 'Coolers placed' = installed on a visit."
+    },
+    {
+      "term": "Bullring / Bull's Eye (RING / EYE)",
+      "definition": "Red Bull display/merchandising standards recorded per store."
+    },
+    {
+      "term": "Channel OnP / OffP",
+      "definition": "On-premise (consumed on site) or off-premise (take-away retail)."
+    },
+    {
+      "term": "Classification A–D",
+      "definition": "Store priority grade."
+    },
+    {
+      "term": "Competitors",
+      "definition": "Monster, Monster Ultra, V (and V Sugarfree, V Blue), Solo Energy, Rockstar, Celsius, plus brands added in the field."
+    },
+    {
+      "term": "Approval",
+      "definition": "Pending, Approved, Rejected or Duplicate. Only Approved audits score."
+    },
+    {
+      "term": "National Leaderboard",
+      "definition": "Monthly ranking of Student Marketeers by weighted score (Ranging 30, TDP 25, Editions 20, POS 15, Coolers 10)."
+    },
+    {
+      "term": "Snapshot",
+      "definition": "A month's leaderboard: In review after rollover, Final after an Admin finalises."
+    },
+    {
+      "term": "Finalise / Distribute",
+      "definition": "Admin locks a month's results, then sends them to chosen groups."
+    },
+    {
+      "term": "Step-up",
+      "definition": "Second check before sensitive admin actions (prototype PIN; production Entra MFA)."
+    },
+    {
+      "term": "Coverage",
+      "definition": "Share of active locations audited at least once in the period.",
+      "aka": [
+        "Completion"
+      ]
+    },
+    {
+      "term": "Daily summary",
+      "definition": "Per Student Marketeer per day with 2+ audits; sent to state Leads and Managers at 18:00."
+    },
+    {
+      "term": "Monthly summary / National breakdown",
+      "definition": "Monthly state report for Managers and Leads / national report for Admins, on the 1st."
+    },
+    {
+      "term": "Audit export",
+      "definition": "Excel of every audit in a month, one sheet per state, with a Dashboard of charts; generated on the last calendar day."
+    },
+    {
+      "term": "Removal request",
+      "definition": "Student Marketeer's request to remove a closed or wrong location or institution; decided by the Education Channel Lead."
+    },
+    {
+      "term": "Shared storage / Live · shared",
+      "definition": "The claude.ai artifact database that gives all signed-in users the same live data. 'This browser only' = not connected."
+    },
+    {
+      "term": "Demo activity",
+      "definition": "Generated leaderboard audits for the 8 VIC workbook staff in the prototype; removable in Settings."
+    },
+    {
+      "term": "Dataverse",
+      "definition": "Microsoft's business database behind Power Apps; the production system of record."
+    },
+    {
+      "term": "Business Unit (BU)",
+      "definition": "Dataverse security boundary; one per state in the ECA design."
+    },
+    {
+      "term": "htm",
+      "definition": "Small library that lets the prototype write React markup with tagged template strings instead of JSX."
+    }
+  ]
+}

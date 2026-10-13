@@ -1,0 +1,30 @@
+const { chromium } = require('playwright');
+(async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
+ const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, acceptDownloads: true }); const p = await ctx.newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type()==='error' && !/key/.test(m.text())) errs.push(m.text()); });
+ await p.goto('file://' + process.cwd() + '/index.html'); await p.waitForTimeout(700);
+ // simulate an older saved state (ecaRev 2, demo without facings)
+ await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('edu-audit-national-v2')); s.ecaRev = 2; s.demo = s.demo.map(({ rbFacings, compFacings, compDetail, compPos, compCoolers, ...v }) => v); localStorage.setItem('edu-audit-national-v2', JSON.stringify(s)); });
+ await p.reload(); await p.waitForTimeout(700);
+ console.log('migrated demo facings:', await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('edu-audit-national-v2')); return s.ecaRev + ' ' + s.demo.filter(v => v.rbFacings != null).length + '/' + s.demo.length; }));
+ await p.fill('#li-f','Hudson'); await p.fill('#li-l','Ayoubi'); await p.click('button[type=submit]'); await p.waitForTimeout(500);
+ await p.locator('.rail >> text=Progress').click(); await p.waitForTimeout(500);
+ await p.locator('[aria-label="Date range"] button, .seg button', { hasText: 'Last 30 days' }).first().click().catch(()=>{});
+ await p.selectOption('#f-range', '30').catch(()=>{}); await p.waitForTimeout(300);
+ const sec = p.locator('section.card', { hasText: 'Execution' }).first();
+ console.log('exec KPIs:', (await sec.locator('.kpi').allInnerTexts()).map(t => t.replace(/\n/g, ' | ')));
+ await sec.scrollIntoViewIfNeeded(); await sec.screenshot({ path: 'out/e_progress.png' });
+ const [dl] = await Promise.all([p.waitForEvent('download'), p.locator('button', { hasText: 'Download Excel' }).click()]); await dl.saveAs('out/e_progress.xlsx');
+ await p.locator('.rail >> text=Notifications').click(); await p.waitForTimeout(300); await p.locator('.tabs button', { hasText: 'Inbox' }).click();
+ console.log('inbox:', (await p.locator('.rowbtn', { hasText: 'National breakdown' }).first().innerText()).replace(/\n/g, ' | '));
+ await p.locator('.tabs button', { hasText: 'Monthly summaries' }).click(); await p.waitForTimeout(300);
+ await p.locator('.ucard', { hasText: 'National breakdown' }).click(); await p.waitForTimeout(400);
+ await p.locator('.sheet').screenshot({ path: 'out/e_monthly.png' });
+ const [dl2] = await Promise.all([p.waitForEvent('download'), p.locator('.sheet-f button.primary').click()]); await dl2.saveAs('out/e_national.xlsx');
+ // manager mobile
+ await p.setViewportSize({ width: 390, height: 844 });
+ await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('edu-audit-national-v2')); s.authed=false; s.meId=null; localStorage.setItem('edu-audit-national-v2', JSON.stringify(s)); }); await p.reload(); await p.waitForTimeout(600);
+ await p.fill('#li-f','Phillip'); await p.fill('#li-l','Petinella'); await p.click('button[type=submit]'); await p.waitForTimeout(500);
+ await p.locator('.bottombar button', { hasText: 'More' }).click(); await p.waitForTimeout(200); await p.locator('text=Progress').last().click(); await p.waitForTimeout(500);
+ const sec2 = p.locator('section.card', { hasText: 'Execution' }).first(); await sec2.screenshot({ path: 'out/e_mobile.png' });
+ console.log('mobile scrollWidth:', await p.evaluate(() => document.documentElement.scrollWidth));
+ console.log(errs.length ? errs : 'NO ERRORS'); await b.close(); })();
