@@ -2,11 +2,14 @@
   "name": "education-channel-audit-tool",
   "version": "0.30.0",
   "private": true,
-  "description": "Education Channel Audit Tool (ECA) — Red Bull Australia student marketing store-audit prototype. Single-page React app built into one HTML file.",
+  "description": "Education Channel Audit Tool (ECA) \u2014 Red Bull Australia student marketing store-audit prototype. Single-page React app built into one HTML file.",
   "scripts": {
     "build": "python3 scripts/build.py",
     "test": "bash scripts/run-tests.sh",
-    "build:pack": "python3 scripts/build_pack.py docs/power-platform/state_dump.json docs/power-platform/ECA_Dataverse_Build_Pack.xlsx"
+    "build:pack": "python3 scripts/build_pack.py docs/power-platform/state_dump.json docs/power-platform/ECA_Dataverse_Build_Pack.xlsx",
+    "pp:schema": "python3 scripts/pp_schema.py",
+    "pp:plan": "python3 scripts/pp_deploy.py",
+    "test:pp": "python3 -m unittest discover -s tests/pp"
   },
   "devDependencies": {
     "htm": "3.1.1",
@@ -14,5 +17,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  }
 }

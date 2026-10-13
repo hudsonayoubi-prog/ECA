@@ -45,3 +45,6 @@
 
 ## C. Risks
 Impersonation (prototype), unagreed scoring, wrong auto store types, data drift between Excel/prototype/Power App, Copilot output variability, pilot data stranded in claude.ai, licence cost, approval backlog, personal data exposure on a shared link. Mitigations: Power Platform as system of record, Microsoft sign-in, agree scoring before launch, confirm store types, export pilot data before cut-over, restrict sharing.
+
+## Path 2 · Stage 1 assumptions (added 13 Oct 2026)
+See `docs/power-platform/STAGE1.md`: Visit ID created as text; two choice sets derived from inline labels; extra alternate keys; deploy script untested against a live Dataverse; Manager-cannot-edit-Administrators rule needs testing.

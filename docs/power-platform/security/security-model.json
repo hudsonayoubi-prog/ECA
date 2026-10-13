@@ -1,0 +1,54 @@
+{
+  "note": "Stage 1 security design for the ECA Dataverse solution. Source: copilot-handover/12-security-and-privacy.md. Build in the Power Platform admin centre / make.powerapps.com; roles are solution components.",
+  "businessUnits": {
+    "root": "Red Bull Australia (existing root BU)",
+    "children": ["VIC", "NSW", "QLD", "SA", "WA"],
+    "rule": "Each state's records are owned by a team in that state's BU. Administrators sit in the root BU so they read across states."
+  },
+  "teams": [
+    {"name": "ECA SM - {STATE}", "type": "AAD group (security group)", "role": "ECA Student Marketeer", "bu": "{STATE}"},
+    {"name": "ECA Managers - {STATE}", "type": "AAD group (security group)", "role": "ECA Manager", "bu": "{STATE}"},
+    {"name": "ECA Administrators", "type": "AAD group (security group)", "role": "ECA Administrator", "bu": "root"}
+  ],
+  "accessLevels": {"U": "User (own)", "B": "Business Unit", "O": "Organisation", "-": "None"},
+  "roles": {
+    "ECA Student Marketeer": {
+      "eca_institution,eca_campus,eca_storelocationtype,eca_competitor,eca_state": {"read": "O"},
+      "eca_location": {"read": "B", "create": "B", "write": "-"},
+      "eca_auditvisit,eca_visitcompetitor": {"create": "U", "read": "B", "write": "U", "note": "edit own within 48 h is enforced by a flow, not by the role"},
+      "eca_locationcompetitor": {"read": "B", "create": "B", "write": "B"},
+      "eca_ecauser": {"read": "B"},
+      "eca_leaderboardsnapshot,eca_snapshotrow,eca_scoringruleset,eca_distributionsettings,eca_resultsdistribution": {"read": "O"},
+      "eca_removalrequest": {"create": "U", "read": "U"},
+      "eca_monthlyreport": {},
+      "eca_auditlog,eca_signinevent": {}
+    },
+    "ECA Manager": {
+      "eca_institution,eca_campus,eca_storelocationtype,eca_competitor": {"read": "O", "create": "B", "write": "B"},
+      "eca_state": {"read": "O"},
+      "eca_location,eca_locationcompetitor,eca_allocation": {"read": "B", "create": "B", "write": "B"},
+      "eca_auditvisit,eca_visitcompetitor": {"read": "B", "create": "B", "write": "B", "note": "approve = write Approval Status; self-approval blocked in app and flow"},
+      "eca_ecauser": {"read": "B", "create": "B", "write": "B", "note": "must not be able to create or edit Administrators: enforce with a plug-in-free rule: Administrator rows are owned by the root BU, which a Manager cannot write"},
+      "eca_channellead": {"read": "B"},
+      "eca_leaderboardsnapshot,eca_snapshotrow,eca_scoringruleset,eca_distributionsettings,eca_resultsdistribution": {"read": "O"},
+      "eca_removalrequest": {"read": "B", "create": "B"},
+      "eca_monthlyreport": {"read": "B"},
+      "eca_auditlog,eca_signinevent": {"read": "B"}
+    },
+    "ECA Administrator": {
+      "all eca_* tables": {"read": "O", "create": "O", "write": "O", "delete": "O"},
+      "eca_auditlog,eca_signinevent": {"read": "O", "create": "O", "write": "-", "delete": "-", "note": "append-only for everyone"},
+      "eca_scoringruleset,eca_distributionsettings": {"note": "changes need MFA: Conditional Access authentication context on the Administrator group"}
+    }
+  },
+  "columnSecurity": {
+    "profile": "ECA Contact Details",
+    "columns": ["eca_location.eca_contactphone", "eca_location.eca_contactemail", "eca_location.eca_storecontact"],
+    "grants": [
+      {"principal": "ECA Managers - * and ECA Administrators", "read": true, "update": true, "create": true},
+      {"principal": "ECA SM - *", "read": false, "update": true, "create": true, "note": "SMs can write a contact on audit but never read it back"}
+    ],
+    "todo": "Mark the three columns 'Enable column security' in the table designer BEFORE creating the profile."
+  },
+  "auditing": {"environment": "On", "tables": "All eca_* tables (IsAuditEnabled is set by scripts/pp_deploy.py); retention 2 years", "readAuditing": "On for eca_location contact columns"}
+}

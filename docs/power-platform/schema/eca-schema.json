@@ -1,0 +1,3385 @@
+{
+ "publisherPrefix": "eca_",
+ "solution": "ECA",
+ "choices": [
+  {
+   "name": "ECA Role",
+   "logicalName": "eca_ecarole",
+   "options": [
+    {
+     "label": "Student Marketeer",
+     "value": 100000000
+    },
+    {
+     "label": "Manager",
+     "value": 100000001
+    },
+    {
+     "label": "Administrator",
+     "value": 100000002
+    }
+   ]
+  },
+  {
+   "name": "Active / Inactive",
+   "logicalName": "eca_activeinactive",
+   "options": [
+    {
+     "label": "Active",
+     "value": 100000000
+    },
+    {
+     "label": "Inactive",
+     "value": 100000001
+    }
+   ]
+  },
+  {
+   "name": "Location Status",
+   "logicalName": "eca_locationstatus",
+   "options": [
+    {
+     "label": "Active",
+     "value": 100000000
+    },
+    {
+     "label": "Paused",
+     "value": 100000001
+    },
+    {
+     "label": "Removed",
+     "value": 100000002
+    }
+   ]
+  },
+  {
+   "name": "Institution Kind",
+   "logicalName": "eca_institutionkind",
+   "options": [
+    {
+     "label": "University",
+     "value": 100000000
+    },
+    {
+     "label": "TAFE",
+     "value": 100000001
+    }
+   ]
+  },
+  {
+   "name": "Visit Status",
+   "logicalName": "eca_visitstatus",
+   "options": [
+    {
+     "label": "Completed",
+     "value": 100000000
+    },
+    {
+     "label": "Scheduled",
+     "value": 100000001
+    },
+    {
+     "label": "Cancelled",
+     "value": 100000002
+    }
+   ]
+  },
+  {
+   "name": "Approval Status",
+   "logicalName": "eca_approvalstatus",
+   "options": [
+    {
+     "label": "Pending",
+     "value": 100000000
+    },
+    {
+     "label": "Approved",
+     "value": 100000001
+    },
+    {
+     "label": "Rejected",
+     "value": 100000002
+    },
+    {
+     "label": "Duplicate",
+     "value": 100000003
+    }
+   ]
+  },
+  {
+   "name": "Yes / No",
+   "logicalName": "eca_yesno",
+   "options": [
+    {
+     "label": "Yes",
+     "value": 100000000
+    },
+    {
+     "label": "No",
+     "value": 100000001
+    }
+   ]
+  },
+  {
+   "name": "ECA POS Type",
+   "logicalName": "eca_ecapostype",
+   "options": [
+    {
+     "label": "Price tag",
+     "value": 100000000
+    },
+    {
+     "label": "Wobbler",
+     "value": 100000001
+    },
+    {
+     "label": "Poster",
+     "value": 100000002
+    },
+    {
+     "label": "Shelf strip",
+     "value": 100000003
+    },
+    {
+     "label": "Fridge decal",
+     "value": 100000004
+    },
+    {
+     "label": "Counter unit",
+     "value": 100000005
+    },
+    {
+     "label": "Menu board",
+     "value": 100000006
+    },
+    {
+     "label": "Vending decal",
+     "value": 100000007
+    },
+    {
+     "label": "Other",
+     "value": 100000008
+    }
+   ]
+  },
+  {
+   "name": "ECA Contact Role",
+   "logicalName": "eca_ecacontactrole",
+   "options": [
+    {
+     "label": "Owner",
+     "value": 100000000
+    },
+    {
+     "label": "Manager",
+     "value": 100000001
+    },
+    {
+     "label": "Assistant manager",
+     "value": 100000002
+    },
+    {
+     "label": "Supervisor",
+     "value": 100000003
+    },
+    {
+     "label": "Buyer / purchasing",
+     "value": 100000004
+    },
+    {
+     "label": "Staff member",
+     "value": 100000005
+    },
+    {
+     "label": "Other",
+     "value": 100000006
+    }
+   ]
+  },
+  {
+   "name": "Report Type",
+   "logicalName": "eca_reporttype",
+   "options": [
+    {
+     "label": "State summary",
+     "value": 100000000
+    },
+    {
+     "label": "National breakdown",
+     "value": 100000001
+    },
+    {
+     "label": "Audit export",
+     "value": 100000002
+    }
+   ]
+  },
+  {
+   "name": "Bullring or Bull’s Eye",
+   "logicalName": "eca_bullringorbullseye",
+   "options": [
+    {
+     "label": "EYE",
+     "value": 100000000
+    },
+    {
+     "label": "RING",
+     "value": 100000001
+    }
+   ]
+  },
+  {
+   "name": "Channel",
+   "logicalName": "eca_channel",
+   "options": [
+    {
+     "label": "OnP",
+     "value": 100000000
+    },
+    {
+     "label": "OffP",
+     "value": 100000001
+    }
+   ]
+  },
+  {
+   "name": "Classification",
+   "logicalName": "eca_classification",
+   "options": [
+    {
+     "label": "A",
+     "value": 100000000
+    },
+    {
+     "label": "B",
+     "value": 100000001
+    },
+    {
+     "label": "C",
+     "value": 100000002
+    },
+    {
+     "label": "D",
+     "value": 100000003
+    }
+   ]
+  },
+  {
+   "name": "IND or NKA",
+   "logicalName": "eca_indornka",
+   "options": [
+    {
+     "label": "IND",
+     "value": 100000000
+    },
+    {
+     "label": "NKA",
+     "value": 100000001
+    }
+   ]
+  },
+  {
+   "name": "ECA Removal Reason",
+   "logicalName": "eca_ecaremovalreason",
+   "options": [
+    {
+     "label": "Closed permanently",
+     "value": 100000000
+    },
+    {
+     "label": "No longer stocks Red Bull",
+     "value": 100000001
+    },
+    {
+     "label": "Duplicate entry",
+     "value": 100000002
+    },
+    {
+     "label": "Moved or renamed",
+     "value": 100000003
+    },
+    {
+     "label": "Not accessible to staff",
+     "value": 100000004
+    },
+    {
+     "label": "Other",
+     "value": 100000005
+    }
+   ]
+  },
+  {
+   "name": "Snapshot Status",
+   "logicalName": "eca_snapshotstatus",
+   "options": [
+    {
+     "label": "In review",
+     "value": 100000000
+    },
+    {
+     "label": "Final",
+     "value": 100000001
+    }
+   ]
+  },
+  {
+   "name": "Normalisation",
+   "logicalName": "eca_normalisation",
+   "options": [
+    {
+     "label": "Relative to leader",
+     "value": 100000000
+    },
+    {
+     "label": "Against targets",
+     "value": 100000001
+    }
+   ]
+  },
+  {
+   "name": "Approval Mode",
+   "logicalName": "eca_approvalmode",
+   "options": [
+    {
+     "label": "Manager approval",
+     "value": 100000000
+    },
+    {
+     "label": "Count on submit",
+     "value": 100000001
+    }
+   ]
+  },
+  {
+   "name": "Distribution Method",
+   "logicalName": "eca_distributionmethod",
+   "options": [
+    {
+     "label": "Email and in-app",
+     "value": 100000000
+    },
+    {
+     "label": "Email only",
+     "value": 100000001
+    },
+    {
+     "label": "In-app only",
+     "value": 100000002
+    },
+    {
+     "label": "Teams post and in-app",
+     "value": 100000003
+    }
+   ]
+  },
+  {
+   "name": "Log Category",
+   "logicalName": "eca_logcategory",
+   "options": [
+    {
+     "label": "Login",
+     "value": 100000000
+    },
+    {
+     "label": "Activity",
+     "value": 100000001
+    },
+    {
+     "label": "Approval",
+     "value": 100000002
+    },
+    {
+     "label": "Correction",
+     "value": 100000003
+    },
+    {
+     "label": "Score",
+     "value": 100000004
+    },
+    {
+     "label": "Leaderboard",
+     "value": 100000005
+    },
+    {
+     "label": "Distribution",
+     "value": 100000006
+    },
+    {
+     "label": "People",
+     "value": 100000007
+    },
+    {
+     "label": "Locations",
+     "value": 100000008
+    },
+    {
+     "label": "Settings",
+     "value": 100000009
+    }
+   ]
+  },
+  {
+   "name": "Sign-in Result",
+   "logicalName": "eca_signinresult",
+   "options": [
+    {
+     "label": "Signed in",
+     "value": 100000000
+    },
+    {
+     "label": "Not on list",
+     "value": 100000001
+    },
+    {
+     "label": "Deactivated",
+     "value": 100000002
+    },
+    {
+     "label": "Wrong admin PIN",
+     "value": 100000003
+    },
+    {
+     "label": "Locked out",
+     "value": 100000004
+    }
+   ]
+  },
+  {
+   "name": "Removal Target Type",
+   "logicalName": "eca_removaltargettype",
+   "options": [
+    {
+     "label": "Store",
+     "value": 100000000
+    },
+    {
+     "label": "Vending machine",
+     "value": 100000001
+    },
+    {
+     "label": "University",
+     "value": 100000002
+    },
+    {
+     "label": "TAFE",
+     "value": 100000003
+    }
+   ]
+  },
+  {
+   "name": "Institution Status",
+   "logicalName": "eca_institutionstatus",
+   "options": [
+    {
+     "label": "Active",
+     "value": 100000000
+    },
+    {
+     "label": "Removed",
+     "value": 100000001
+    }
+   ]
+  },
+  {
+   "name": "Removal Status",
+   "logicalName": "eca_removalstatus",
+   "options": [
+    {
+     "label": "Pending",
+     "value": 100000000
+    },
+    {
+     "label": "Approved",
+     "value": 100000001
+    },
+    {
+     "label": "Rejected",
+     "value": 100000002
+    }
+   ]
+  }
+ ],
+ "tables": [
+  {
+   "displayName": "State",
+   "logicalName": "eca_state",
+   "description": "One row per state. Business Unit of the same name owns the state’s records.",
+   "columns": [
+    {
+     "displayName": "State Code",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "VIC, NSW, QLD, SA, WA",
+     "maxLength": 10,
+     "format": "Text"
+    },
+    {
+     "displayName": "State Name",
+     "logicalName": "eca_statename",
+     "kind": "string",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    }
+   ],
+   "alternateKey": [
+    "eca_name"
+   ]
+  },
+  {
+   "displayName": "Store Location Type",
+   "logicalName": "eca_storelocationtype",
+   "description": "Admin-managed dropdown for every audit location.",
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "QSR, Vending, Student Bar, Convenience, NKA",
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Active",
+     "logicalName": "eca_active",
+     "kind": "boolean",
+     "required": true,
+     "primary": false,
+     "default": true,
+     "behaviour": "Default Yes",
+     "notes": "No = hidden from new records, kept on history"
+    },
+    {
+     "displayName": "Uses Vending Fields",
+     "logicalName": "eca_usesvendingfields",
+     "kind": "boolean",
+     "required": true,
+     "primary": false,
+     "default": false,
+     "behaviour": "Default No",
+     "notes": "Yes for Vending: form shows machine fields"
+    },
+    {
+     "displayName": "Sort Order",
+     "logicalName": "eca_sortorder",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "ECA User",
+   "logicalName": "eca_ecauser",
+   "description": "The approved user list. Every audit, approval and score points at this table by ID, never by name.",
+   "columns": [
+    {
+     "displayName": "Full Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "Display name, e.g. Charlotte Terrell",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "First Name",
+     "logicalName": "eca_firstname",
+     "kind": "string",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Last Name",
+     "logicalName": "eca_lastname",
+     "kind": "string",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Normalised Name",
+     "logicalName": "eca_normalisedname",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Set by flow / Power Fx on save",
+     "notes": "lower case, no accents, hyphens and apostrophes as spaces; used for name sign-in",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Aliases",
+     "logicalName": "eca_aliases",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Comma separated other names, e.g. preferred first name",
+     "maxLength": 400,
+     "format": "Text"
+    },
+    {
+     "displayName": "Disambiguation Label",
+     "logicalName": "eca_disambiguation",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Required when two users share a name",
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Role",
+     "logicalName": "eca_role",
+     "kind": "choice",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "ECA Role"
+    },
+    {
+     "displayName": "State",
+     "logicalName": "eca_state",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Blank for national Administrators",
+     "target": "State"
+    },
+    {
+     "displayName": "Reports To",
+     "logicalName": "eca_reportsto",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Student Marketeers → their Manager",
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Status",
+     "logicalName": "eca_status",
+     "kind": "choice",
+     "required": true,
+     "primary": false,
+     "default": "Active",
+     "behaviour": "Default Active",
+     "notes": null,
+     "choiceSet": "Active / Inactive"
+    },
+    {
+     "displayName": "Email",
+     "logicalName": "eca_email",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Red Bull email. Needed for Microsoft sign-in and for results emails",
+     "maxLength": 200,
+     "format": "Email"
+    },
+    {
+     "displayName": "Entra User",
+     "logicalName": "eca_systemuser",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Links the record to the person’s Microsoft account",
+     "target": "systemuser"
+    },
+    {
+     "displayName": "Last Sign-in",
+     "logicalName": "eca_lastsignin",
+     "kind": "datetime",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Channel Lead",
+   "logicalName": "eca_channellead",
+   "description": "Education Channel Leads per state: approve removals, finalise and send results.",
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "e.g. VIC – Keane Vivas",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Lead",
+     "logicalName": "eca_lead",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "ECA User"
+    },
+    {
+     "displayName": "State",
+     "logicalName": "eca_state",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "State"
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Institution",
+   "logicalName": "eca_institution",
+   "description": "Universities and TAFEs.",
+   "columns": [
+    {
+     "displayName": "Code",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "MON, RMIT … also the Location ID prefix",
+     "maxLength": 10,
+     "format": "Text"
+    },
+    {
+     "displayName": "Institution Name",
+     "logicalName": "eca_institutionname",
+     "kind": "string",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Short Name",
+     "logicalName": "eca_shortname",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 60,
+     "format": "Text"
+    },
+    {
+     "displayName": "Kind",
+     "logicalName": "eca_kind",
+     "kind": "choice",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Institution Kind"
+    },
+    {
+     "displayName": "State",
+     "logicalName": "eca_state",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "State"
+    },
+    {
+     "displayName": "Status",
+     "logicalName": "eca_status",
+     "kind": "choice",
+     "required": true,
+     "primary": false,
+     "default": "Active",
+     "behaviour": "Default Active",
+     "notes": null,
+     "choiceSet": "Institution Status"
+    },
+    {
+     "displayName": "Note",
+     "logicalName": "eca_note",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 400,
+     "format": "Text"
+    },
+    {
+     "displayName": "Logo",
+     "logicalName": "eca_logo",
+     "kind": "image",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Official logo file uploaded by an Admin or Manager; tiles show the code when blank"
+    }
+   ],
+   "alternateKey": [
+    "eca_name"
+   ]
+  },
+  {
+   "displayName": "Campus",
+   "logicalName": "eca_campus",
+   "description": null,
+   "columns": [
+    {
+     "displayName": "Campus Key",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "Institution code + campus, e.g. MON – Clayton (unique, used by imports)",
+     "maxLength": 120,
+     "format": "Text"
+    },
+    {
+     "displayName": "Campus Name",
+     "logicalName": "eca_campusname",
+     "kind": "string",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Institution",
+     "logicalName": "eca_institution",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Institution"
+    }
+   ],
+   "alternateKey": [
+    "eca_name"
+   ]
+  },
+  {
+   "displayName": "Location",
+   "logicalName": "eca_location",
+   "description": "Every QSR store and vending machine.",
+   "columns": [
+    {
+     "displayName": "Location ID",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": "Alternate key",
+     "notes": "MON-012 (store) or MON-VM-012 (vending). Never reused",
+     "maxLength": 20,
+     "format": "Text"
+    },
+    {
+     "displayName": "Location Name",
+     "logicalName": "eca_locationname",
+     "kind": "string",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Institution",
+     "logicalName": "eca_institution",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Institution"
+    },
+    {
+     "displayName": "Campus",
+     "logicalName": "eca_campus",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Campus"
+    },
+    {
+     "displayName": "Store Location Type",
+     "logicalName": "eca_storelocationtype",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Store Location Type"
+    },
+    {
+     "displayName": "Type Confirmed",
+     "logicalName": "eca_typeconfirmed",
+     "kind": "boolean",
+     "required": true,
+     "primary": false,
+     "default": false,
+     "behaviour": "Default No",
+     "notes": "No = classified automatically from the workbook"
+    },
+    {
+     "displayName": "Status",
+     "logicalName": "eca_status",
+     "kind": "choice",
+     "required": true,
+     "primary": false,
+     "default": "Active",
+     "behaviour": "Default Active",
+     "notes": null,
+     "choiceSet": "Location Status"
+    },
+    {
+     "displayName": "Date Added",
+     "logicalName": "eca_dateadded",
+     "kind": "date",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Visit Cycle (days)",
+     "logicalName": "eca_visitcycledays",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": 14,
+     "behaviour": "Default 14",
+     "notes": null,
+     "min": 1,
+     "max": 365
+    },
+    {
+     "displayName": "Address",
+     "logicalName": "eca_address",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 300,
+     "format": "Text"
+    },
+    {
+     "displayName": "Postcode",
+     "logicalName": "eca_postcode",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 10,
+     "format": "Text"
+    },
+    {
+     "displayName": "Landmark",
+     "logicalName": "eca_landmark",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Building",
+     "logicalName": "eca_building",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Level",
+     "logicalName": "eca_level",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 50,
+     "format": "Text"
+    },
+    {
+     "displayName": "Ranged: Energy Drink",
+     "logicalName": "eca_rg_ed",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Red Bull SKU, scores ranging %",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Ranged: Sugarfree",
+     "logicalName": "eca_rg_sf",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Red Bull SKU, scores ranging %",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Ranged: Zero",
+     "logicalName": "eca_rg_zero",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Red Bull SKU, scores ranging %",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Ranged: Editions",
+     "logicalName": "eca_rg_editions",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Red Bull SKU, scores ranging %",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Ranged: Monster",
+     "logicalName": "eca_rg_monster",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Competitor",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Ranged: Monster Ultra",
+     "logicalName": "eca_rg_monsterultra",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Competitor",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Ranged: V",
+     "logicalName": "eca_rg_v",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Competitor",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Ranged: V Sugarfree",
+     "logicalName": "eca_rg_vsf",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Competitor",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Ranged: V Blue",
+     "logicalName": "eca_rg_vblue",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Competitor",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Ranged: Solo Energy",
+     "logicalName": "eca_rg_solo",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Competitor",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "POS Present",
+     "logicalName": "eca_pospresent",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Cooler Present",
+     "logicalName": "eca_coolerpresent",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Red Bull Price",
+     "logicalName": "eca_redbullprice",
+     "kind": "money",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Top Competitor",
+     "logicalName": "eca_topcompetitor",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Competitor Price",
+     "logicalName": "eca_competitorprice",
+     "kind": "money",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Bullring or Bull’s Eye",
+     "logicalName": "eca_bull",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Bullring or Bull’s Eye"
+    },
+    {
+     "displayName": "Channel",
+     "logicalName": "eca_channel",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Channel"
+    },
+    {
+     "displayName": "Classification",
+     "logicalName": "eca_classification",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Classification"
+    },
+    {
+     "displayName": "IND or NKA",
+     "logicalName": "eca_indnka",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "IND or NKA"
+    },
+    {
+     "displayName": "Red Bull Owner",
+     "logicalName": "eca_redbullowner",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Store Contact (legacy)",
+     "logicalName": "eca_storecontact",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Column security: Managers and Admins only",
+     "notes": "Masked value from the workbook; superseded by the four contact columns",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Contact Name",
+     "logicalName": "eca_contactname",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Set from the latest audit",
+     "notes": "Person spoken to; visible to everyone in the state",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Contact Role",
+     "logicalName": "eca_contactrole",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Set from the latest audit",
+     "notes": null,
+     "choiceSet": "ECA Contact Role"
+    },
+    {
+     "displayName": "Contact Phone",
+     "logicalName": "eca_contactphone",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Column security: Managers and Admins read; Student Marketeers write only",
+     "notes": "Kept if an audit leaves it blank",
+     "maxLength": 30,
+     "format": "Phone"
+    },
+    {
+     "displayName": "Contact Email",
+     "logicalName": "eca_contactemail",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Column security: Managers and Admins read; Student Marketeers write only",
+     "notes": "Kept if an audit leaves it blank",
+     "maxLength": 200,
+     "format": "Email"
+    },
+    {
+     "displayName": "Contact Recorded On",
+     "logicalName": "eca_contactrecordedon",
+     "kind": "date",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Contact Recorded By",
+     "logicalName": "eca_contactrecordedby",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Red Bull Front Facings",
+     "logicalName": "eca_rbfacings",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Set from the latest completed audit",
+     "notes": null,
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "Facings Recorded On",
+     "logicalName": "eca_facingsrecordedon",
+     "kind": "date",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Vending Company",
+     "logicalName": "eca_vendingcompany",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Machine ID",
+     "logicalName": "eca_machineid",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 50,
+     "format": "Text"
+    },
+    {
+     "displayName": "V SKU Count",
+     "logicalName": "eca_vskucount",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "V Price",
+     "logicalName": "eca_vprice",
+     "kind": "money",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Monster SKU Count",
+     "logicalName": "eca_monsterskucount",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Monster Price",
+     "logicalName": "eca_monsterprice",
+     "kind": "money",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Latest Note",
+     "logicalName": "eca_latestnote",
+     "kind": "memo",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 2000
+    },
+    {
+     "displayName": "Last Completed Visit",
+     "logicalName": "eca_lastcompletedvisit",
+     "kind": "date",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Set by flow on approved/complete visit",
+     "notes": null
+    },
+    {
+     "displayName": "Next Due",
+     "logicalName": "eca_nextdue",
+     "kind": "date",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Formula column: Last Completed Visit (or Date Added) + Visit Cycle",
+     "notes": null
+    }
+   ],
+   "alternateKey": [
+    "eca_name"
+   ]
+  },
+  {
+   "displayName": "Allocation",
+   "logicalName": "eca_allocation",
+   "description": "Who usually covers which campus (guidance, not a lock).",
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "Person – Institution – Campus",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Staff Member",
+     "logicalName": "eca_staffmember",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Institution",
+     "logicalName": "eca_institution",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Institution"
+    },
+    {
+     "displayName": "Campus",
+     "logicalName": "eca_campustext",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "“All” or a campus name",
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Status",
+     "logicalName": "eca_status",
+     "kind": "choice",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Active / Inactive"
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Competitor",
+   "logicalName": "eca_competitor",
+   "description": "Competitor brands for front facings and competitor execution.",
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "Monster, V, Solo Energy, Rockstar, Celsius, plus any added in the field",
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Active",
+     "logicalName": "eca_active",
+     "kind": "boolean",
+     "required": true,
+     "primary": false,
+     "default": true,
+     "behaviour": "Default Yes",
+     "notes": "Active ones show as tick chips in audit step 3"
+    },
+    {
+     "displayName": "Added From Field",
+     "logicalName": "eca_addedfromfield",
+     "kind": "boolean",
+     "required": false,
+     "primary": false,
+     "default": false,
+     "behaviour": "Default No",
+     "notes": "Yes = typed in by a Student Marketeer via Add competitor; Admin to review"
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Location Competitor",
+   "logicalName": "eca_locationcompetitor",
+   "description": "Latest competitor picture per location (replaced on every completed audit). Pre-ticks competitors at the next audit.",
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "Location ID – competitor",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Location",
+     "logicalName": "eca_location",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Location"
+    },
+    {
+     "displayName": "Competitor",
+     "logicalName": "eca_competitor",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Competitor"
+    },
+    {
+     "displayName": "Front Facings",
+     "logicalName": "eca_facings",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "Price",
+     "logicalName": "eca_price",
+     "kind": "money",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "POS Pieces",
+     "logicalName": "eca_pospieces",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Stores only, not vending",
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "Coolers",
+     "logicalName": "eca_coolers",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Stores only, not vending",
+     "min": 0,
+     "max": null
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Audit Visit",
+   "logicalName": "eca_auditvisit",
+   "description": "Every visit. Only Completed + Approved + named Student Marketeer + not imported counts on the leaderboard.",
+   "columns": [
+    {
+     "displayName": "Visit ID",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "e.g. MON-V0001",
+     "maxLength": 50,
+     "format": "Text"
+    },
+    {
+     "displayName": "Location",
+     "logicalName": "eca_location",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Location"
+    },
+    {
+     "displayName": "Institution",
+     "logicalName": "eca_institution",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Institution"
+    },
+    {
+     "displayName": "Visit Date",
+     "logicalName": "eca_visitdate",
+     "kind": "date",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Visit Time",
+     "logicalName": "eca_visittime",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "HH:MM local",
+     "maxLength": 5,
+     "format": "Text"
+    },
+    {
+     "displayName": "Staff Member",
+     "logicalName": "eca_staffmember",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Blank only on imported history",
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Visit Status",
+     "logicalName": "eca_visitstatus",
+     "kind": "choice",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Visit Status"
+    },
+    {
+     "displayName": "Approval Status",
+     "logicalName": "eca_approvalstatus",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Completed visits only",
+     "choiceSet": "Approval Status"
+    },
+    {
+     "displayName": "Approved By",
+     "logicalName": "eca_approvedby",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Approved On",
+     "logicalName": "eca_approvedon",
+     "kind": "datetime",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Reject Reason",
+     "logicalName": "eca_rejectreason",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 400,
+     "format": "Text"
+    },
+    {
+     "displayName": "Duplicate Of",
+     "logicalName": "eca_duplicateof",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Audit Visit"
+    },
+    {
+     "displayName": "Reporting Month",
+     "logicalName": "eca_reportingmonth",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Formula column",
+     "notes": "YYYY-MM from Visit Date",
+     "maxLength": 7,
+     "format": "Text"
+    },
+    {
+     "displayName": "DPs Added",
+     "logicalName": "eca_dpsadded",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": 0,
+     "behaviour": "Default 0",
+     "notes": null,
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "DPs Lost",
+     "logicalName": "eca_dpslost",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": 0,
+     "behaviour": "Default 0",
+     "notes": null,
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "Editions Sold In",
+     "logicalName": "eca_editionssold",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": 0,
+     "behaviour": "Default 0",
+     "notes": null,
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "Edition Flavours",
+     "logicalName": "eca_editionflavours",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "POS Placed",
+     "logicalName": "eca_posplaced",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": 0,
+     "behaviour": "Default 0",
+     "notes": null,
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "POS Type",
+     "logicalName": "eca_postype",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "ECA POS Type"
+    },
+    {
+     "displayName": "Coolers Installed",
+     "logicalName": "eca_coolersin",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": 0,
+     "behaviour": "Default 0",
+     "notes": null,
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "Coolers Removed",
+     "logicalName": "eca_coolersout",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": 0,
+     "behaviour": "Default 0",
+     "notes": null,
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "Ranging Answers",
+     "logicalName": "eca_rangingjson",
+     "kind": "memo",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "JSON of Yes/No per SKU on this visit (used for ranging %)",
+     "maxLength": 100000
+    },
+    {
+     "displayName": "Ranging %",
+     "logicalName": "eca_rangingpct",
+     "kind": "decimal",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Set by app on submit",
+     "notes": "Red Bull SKUs ranged ÷ applicable",
+     "precision": 2,
+     "min": 0,
+     "max": 100
+    },
+    {
+     "displayName": "Notes",
+     "logicalName": "eca_notes",
+     "kind": "memo",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 4000
+    },
+    {
+     "displayName": "Next Step",
+     "logicalName": "eca_nextstep",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 400,
+     "format": "Text"
+    },
+    {
+     "displayName": "Follow-up Date",
+     "logicalName": "eca_followup",
+     "kind": "date",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Issue",
+     "logicalName": "eca_issue",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 400,
+     "format": "Text"
+    },
+    {
+     "displayName": "Photo Count",
+     "logicalName": "eca_photocount",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Photos stored as Notes/attachments or a File column",
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Imported",
+     "logicalName": "eca_imported",
+     "kind": "boolean",
+     "required": true,
+     "primary": false,
+     "default": false,
+     "behaviour": "Default No",
+     "notes": "Yes = history from the workbook, never scores"
+    },
+    {
+     "displayName": "Correction Reason",
+     "logicalName": "eca_correctionreason",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Required when edited after the month is final",
+     "maxLength": 400,
+     "format": "Text"
+    },
+    {
+     "displayName": "Contact Name",
+     "logicalName": "eca_contactname",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Required for Completed visits",
+     "notes": "Who the Student Marketeer spoke to (step 1)",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Contact Role",
+     "logicalName": "eca_contactrole",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "ECA Contact Role"
+    },
+    {
+     "displayName": "Red Bull Price",
+     "logicalName": "eca_redbullprice",
+     "kind": "money",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Top Competitor",
+     "logicalName": "eca_topcompetitor",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Set by app",
+     "notes": "Competitor with most facings; kept for older reports",
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Competitor Price",
+     "logicalName": "eca_competitorprice",
+     "kind": "money",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Set by app",
+     "notes": "Price of the top competitor"
+    },
+    {
+     "displayName": "Red Bull POS Present",
+     "logicalName": "eca_rbpospresent",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Red Bull Cooler Present",
+     "logicalName": "eca_rbcoolerpresent",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Red Bull Front Facings",
+     "logicalName": "eca_rbfacings",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Completed visits only",
+     "notes": null,
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "Competitor Front Facings",
+     "logicalName": "eca_compfacings",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Rollup: sum of Visit Competitor facings",
+     "notes": null,
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "Share of Shelf %",
+     "logicalName": "eca_shareofshelf",
+     "kind": "decimal",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Formula: Red Bull ÷ (Red Bull + competitor) facings",
+     "notes": null,
+     "precision": 2,
+     "min": 0,
+     "max": 100
+    },
+    {
+     "displayName": "Competitor POS Seen",
+     "logicalName": "eca_comppos",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Rollup: sum of Visit Competitor POS",
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Competitor Coolers Seen",
+     "logicalName": "eca_compcoolers",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": "Rollup: sum of Visit Competitor coolers",
+     "notes": null,
+     "min": null,
+     "max": null
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Visit Competitor",
+   "logicalName": "eca_visitcompetitor",
+   "description": "One row per competitor recorded on an audit (step 3). Any number per visit.",
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "Visit ID – competitor",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Audit Visit",
+     "logicalName": "eca_auditvisit",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": "Parental (cascade delete)",
+     "notes": null,
+     "target": "Audit Visit"
+    },
+    {
+     "displayName": "Competitor",
+     "logicalName": "eca_competitor",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Competitor"
+    },
+    {
+     "displayName": "Front Facings",
+     "logicalName": "eca_facings",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": 0,
+     "behaviour": "Default 0",
+     "notes": null,
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "Price",
+     "logicalName": "eca_price",
+     "kind": "money",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "POS Pieces",
+     "logicalName": "eca_pospieces",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": 0,
+     "behaviour": "Default 0",
+     "notes": "Stores only",
+     "min": 0,
+     "max": null
+    },
+    {
+     "displayName": "Coolers",
+     "logicalName": "eca_coolers",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": 0,
+     "behaviour": "Default 0",
+     "notes": "Stores only",
+     "min": 0,
+     "max": null
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Monthly Report",
+   "logicalName": "eca_monthlyreport",
+   "description": "Optional in production: Power Automate writes one row per generated report so the Notifications screen can list and download them.",
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "e.g. 2026-09 · VIC · State summary",
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Month",
+     "logicalName": "eca_month",
+     "kind": "string",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "YYYY-MM",
+     "maxLength": 7,
+     "format": "Text"
+    },
+    {
+     "displayName": "Report Type",
+     "logicalName": "eca_reporttype",
+     "kind": "choice",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Report Type"
+    },
+    {
+     "displayName": "State",
+     "logicalName": "eca_state",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Blank = all states",
+     "target": "State"
+    },
+    {
+     "displayName": "Generated On",
+     "logicalName": "eca_generatedon",
+     "kind": "datetime",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Summaries: 1st of next month 08:00. Audit export: last calendar day 18:00"
+    },
+    {
+     "displayName": "File",
+     "logicalName": "eca_file",
+     "kind": "file",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "The generated .xlsx (audit export includes the Dashboard sheet with charts)"
+    },
+    {
+     "displayName": "Recipients",
+     "logicalName": "eca_recipients",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Managers + Channel Leads for state reports; Administrators for national",
+     "maxLength": 2000,
+     "format": "Text"
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Scoring Rule Set",
+   "logicalName": "eca_scoringruleset",
+   "description": "Weights must total 100. A new row per change; snapshots point at the row they used.",
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Effective From",
+     "logicalName": "eca_effectivefrom",
+     "kind": "date",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Weight Ranging",
+     "logicalName": "eca_wranging",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": 0,
+     "max": 100
+    },
+    {
+     "displayName": "Weight TDP",
+     "logicalName": "eca_wtdp",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": 0,
+     "max": 100
+    },
+    {
+     "displayName": "Weight Editions",
+     "logicalName": "eca_weditions",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": 0,
+     "max": 100
+    },
+    {
+     "displayName": "Weight POS",
+     "logicalName": "eca_wpos",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": 0,
+     "max": 100
+    },
+    {
+     "displayName": "Weight Coolers",
+     "logicalName": "eca_wcoolers",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": 0,
+     "max": 100
+    },
+    {
+     "displayName": "Normalisation",
+     "logicalName": "eca_normalisation",
+     "kind": "choice",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Normalisation"
+    },
+    {
+     "displayName": "Target TDP",
+     "logicalName": "eca_ttdp",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Target Editions",
+     "logicalName": "eca_teditions",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Target POS",
+     "logicalName": "eca_tpos",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Target Coolers",
+     "logicalName": "eca_tcoolers",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Minimum Approved Audits",
+     "logicalName": "eca_minaudits",
+     "kind": "integer",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": 1,
+     "max": null
+    },
+    {
+     "displayName": "Approval Mode",
+     "logicalName": "eca_approvalmode",
+     "kind": "choice",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Approval Mode"
+    },
+    {
+     "displayName": "Is Current",
+     "logicalName": "eca_iscurrent",
+     "kind": "boolean",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Leaderboard Snapshot",
+   "logicalName": "eca_leaderboardsnapshot",
+   "description": "Created at month end by flow; locked when Final.",
+   "columns": [
+    {
+     "displayName": "Month",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": "Alternate key",
+     "notes": "YYYY-MM",
+     "maxLength": 7,
+     "format": "Text"
+    },
+    {
+     "displayName": "Status",
+     "logicalName": "eca_status",
+     "kind": "choice",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Snapshot Status"
+    },
+    {
+     "displayName": "Created On",
+     "logicalName": "eca_snapshotcreated",
+     "kind": "datetime",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Finalised By",
+     "logicalName": "eca_finalisedby",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Finalised On",
+     "logicalName": "eca_finalisedon",
+     "kind": "datetime",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Rule Set",
+     "logicalName": "eca_ruleset",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Scoring Rule Set"
+    },
+    {
+     "displayName": "Unapproved Audits Excluded",
+     "logicalName": "eca_excludedpending",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    }
+   ],
+   "alternateKey": [
+    "eca_name"
+   ]
+  },
+  {
+   "displayName": "Snapshot Row",
+   "logicalName": "eca_snapshotrow",
+   "description": null,
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "Month – person",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Snapshot",
+     "logicalName": "eca_snapshot",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Leaderboard Snapshot"
+    },
+    {
+     "displayName": "Student Marketeer",
+     "logicalName": "eca_user",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Rank",
+     "logicalName": "eca_rank",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Blank = not ranked",
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Total Score",
+     "logicalName": "eca_totalscore",
+     "kind": "decimal",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "precision": 1,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Qualified",
+     "logicalName": "eca_qualified",
+     "kind": "boolean",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Approved Audits",
+     "logicalName": "eca_audits",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Ranging %",
+     "logicalName": "eca_rangingpct",
+     "kind": "decimal",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "precision": 2,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "TDP Added",
+     "logicalName": "eca_tdp",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Editions Sold",
+     "logicalName": "eca_editions",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "POS Placed",
+     "logicalName": "eca_pos",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Coolers Added",
+     "logicalName": "eca_coolers",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Score Ranging",
+     "logicalName": "eca_sranging",
+     "kind": "decimal",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "precision": 2,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Score TDP",
+     "logicalName": "eca_stdp",
+     "kind": "decimal",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "precision": 2,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Score Editions",
+     "logicalName": "eca_seditions",
+     "kind": "decimal",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "precision": 2,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Score POS",
+     "logicalName": "eca_spos",
+     "kind": "decimal",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "precision": 2,
+     "min": null,
+     "max": null
+    },
+    {
+     "displayName": "Score Coolers",
+     "logicalName": "eca_scoolers",
+     "kind": "decimal",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "precision": 2,
+     "min": null,
+     "max": null
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Results Distribution",
+   "logicalName": "eca_resultsdistribution",
+   "description": null,
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Snapshot",
+     "logicalName": "eca_snapshot",
+     "kind": "lookup",
+     "required": true,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Leaderboard Snapshot"
+    },
+    {
+     "displayName": "Generated On",
+     "logicalName": "eca_generatedon",
+     "kind": "datetime",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Distributed On",
+     "logicalName": "eca_distributedon",
+     "kind": "datetime",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Distributed By",
+     "logicalName": "eca_distributedby",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Groups",
+     "logicalName": "eca_groups",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 300,
+     "format": "Text"
+    },
+    {
+     "displayName": "Method",
+     "logicalName": "eca_method",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Distribution Method"
+    },
+    {
+     "displayName": "Message",
+     "logicalName": "eca_message",
+     "kind": "memo",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 4000
+    },
+    {
+     "displayName": "Recipient Count",
+     "logicalName": "eca_recipientcount",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": null,
+     "max": null
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Distribution Settings",
+   "logicalName": "eca_distributionsettings",
+   "description": null,
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "Single row: “Default”",
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Send to Channel Leads",
+     "logicalName": "eca_toleads",
+     "kind": "boolean",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Send to Administrators",
+     "logicalName": "eca_toadmins",
+     "kind": "boolean",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Send to Student Marketeers",
+     "logicalName": "eca_tosms",
+     "kind": "boolean",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Additional Recipients",
+     "logicalName": "eca_extra",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Emails, semicolon separated",
+     "maxLength": 1000,
+     "format": "Text"
+    },
+    {
+     "displayName": "Method",
+     "logicalName": "eca_method",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Distribution Method"
+    },
+    {
+     "displayName": "Send By Business Day",
+     "logicalName": "eca_businessday",
+     "kind": "integer",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "min": 1,
+     "max": 10
+    },
+    {
+     "displayName": "Message Template",
+     "logicalName": "eca_template",
+     "kind": "memo",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 2000
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Removal Request",
+   "logicalName": "eca_removalrequest",
+   "description": null,
+   "columns": [
+    {
+     "displayName": "Request ID",
+     "logicalName": "eca_name",
+     "kind": "autonumber",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "format": "RR-{SEQNUM:4}"
+    },
+    {
+     "displayName": "Target Type",
+     "logicalName": "eca_targettype",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Removal Target Type"
+    },
+    {
+     "displayName": "Location",
+     "logicalName": "eca_location",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Location"
+    },
+    {
+     "displayName": "Institution",
+     "logicalName": "eca_institution",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "Institution"
+    },
+    {
+     "displayName": "State",
+     "logicalName": "eca_state",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "State"
+    },
+    {
+     "displayName": "Requested By",
+     "logicalName": "eca_requestedby",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Reason",
+     "logicalName": "eca_reason",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "ECA Removal Reason"
+    },
+    {
+     "displayName": "Comments",
+     "logicalName": "eca_comments",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 1000,
+     "format": "Text"
+    },
+    {
+     "displayName": "Status",
+     "logicalName": "eca_status",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Removal Status"
+    },
+    {
+     "displayName": "Decided By",
+     "logicalName": "eca_decidedby",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Decided On",
+     "logicalName": "eca_decidedon",
+     "kind": "datetime",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Decision Note",
+     "logicalName": "eca_decisionnote",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 400,
+     "format": "Text"
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "Sign-in Event",
+   "logicalName": "eca_signinevent",
+   "description": "Only needed if the name sign-in fallback is used; Microsoft sign-in is logged by Entra ID.",
+   "columns": [
+    {
+     "displayName": "Name",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": "Name entered",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Matched User",
+     "logicalName": "eca_user",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Result",
+     "logicalName": "eca_result",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Sign-in Result"
+    },
+    {
+     "displayName": "Signed In On",
+     "logicalName": "eca_signedinon",
+     "kind": "datetime",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Device",
+     "logicalName": "eca_device",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 200,
+     "format": "Text"
+    }
+   ],
+   "alternateKey": null
+  },
+  {
+   "displayName": "ECA Audit Log",
+   "logicalName": "eca_auditlog",
+   "description": "Append-only: every security role gets Create + Read only. Turn on Dataverse auditing as well.",
+   "columns": [
+    {
+     "displayName": "Action",
+     "logicalName": "eca_name",
+     "kind": "string",
+     "required": true,
+     "primary": true,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Category",
+     "logicalName": "eca_category",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "choiceSet": "Log Category"
+    },
+    {
+     "displayName": "User",
+     "logicalName": "eca_user",
+     "kind": "lookup",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "target": "ECA User"
+    },
+    {
+     "displayName": "Logged On",
+     "logicalName": "eca_loggedon",
+     "kind": "datetime",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null
+    },
+    {
+     "displayName": "Table",
+     "logicalName": "eca_tablename",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Record",
+     "logicalName": "eca_recordid",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 100,
+     "format": "Text"
+    },
+    {
+     "displayName": "Previous Value",
+     "logicalName": "eca_previousvalue",
+     "kind": "memo",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 2000
+    },
+    {
+     "displayName": "New Value",
+     "logicalName": "eca_newvalue",
+     "kind": "memo",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 2000
+    },
+    {
+     "displayName": "Detail",
+     "logicalName": "eca_detail",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": null,
+     "maxLength": 1000,
+     "format": "Text"
+    }
+   ],
+   "alternateKey": null
+  }
+ ]
+}
