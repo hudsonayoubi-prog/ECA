@@ -1,9 +1,9 @@
-const { chromium } = require('playwright');
+const { chromium } = require('playwright'); const { signIn } = require('./lib-login');
 (async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
  const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type()==='error' && !/key/.test(m.text())) errs.push(m.text()); });
  await p.goto('file://' + process.cwd() + '/index.html'); await p.waitForTimeout(700);
  const sm = await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('edu-audit-national-v2')); return s.people.find(x => x.role==='marketeer' && x.state==='VIC').name; });
- const [fn, ...ln] = sm.split(' '); await p.fill('#li-f', fn); await p.fill('#li-l', ln.join(' ')); await p.click('button[type=submit]'); await p.waitForTimeout(500);
+ const [fn, ...ln] = sm.split(' '); await signIn(p, fn, ln.join(' ')); await p.waitForTimeout(500);
  console.log('SM:', sm);
  await p.evaluate(() => {}); 
  await p.locator('.bottombar button', { hasText: 'Audit' }).click(); await p.waitForTimeout(300);
@@ -41,7 +41,7 @@ const { chromium } = require('playwright');
  console.log('SM prefill:', await p.inputValue('#a-cn'), '|', await p.inputValue('#a-cph'), '|', (await p.locator('#a-cph').locator('..').locator('.hint').innerText()));
  // admin view
  await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('edu-audit-national-v2')); s.authed=false; s.meId=null; localStorage.setItem('edu-audit-national-v2', JSON.stringify(s)); }); await p.reload(); await p.waitForTimeout(600);
- await p.fill('#li-f','Hudson'); await p.fill('#li-l','Ayoubi'); await p.click('button[type=submit]'); await p.waitForTimeout(500);
+ await signIn(p, 'Hudson', 'Ayoubi'); await p.waitForTimeout(500);
  await p.evaluate(() => {}); await p.setViewportSize({ width: 1280, height: 900 });
  await p.locator('.rail >> text=Audit Locations').click(); await p.waitForTimeout(300); await p.locator('#l-q, input[placeholder*="Store"]').first().fill('Grafali').catch(()=>{}); await p.waitForTimeout(200);
  await p.locator('text=Grafali').first().click(); await p.waitForTimeout(300);

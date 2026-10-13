@@ -1,8 +1,8 @@
-const { chromium } = require('playwright');
+const { chromium } = require('playwright'); const { signIn } = require('./lib-login');
 (async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
  const p = await (await b.newContext({ viewport: { width: 1280, height: 900 } })).newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message));
  await p.goto('file://' + process.cwd() + '/index.html'); await p.waitForTimeout(700);
- await p.fill('#li-f','Hudson'); await p.fill('#li-l','Ayoubi'); await p.click('button[type=submit]'); await p.waitForTimeout(500);
+ await signIn(p, 'Hudson', 'Ayoubi'); await p.waitForTimeout(500);
  const pin = p.locator('input[type=password]'); if (await pin.count()) { await pin.first().fill('2468'); await p.keyboard.press('Enter'); await p.waitForTimeout(400); }
  await p.locator('.rail >> text=Universities & TAFEs').click(); await p.waitForTimeout(400);
  await p.locator('.ucard', { hasText: 'Monash University' }).click(); await p.waitForTimeout(300);

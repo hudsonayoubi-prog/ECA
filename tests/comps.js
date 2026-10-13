@@ -1,8 +1,8 @@
-const { chromium } = require('playwright');
+const { chromium } = require('playwright'); const { signIn } = require('./lib-login');
 (async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
  const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type()==='error' && !/key/.test(m.text())) errs.push(m.text()); });
  await p.goto('file://' + process.cwd() + '/index.html'); await p.waitForTimeout(700);
- await p.fill('#li-f','Phillip'); await p.fill('#li-l','Petinella'); await p.click('button[type=submit]'); await p.waitForTimeout(500);
+ await signIn(p, 'Phillip', 'Petinella'); await p.waitForTimeout(500);
  const inc = async (id, n) => { for (let i=0;i<n;i++) await p.locator('#'+id).locator('..').locator('button').last().click(); };
  const audit = async (uni, loc) => {
    await p.locator('.bottombar button', { hasText: 'Audit' }).click(); await p.waitForTimeout(300);

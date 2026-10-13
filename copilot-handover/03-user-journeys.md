@@ -3,7 +3,7 @@
 Screenshots referenced are in `project/assets/screenshots/`. Test names refer to `project/tests/`.
 
 ## J1 · Sign in (everyone)
-1. Open the ECA → **Sign in** (01, 20). Enter first and last name → Continue.
+1. Open the ECA → **Sign in** (01, 20). Enter first and last name and your PIN → Continue. First time? Your PIN is **0000**: you are then asked to create your own PIN (4 to 8 digits, not 0000) before you get in. Forgotten it? Ask your Manager or an Administrator to reset it (People → Reset PIN). Change it any time in Settings.
 2. Unknown name → error; 5 failures → 60-second lockout. Deactivated → "access is switched off".
 3. Two active people with that name → pick your profile (shows state, reporting line or label).
 4. Landing page: SMs go to **National Leaderboard**; Managers and Admins to **Dashboard**.

@@ -1,8 +1,8 @@
-const { chromium } = require('playwright');
+const { chromium } = require('playwright'); const { signIn } = require('./lib-login');
 (async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
  const p = await (await b.newContext()).newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message));
  await p.goto('file://' + process.cwd() + '/index.html'); await p.waitForTimeout(700);
- await p.fill('#li-f','Hudson'); await p.fill('#li-l','Ayoubi'); await p.click('button[type=submit]'); await p.waitForTimeout(300);
+ await signIn(p, 'Hudson', 'Ayoubi'); await p.waitForTimeout(300);
  await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('edu-audit-national-v2')); s.lastMonth = '2026-09'; s.snapshots = s.snapshots.filter(x => x.month !== '2026-09'); localStorage.setItem('edu-audit-national-v2', JSON.stringify(s)); });
  await p.reload(); await p.waitForTimeout(700);
  const r = await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('edu-audit-national-v2')); return { last: s.lastMonth, sep: s.snapshots.find(x => x.month === '2026-09')?.status, rows: s.snapshots.find(x => x.month === '2026-09')?.rows.filter(r=>r.rank).length, log: s.log[0].action + ' · ' + s.log[0].detail }; });

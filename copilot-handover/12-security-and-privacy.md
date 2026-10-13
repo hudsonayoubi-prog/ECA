@@ -16,7 +16,7 @@ No payment data, government IDs or health data. Student Marketeers' own ages or 
 
 | Area | Prototype | Limit | Production requirement |
 |---|---|---|---|
-| Identity | Name typed at sign-in, matched to the approved list | Anyone with the link who knows a name can sign in as that person | Entra ID sign-in with MFA |
+| Identity | Name plus a personal PIN (default 0000, chosen on first sign-in), matched to the approved list | A 4-digit PIN is guessable, and anyone who can read the shared data can try hashes offline; until someone signs in for the first time, anyone who knows their name can use 0000 | Entra ID sign-in with MFA (no PIN) |
 | Admin step-up | Shared PIN; default is in the source (`DEFAULT_REF.adminPin`) (no longer shown in the PIN field hint) | Not a secret. Anyone reading the code or the hint knows the default | Entra ID MFA / PIM; no shared PIN. **Until then: change the PIN in Settings and fix the hint** (`13-known-issues.md`) |
 | Authorisation | Enforced in the UI (`D.can`, scope filters) | In shared mode every record (incl. contact phone/email) is in the artifact database readable by anyone who can open the artifact; hiding is client-side only | Dataverse security roles, Business Units per state, column security on contact phone/email, row-level access |
 | Link sharing | Live artifact shared "Anyone with the link" | Unsigned visitors can open the page (cannot write) and read seeded store data | Share with the organisation only; production app shared to Entra groups |

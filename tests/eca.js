@@ -1,8 +1,8 @@
-const { chromium } = require('playwright');
+const { chromium } = require('playwright'); const { signIn, createPinIfAsked } = require('./lib-login');
 (async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
  const ctx = await b.newContext({ viewport: { width: 1366, height: 900 } }); const p = await ctx.newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type()==='error' && !m.text().includes('unique "key"') && errs.push('console: '+m.text().slice(0,200)));
  const shot = n => p.screenshot({ path: 'out/eca-' + n + '.png', fullPage: false });
- const login = async (f, l) => { await p.fill('#li-f', f); await p.fill('#li-l', l); await p.click('button[type=submit]'); await p.waitForTimeout(250); };
+ const login = async (f, l) => { await signIn(p, f, l); await p.waitForTimeout(250); };
  await p.goto('file://' + process.cwd() + '/index.html'); await p.waitForTimeout(800);
  console.log('title:', await p.title()); await shot('login');
  await p.click('button[type=submit]'); console.log('empty errs:', await p.locator('.err').allInnerTexts());
@@ -43,7 +43,7 @@ const { chromium } = require('playwright');
  await p.click('.rail >> text="People"'); await p.click('button:has-text("Add person")'); await p.fill('#pf-n', 'Zoe Smith'); await p.click('.sheet-f .btn.primary'); console.log('dup err:', await p.locator('.sheet .err').first().innerText());
  await p.check('.sheet input[type=checkbox]'); await p.selectOption('#pf-s', 'QLD'); await p.fill('#pf-dis', 'UQ, St Lucia'); await p.click('.sheet-f .btn.primary'); await p.waitForTimeout(200);
  await p.click('text=Sign out >> nth=0'); await login('Zoe', 'Smith'); console.log('choices:', (await p.locator('.banner.warn .rowbtn').allInnerTexts()).map(x=>x.replace(/\s+/g,' ')));
- await p.locator('.banner.warn .rowbtn').nth(1).click(); await p.waitForTimeout(200); console.log('signed in as:', (await p.locator('.who').innerText()).split('\n').slice(0,2).join(' / '));
+ await p.locator('.banner.warn .rowbtn').nth(1).click(); await p.waitForTimeout(200); await createPinIfAsked(p); console.log('signed in as:', (await p.locator('.who').innerText()).split('\n').slice(0,2).join(' / '));
  // store types / location filter
  await p.click('text=Sign out >> nth=0'); await login('Hudson','Ayoubi'); await p.click('.rail >> text="Audit Locations"'); await p.selectOption('#l-stt', 'Student Bar'); await p.waitForTimeout(150); console.log('student bars:', await p.locator('.small.muted.num').first().innerText());
  await p.click('button:has-text("Add Location") >> nth=0'); await p.waitForTimeout(150); console.log('store type opts:', await p.locator('#lf-stype option').allInnerTexts()); await p.keyboard.press('Escape');

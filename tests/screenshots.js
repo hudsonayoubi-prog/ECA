@@ -1,5 +1,5 @@
 // Regenerates assets/screenshots/*.png from tests/index.html (run npm run build first). Run from the tests folder: node screenshots.js
-const { chromium } = require('playwright'); const fs = require('fs'); const path = require('path');
+const { chromium } = require('playwright'); const { signIn } = require('./lib-login'); const fs = require('fs'); const path = require('path');
 const OUT = path.join(__dirname, '..', 'assets', 'screenshots'); fs.mkdirSync(OUT, { recursive: true });
 (async () => {
   const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
@@ -9,7 +9,7 @@ const OUT = path.join(__dirname, '..', 'assets', 'screenshots'); fs.mkdirSync(OU
   const url = 'file://' + path.join(__dirname, 'index.html');
   const snap = async (name, opts = {}) => { await p.waitForTimeout(350); const f = path.join(OUT, name + '.png'); if (opts.el) await p.locator(opts.el).first().screenshot({ path: f }); else await p.screenshot({ path: f, fullPage: !!opts.full }); shots.push(name); };
   const signOut = async () => { await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('edu-audit-national-v2')); s.authed = false; s.meId = null; localStorage.setItem('edu-audit-national-v2', JSON.stringify(s)); }); await p.reload(); await p.waitForTimeout(600); };
-  const signIn = async (f, l) => { await p.fill('#li-f', f); await p.fill('#li-l', l); await p.click('button[type=submit]'); await p.waitForTimeout(600); };
+  const signIn = async (f, l) => { await signIn(p, f, l); await p.waitForTimeout(600); };
   const rail = async t => { await p.locator('.rail .navbtn', { hasText: t }).first().click(); await p.waitForTimeout(450); };
   await p.goto(url); await p.waitForTimeout(800);
   await snap('01-sign-in-desktop');

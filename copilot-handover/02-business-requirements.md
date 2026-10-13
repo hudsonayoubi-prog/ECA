@@ -7,6 +7,7 @@ Each requirement has an ID (BR-xx), the rule, where the prototype implements it 
 ## A. Access and identity
 
 **BR-01 Approved users only.** Only people on the approved list (People screen) can sign in. Nobody can self-register.
+**BR-01a Personal sign-in PIN (prototype).** Everyone signs in with their name and a personal PIN. Until a person chooses one, their PIN is the default **0000**; entering it takes them to *Create your PIN* before they get in. A PIN is 4 to 8 digits and cannot be 0000. Only a salted hash is stored on the person's record; creating, changing and resetting a PIN are logged (never the PIN). Five wrong attempts lock sign-in for 60 seconds. People change their own PIN in Settings; a Manager (own state) or Administrator (step-up) can reset it to 0000 in People. A PIN is a speed bump, not proof of identity: production uses Microsoft Entra ID and has no PIN. *Prototype:* `Login`, `ChangeMyPin`, `checkPin`, `pinHash`, reducer `setSignInPin`. *Tests:* signinpin, signin.
 *Prototype:* `Login` matches first + last name (case, accents, hyphens and apostrophes ignored, see `normName`) against `people` names and `aliases`. *Production:* Microsoft Entra ID sign-in; the ECA User row is matched by email.
 *Accept:* an unknown name shows "We couldn’t find that name on the approved user list…"; 5 failures lock sign-in for 60 seconds; deactivated users see "Your access is switched off".
 

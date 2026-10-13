@@ -1,9 +1,9 @@
-const { chromium } = require('playwright'); const fs = require('fs');
+const { chromium } = require('playwright'); const { signIn } = require('./lib-login'); const fs = require('fs');
 (async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
  const ctx = await b.newContext({ viewport: { width: 1366, height: 900 } }); await ctx.addInitScript({ content: fs.readFileSync('fakedb.js', 'utf8') });
  const p = await ctx.newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type()==='error' && !m.text().includes('unique "key"') && errs.push(m.text().slice(0,200)));
  const W = () => p.evaluate(() => window.__writes.slice()); const S = () => p.evaluate(() => Object.keys(window.__store));
- const login = async (f, l) => { await p.waitForSelector('button[type=submit]:not([disabled])'); await p.fill('#li-f', f); await p.fill('#li-l', l); await p.click('button[type=submit]'); await p.waitForTimeout(400); };
+ const login = async (f, l) => { await p.waitForSelector('button[type=submit]:not([disabled])'); await signIn(p, f, l); await p.waitForTimeout(400); };
  const settle = async () => { await p.waitForTimeout(800); const a = (await W()).length; await p.waitForTimeout(1200); const c = (await W()).length; return [a, c]; };
  await p.goto('file://' + process.cwd() + '/index.html'); await p.waitForTimeout(600);
  console.log('boot writes:', await W());

@@ -66,3 +66,6 @@ See the second half of `docs/power-platform/EXPORT.md`. Same open items as the a
 
 ## Flow design (added 13 Oct 2026)
 See `docs/power-platform/FLOWS.md`: seven decisions needed before building (calculation hosting, missing notification table, time zone, Teams vs email, settings with no Dataverse home, removal note column, step-up for Finalise and Distribute). `dailySummaries` and the reminder logic are not ported to Python.
+
+## Sign-in PIN (added 13 Oct 2026)
+See BR-01a and D60. Open: until a person signs in for the first time their PIN is the public default 0000, so a new person's account is open to anyone who knows their name (mitigation: tell people to sign in soon after they are added, or an administrator can create the PIN for them). Lockout counts are per browser. Sessions already signed in keep working and are nudged only through Settings. Reference screenshots 01 and 20 show the old sign-in form (no PIN field) and need regenerating with `node tests/screenshots.js`.

@@ -1,8 +1,8 @@
-const { chromium } = require('playwright');
+const { chromium } = require('playwright'); const { signIn } = require('./lib-login');
 (async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
  const p = await (await b.newContext({ viewport: { width: 1280, height: 900 } })).newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message));
  await p.goto('file://' + process.cwd() + '/index.html'); await p.waitForTimeout(700);
- const login = async (f,l) => { await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('edu-audit-national-v2')); s.authed=false; s.meId=null; localStorage.setItem('edu-audit-national-v2', JSON.stringify(s)); }); await p.reload(); await p.waitForTimeout(600); await p.fill('#li-f',f); await p.fill('#li-l',l); await p.click('button[type=submit]'); await p.waitForTimeout(500); };
+ const login = async (f,l) => { await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('edu-audit-national-v2')); s.authed=false; s.meId=null; localStorage.setItem('edu-audit-national-v2', JSON.stringify(s)); }); await p.reload(); await p.waitForTimeout(600); await signIn(p, f, l); await p.waitForTimeout(500); };
  await login('Phillip','Petinella'); await p.locator('.rail .navbtn', { hasText: 'Settings' }).click(); await p.waitForTimeout(300);
  console.log('manager cycle input present:', await p.locator('#set-cycle').count(), '| read-only text:', await p.locator('text=Administrators can change these.').count());
  // add a location under GOTAFE (6-letter code)

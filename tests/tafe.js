@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+const { chromium } = require('playwright'); const { signIn } = require('./lib-login');
 (async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
  const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message));
  await p.goto('file://' + process.cwd() + '/index.html'); await p.waitForTimeout(700);
@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
  await chk('fresh:');
  await p.evaluate(() => { const s = JSON.parse(localStorage.getItem('edu-audit-national-v2')); s.unis = s.unis.filter(u => u.kind !== 'TAFE'); s.log = []; localStorage.setItem('edu-audit-national-v2', JSON.stringify(s)); });
  await p.reload(); await p.waitForTimeout(700); await chk('migrated:');
- await p.fill('#li-f','Hugh'); await p.fill('#li-l','Black'); await p.click('button[type=submit]'); await p.waitForTimeout(400);
+ await signIn(p, 'Hugh', 'Black'); await p.waitForTimeout(400);
  await p.locator('nav >> text=Visits').last().click(); await p.waitForTimeout(300);
  console.log('SA SM:', (await p.locator('#v-uni option').allInnerTexts()).slice(1).join(' | '));
  console.log(errs.length ? errs : 'NO ERRORS'); await b.close(); })();

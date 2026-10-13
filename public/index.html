@@ -590,6 +590,9 @@ function reducer(s, a) {
       const roleChg = old && old.role !== a.person.role;
       return { ...s, people: exists ? s.people.map(p => (p.id === a.person.id ? a.person : p)) : [...s.people, a.person], log: stamp(roleChg ? 'Changed role' : exists ? 'Edited person' : 'Added person to approved user list', a.person.name, a.person.disambig || null, { cat: 'People', from: desc(old), to: desc(a.person) }) };
     }
+    case 'setSignInPin': { const p = s.people.find(x => x.id === a.id); if (!p) return s;
+      const people = s.people.map(x => (x.id !== a.id ? x : a.reset ? (({ pinHash, pinSalt, pinAt, ...rest }) => rest)(x) : { ...x, pinHash: a.pinHash, pinSalt: a.pinSalt, pinAt: new Date().toISOString() }));
+      return { ...s, people, log: stamp(a.reset ? 'Reset sign-in PIN' : a.first ? 'Created sign-in PIN' : 'Changed sign-in PIN', p.name, a.reset ? 'Back to the default; they choose a new one at next sign-in' : null, { cat: a.reset ? 'People' : 'Login' }) }; }
     case 'setPersonStatus': { const old = s.people.find(p => p.id === a.id); return { ...s, people: s.people.map(p => (p.id === a.id ? { ...p, status: a.status } : p)), log: stamp(`${a.status === 'Active' ? 'Reactivated' : a.status === 'Removed' ? 'Removed' : 'Deactivated'} user`, old?.name, null, { cat: 'People', from: old?.status, to: a.status }) }; }
     case 'saveState': return { ...s, states: [...s.states, a.state], leads: { ...s.leads, [a.state.code]: [] }, log: stamp('Added state', a.state.code, a.state.name) };
     case 'setLeads': return { ...s, leads: { ...s.leads, [a.state]: a.names }, log: stamp('Changed channel leads', a.state, a.names.join(', ')) };
@@ -2106,6 +2109,8 @@ function PeopleTable({ fixedState, note }) {
   const rows = s.people.filter(p => (st === 'all' || p.state === st || (p.role === 'admin' && (s.leads[st] || []).includes(p.name))) && (role === 'all' || p.role === role) && (status === 'All' || p.status === status) && (!q || p.name.toLowerCase().includes(q.toLowerCase())))
     .sort((a, b) => ['admin', 'manager', 'marketeer'].indexOf(a.role) - ['admin', 'manager', 'marketeer'].indexOf(b.role) || a.name.localeCompare(b.name));
   const leadOf = n => Object.entries(s.leads).filter(([, ns]) => ns.includes(n)).map(([x]) => x);
+  const resetPin = p => { const acts = [{ type: 'setSignInPin', id: p.id, reset: true }, { type: 'toast', msg: `${p.name}’s PIN is reset to 0000. They choose a new one at next sign-in.` }];
+    if (D.isAdmin) requireAdmin(D, d, acts, 'Resetting a sign-in PIN needs a step-up check.'); else acts.forEach(x => d(x)); };
   return html`${note ? html`<p class="small muted" style="margin:0">${note}</p>` : null}<div class="toolbar">
     ${fixedState ? null : html`<${StatePick} value=${st} onChange=${setSt} D=${D} s=${s} allLabel="All" />`}
     <${Select} id="pp-role" label="Role" value=${role} onChange=${setRole} options=${[['all', 'All roles'], ['marketeer', 'Student Marketeers'], ['manager', 'Managers'], ['admin', 'Administrators']]} />
@@ -2116,6 +2121,7 @@ function PeopleTable({ fixedState, note }) {
     ${rows.map(p => html`<tr key=${p.id}><td><b>${p.name}</b>${p.status !== 'Active' ? html` <span class="chip muted">${p.status}</span>` : null}${sameNameCount(s, p) > 1 ? html` <span class="chip warn" title="Another user has the same name">Same name ×${sameNameCount(s, p)}</span>` : null}${p.disambig ? html`<div class="xs muted">${p.disambig}</div>` : null}${leadOf(p.name).length ? html`<div class="xs" style="color:var(--brand);font-weight:700">Education Channel Lead · ${leadOf(p.name).join(', ')}</div>` : null}${p.reportsTo ? html`<div class="xs muted">Reports to ${p.reportsTo}</div>` : null}</td>
       <td><${RoleChip} role=${p.role} /></td><td class="hide-m">${p.state || 'National'}</td><td class="n hide-m">${s.visits.filter(v => v.staff === p.name && v.status === 'Completed').length}</td>
       ${D.can.managePeople ? html`<td style="white-space:nowrap;text-align:right">${D.can.managePerson(p) && p.name !== D.meP.name ? html`<button class="btn sm" onClick=${() => d({ type: 'modal', modal: { kind: 'person', person: p } })}>Edit</button>
+        ${p.pinHash ? html`<button class="btn sm" style="margin-left:6px" title="Back to 0000. They choose a new PIN at next sign-in." onClick=${() => resetPin(p)}>Reset PIN</button>` : null}
         <button class=${'btn sm ' + (p.status === 'Active' ? 'danger' : '')} style="margin-left:6px" onClick=${() => { d({ type: 'setPersonStatus', id: p.id, status: p.status === 'Active' ? 'Inactive' : 'Active' }); d({ type: 'toast', msg: p.status === 'Active' ? `${p.name} deactivated` : `${p.name} reactivated` }); }}>${p.status === 'Active' ? 'Deactivate' : 'Reactivate'}</button>` : null}</td>` : null}</tr>`)}</tbody></table></div>`
     : html`<${Empty} title="No people match" body=${st !== 'all' && role === 'marketeer' ? `No Student Marketeers loaded for ${st} yet. Add them here, or send the staff list to load in bulk.` : 'Try another filter.'} />`}
   <p class="xs muted" style="margin:0">Deactivated people disappear from future audit dropdowns; their past audits keep their name.</p>`;
@@ -2210,6 +2216,21 @@ function Progress() {
 }
 
 /* ======================= SETTINGS ======================= */
+function ChangeMyPin() {
+  const { d, D } = useApp(); const me = D.meP;
+  const [f, setF] = useState({ cur: '', a: '', b: '' }); const [tried, setTried] = useState(false);
+  const digits = v => v.replace(/\D/g, '').slice(0, 8);
+  const errs = { cur: !checkPin(me, f.cur) ? 'That isn’t your current PIN.' : null, a: pinProblem(f.a), b: f.a !== f.b ? 'The two PINs don’t match.' : null };
+  const save = e => { e && e.preventDefault(); setTried(true); if (errs.cur || errs.a || errs.b) return;
+    d({ type: 'setSignInPin', id: me.id, ...pinFields(me, f.a) }); setF({ cur: '', a: '', b: '' }); setTried(false); d({ type: 'toast', msg: 'Sign-in PIN changed' }); };
+  return html`<details style="margin-top:12px"><summary style="cursor:pointer;font-weight:600">Change my sign-in PIN</summary>
+    ${!me.pinHash ? html`<div class="banner warn" style="margin-top:8px"><${Icon} n="alert" s=${18} /><div>You are still on the default PIN, 0000. Choose your own below. Your current PIN is 0000.</div></div>` : null}
+    <form onSubmit=${save} onKeyDown=${e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') save(e); }} style="display:flex;flex-direction:column;gap:12px;margin-top:10px;max-width:360px" novalidate>
+      <${Text} id="cp-cur" label="Current PIN" type="password" inputMode="numeric" value=${f.cur} onChange=${v => setF({ ...f, cur: digits(v) })} err=${tried ? errs.cur : null} />
+      <${Text} id="cp-a" label="New PIN" type="password" inputMode="numeric" value=${f.a} onChange=${v => setF({ ...f, a: digits(v) })} err=${tried ? errs.a : null} hint="4 to 8 digits. Not 0000." />
+      <${Text} id="cp-b" label="Confirm new PIN" type="password" inputMode="numeric" value=${f.b} onChange=${v => setF({ ...f, b: digits(v) })} err=${tried ? errs.b : null} />
+      <div><button class="btn primary" type="submit" onClick=${save}>Save PIN</button></div></form></details>`;
+}
 function Settings() {
   const { s, d, D } = useApp();
   const [confirmReset, setConfirmReset] = useState(false); const [newPos, setNewPos] = useState(''); const [newComp, setNewComp] = useState(''); const [ns, setNs] = useState({ code: '', name: '' });
@@ -2220,6 +2241,7 @@ function Settings() {
   <section class="card"><h2 class="section-t">Signed in</h2><div class="form-grid">
     <div class="field"><span class="label">Name</span><b>${D.meP.name}</b>${D.meP.disambig ? html`<span class="hint">${D.meP.disambig}</span>` : null}</div>
     <div class="field"><span class="label">Access</span><div class="chips"><${RoleChip} role=${D.role} /><span class="chip plain">${D.isAdmin ? 'National' : D.meP.state}</span>${D.leadOf.length ? html`<span class="chip type">Channel lead · ${D.leadOf.join(', ')}</span>` : null}</div></div></div>
+    <${ChangeMyPin} />
     <button class="btn" style="margin-top:12px" onClick=${() => d({ type: 'logout' })}><${Icon} n="logout" s=${16} />Sign out</button></section>
   ${D.isAdmin ? html`<${AdminAccess} />` : null}
   <section class="card"><h2 class="section-t">States and Education Channel Leads</h2><div class="tbl-wrap"><table><thead><tr><th>State</th><th class="n">Institutions</th><th class="n">Locations</th><th>Channel leads (approve removals)</th></tr></thead><tbody>
@@ -2262,6 +2284,36 @@ const one = n => (Math.round(n * 10) / 10).toFixed(1);
 const normName = x => String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[’'`.\-]/g, ' ').replace(/\s+/g, ' ').trim();
 const sameNameCount = (s, p) => s.people.filter(x => x.status !== 'Removed' && normName(x.name) === normName(p.name)).length;
 const personLabel = p => [ROLE_LABEL[p.role], p.state || 'National', p.disambig, p.reportsTo ? 'reports to ' + p.reportsTo : null].filter(Boolean).join(' · ');
+/* ======================= SIGN-IN PIN (prototype) =======================
+   Everyone signs in with their name and a personal PIN. Until a person chooses one it is the default (0000) and they must create
+   their own on first sign-in. Only a salted hash is kept, on the person's record, so it follows them across devices in shared mode.
+   A 4-digit PIN can still be guessed by anyone who can read the data, so this is a speed bump, not proof of identity.
+   Production signs in with Microsoft Entra ID and has no PIN. */
+const DEFAULT_PIN = '0000';
+const sha256hex = (() => {
+  const K = [0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  const rotr = (x, n) => (x >>> n) | (x << (32 - n));
+  return str => {
+    const b = new TextEncoder().encode(str), n = b.length, len = ((n + 9 + 63) >> 6) << 6, m = new Uint8Array(len);
+    m.set(b); m[n] = 0x80; const dv = new DataView(m.buffer); dv.setUint32(len - 4, (n * 8) >>> 0); dv.setUint32(len - 8, Math.floor(n * 8 / 4294967296));
+    let h = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19]; const w = new Array(64);
+    for (let o = 0; o < len; o += 64) {
+      for (let i = 0; i < 16; i++) w[i] = dv.getUint32(o + i * 4);
+      for (let i = 16; i < 64; i++) { const s0 = rotr(w[i - 15], 7) ^ rotr(w[i - 15], 18) ^ (w[i - 15] >>> 3), s1 = rotr(w[i - 2], 17) ^ rotr(w[i - 2], 19) ^ (w[i - 2] >>> 10); w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0; }
+      let [a, bb, c, d, e, f, g, hh] = h;
+      for (let i = 0; i < 64; i++) { const S1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25), ch = (e & f) ^ (~e & g), t1 = (hh + S1 + ch + K[i] + w[i]) | 0, S0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22), mj = (a & bb) ^ (a & c) ^ (bb & c), t2 = (S0 + mj) | 0;
+        hh = g; g = f; f = e; e = (d + t1) | 0; d = c; c = bb; bb = a; a = (t1 + t2) | 0; }
+      h = [h[0] + a, h[1] + bb, h[2] + c, h[3] + d, h[4] + e, h[5] + f, h[6] + g, h[7] + hh].map(x => x | 0);
+    }
+    return h.map(x => (x >>> 0).toString(16).padStart(8, '0')).join('');
+  };
+})();
+
+const pinHash = (salt, id, pin) => { let h = sha256hex(salt + ':' + id + ':' + pin); for (let i = 0; i < 1000; i++) h = sha256hex(h + ':' + salt); return h; };
+const newSalt = () => { try { return Array.from(crypto.getRandomValues(new Uint8Array(12)), b => b.toString(16).padStart(2, '0')).join(''); } catch (e) { return Math.random().toString(16).slice(2, 14).padEnd(12, '0'); } };
+const checkPin = (p, pin) => (p.pinHash ? pinHash(p.pinSalt, p.id, pin) === p.pinHash : pin === DEFAULT_PIN);
+const pinProblem = pin => (!/^\d{4,8}$/.test(pin) ? 'Use 4 to 8 digits.' : pin === DEFAULT_PIN ? 'Choose a PIN other than 0000.' : null);
+const pinFields = (p, pin) => { const salt = newSalt(); return { pinSalt: salt, pinHash: pinHash(salt, p.id, pin) }; };
 
 /** Store location type for a QSR location; vending machines are their own location type. Bars named in the workbook are guessed and flagged. */
 function guessStoreType(l) {
@@ -2465,36 +2517,54 @@ const BoardStatus = ({ st, b }) => st === 'Final'
 
 function Login() {
   const { s, d } = useApp();
-  const [f, setF] = useState({ first: '', last: '' }); const [tried, setTried] = useState(false); const [err, setErr] = useState(null);
+  const [f, setF] = useState({ first: '', last: '', pin: '' }); const [tried, setTried] = useState(false); const [err, setErr] = useState(null);
   const [choices, setChoices] = useState(null); const fails = useRef(0); const lockUntil = useRef(0);
-  const fe = { first: !f.first.trim() ? 'Enter your first name.' : null, last: !f.last.trim() ? 'Enter your last name.' : null };
+  const [creating, setCreating] = useState(null); const [np, setNp] = useState({ a: '', b: '' }); const [npTried, setNpTried] = useState(false);
+  const fe = { first: !f.first.trim() ? 'Enter your first name.' : null, last: !f.last.trim() ? 'Enter your last name.' : null, pin: !f.pin.trim() ? 'Enter your PIN.' : null };
+  const enter = p => { fails.current = 0; if (!p.pinHash) { setChoices(null); setCreating(p); return; } d({ type: 'login', person: p }); };
   const submit = e => {
     e && e.preventDefault(); setTried(true); setErr(null); setChoices(null);
-    if (fe.first || fe.last) return;
+    if (fe.first || fe.last || fe.pin) return;
     if (Date.now() < lockUntil.current) { setErr(`Too many attempts. Try again in ${Math.ceil((lockUntil.current - Date.now()) / 1000)} seconds.`); return; }
     const typed = `${f.first.trim()} ${f.last.trim()}`; const key = normName(typed);
     const matches = s.people.filter(p => p.status !== 'Removed' && [p.name, ...(p.aliases || [])].some(n => normName(n) === key));
     const active = matches.filter(p => p.status === 'Active');
-    if (!matches.length) { fails.current++; d({ type: 'loginFail', name: typed, reason: 'Not on approved list' });
-      if (fails.current >= 5) { lockUntil.current = Date.now() + 60e3; fails.current = 0; setErr('Too many attempts. Try again in 60 seconds.'); }
+    const tooMany = () => { fails.current++; if (fails.current >= 5) { lockUntil.current = Date.now() + 60e3; fails.current = 0; return true; } return false; };
+    if (!matches.length) { d({ type: 'loginFail', name: typed, reason: 'Not on approved list' });
+      if (tooMany()) setErr('Too many attempts. Try again in 60 seconds.');
       else setErr('We couldn’t find that name on the approved user list. Check the spelling, or ask your manager to add you. You can’t create an account yourself.'); return; }
     if (!active.length) { d({ type: 'loginFail', name: typed, reason: 'Account deactivated' }); setErr('Your access is switched off. Contact your manager or an ECA administrator.'); return; }
-    if (active.length === 1) { fails.current = 0; d({ type: 'login', person: active[0] }); return; }
-    setChoices(active);
+    const ok = active.filter(p => checkPin(p, f.pin.trim()));
+    if (!ok.length) { d({ type: 'loginFail', name: typed, reason: 'Wrong PIN' });
+      if (tooMany()) setErr('Too many attempts. Try again in 60 seconds.');
+      else setErr('That PIN isn’t right. If you’ve forgotten it, ask your manager or an administrator to reset it.'); return; }
+    if (ok.length === 1) { enter(ok[0]); return; }
+    setChoices(ok);
   };
-  return html`<div class="login-wrap"><main class="login" aria-labelledby="li-h">
-    <div class="login-brand"><div class="lb-mark">ECA</div><div><div class="lb-t">Education Channel Audit Tool</div><div class="lb-s">Universities · TAFEs · National</div></div></div>
-    <section class="card"><h1 id="li-h" style="font-size:26px;margin-bottom:4px">Sign in</h1><p class="small muted" style="margin:0 0 16px">Enter your first and last name as your manager set them up.</p>
+  const npErr = { a: pinProblem(np.a), b: np.a !== np.b ? 'The two PINs don’t match.' : null };
+  const savePin = e => { e && e.preventDefault(); setNpTried(true); if (npErr.a || npErr.b) return;
+    d({ type: 'login', person: creating }); d({ type: 'setSignInPin', id: creating.id, first: true, ...pinFields(creating, np.a) }); };
+  const brand = html`<div class="login-brand"><div class="lb-mark">ECA</div><div><div class="lb-t">Education Channel Audit Tool</div><div class="lb-s">Universities · TAFEs · National</div></div></div>`;
+  if (creating) return html`<div class="login-wrap"><main class="login" aria-labelledby="li-h">${brand}
+    <section class="card"><h1 id="li-h" style="font-size:26px;margin-bottom:4px">Create your PIN</h1><p class="small muted" style="margin:0 0 16px">Welcome, ${creating.name.split(' ')[0]}. Choose a PIN you will remember. You will use it each time you sign in, so don’t share it.</p>
+      <form onSubmit=${savePin} onKeyDown=${e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') savePin(e); }} style="display:flex;flex-direction:column;gap:14px" novalidate>
+        <${Text} id="np-a" label="New PIN" type="password" inputMode="numeric" value=${np.a} onChange=${v => setNp({ ...np, a: v.replace(/\D/g, '').slice(0, 8) })} err=${npTried ? npErr.a : null} hint="4 to 8 digits. Not 0000." />
+        <${Text} id="np-b" label="Confirm new PIN" type="password" inputMode="numeric" value=${np.b} onChange=${v => setNp({ ...np, b: v.replace(/\D/g, '').slice(0, 8) })} err=${npTried ? npErr.b : null} />
+        <div style="display:flex;gap:10px;justify-content:flex-end"><button type="button" class="btn" onClick=${() => { setCreating(null); setNp({ a: '', b: '' }); setNpTried(false); setF({ ...f, pin: '' }); }}>Back</button>
+          <button class="btn primary" type="submit" onClick=${savePin} style="min-height:46px">Save PIN and continue</button></div></form></section></main></div>`;
+  return html`<div class="login-wrap"><main class="login" aria-labelledby="li-h">${brand}
+    <section class="card"><h1 id="li-h" style="font-size:26px;margin-bottom:4px">Sign in</h1><p class="small muted" style="margin:0 0 16px">Enter your first and last name as your manager set them up, and your PIN.</p>
       <form onSubmit=${submit} onKeyDown=${e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') submit(e); }} style="display:flex;flex-direction:column;gap:14px" novalidate>
         <div class="form-grid"><${Text} id="li-f" label="First name" value=${f.first} onChange=${v => setF({ ...f, first: v })} err=${tried ? fe.first : null} />
           <${Text} id="li-l" label="Last name" value=${f.last} onChange=${v => setF({ ...f, last: v })} err=${tried ? fe.last : null} /></div>
+        <${Text} id="li-pin" label="PIN" type="password" inputMode="numeric" value=${f.pin} onChange=${v => setF({ ...f, pin: v.replace(/\D/g, '').slice(0, 8) })} err=${tried ? fe.pin : null} hint="First time signing in? Your PIN is 0000. You will choose your own next." />
         ${err ? html`<div class="banner bad" role="alert"><${Icon} n="alert" s=${18} /><div>${err}</div></div>` : null}
         ${choices ? html`<div class="banner warn" role="status"><${Icon} n="people" s=${18} /><div style="flex:1"><b>More than one person has this name.</b> Choose your profile.
-          <div class="list" style="margin-top:8px">${choices.map(p => html`<button type="button" key=${p.id} class="rowbtn" style="background:var(--surface);border:1px solid var(--line);margin-top:6px" onClick=${() => d({ type: 'login', person: p })}>
+          <div class="list" style="margin-top:8px">${choices.map(p => html`<button type="button" key=${p.id} class="rowbtn" style="background:var(--surface);border:1px solid var(--line);margin-top:6px" onClick=${() => enter(p)}>
             <div class="main-c" style="flex:1;min-width:0"><div class="t" style="font-weight:700">${p.name}</div><div class="m">${personLabel(p)}</div></div><${Icon} n="chev" s=${16} /></button>`)}</div></div></div>` : null}
         <button class="btn primary" type="submit" onClick=${submit} style="min-height:46px" disabled=${s.sync?.mode === 'shared' && !s.sharedLoaded}>${s.sync?.mode === 'shared' && !s.sharedLoaded ? 'Loading shared data…' : 'Continue'}</button></form></section>
     <details class="card flat small"><summary style="cursor:pointer;font-weight:600">Prototype notes</summary>
-      <p style="margin:8px 0 0">Names are checked against the approved user list in People. Try <b>Hudson Ayoubi</b> (administrator), <b>Charlotte Terrell</b> (manager) or <b>George Johnson</b> (Student Marketeer). Name-only sign-in isn’t proof of identity, so administrator changes ask for a step-up check.</p></details>
+      <p style="margin:8px 0 0">Names are checked against the approved user list in People. Try <b>Hudson Ayoubi</b> (administrator), <b>Charlotte Terrell</b> (manager) or <b>George Johnson</b> (Student Marketeer). Everyone starts with the PIN 0000 and chooses their own on first sign-in. A manager or administrator can reset a forgotten PIN in People. A PIN is a speed bump, not proof of identity, so administrator changes still ask for a step-up check. Production signs in with Microsoft Entra ID.</p></details>
   </main></div>`;
 }
 function ElevateSheet({ m, onClose }) {
