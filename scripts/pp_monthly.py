@@ -101,7 +101,9 @@ def exec_stats(visits, locs, start, end, products=PRODUCTS):
             brands[c] = brands.get(c, 0) + _num(n)
             present[c] = present.get(c, 0) + 1
     audit_pcts = [p for p in (rb_range_pct(by_id.get(v['loc']), v['ranging'], products) for _, v in latest_r.values()) if p is not None]
-    return {'vs': vs, 'rbFacings': rb, 'compFacings': comp, 'share': rb / (rb + comp) if rb + comp else None,
+    tot = lambda k: sum(_num(v.get(k)) for v in vs)
+    return {'vs': vs, 'audits': len(vs), 'editions': tot('editions'), 'pos': tot('posPlaced'), 'coolers': tot('coolersIn'),
+            'coolersOut': tot('coolersOut'), 'dpAdded': tot('dpAdded'), 'dpLost': tot('dpLost'), 'rbFacings': rb, 'compFacings': comp, 'share': rb / (rb + comp) if rb + comp else None,
             'shelfLocs': len(latest_f), 'brands': brands, 'present': present,
             'compPos': sum(_num(v.get('compPos')) for v in vs), 'compCoolers': sum(_num(v.get('compCoolers')) for v in vs),
             'rangingAudited': avg(audit_pcts)}

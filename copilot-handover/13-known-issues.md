@@ -57,3 +57,6 @@ See `docs/power-platform/SCORING.md`. Open: store-type/activity board filters, s
 
 ## Path 2 · Monthly summaries (added 13 Oct 2026)
 See `docs/power-platform/MONTHLY.md`. Open: Excel workbook, schedule and notices not built; accented-name tie-breaks may differ.
+
+## Path 2 · Audit export (added 13 Oct 2026)
+See `docs/power-platform/EXPORT.md`. Open: not opened in desktop Excel; chart styling may differ slightly; SharePoint save, schedule and notice not built; BR-53 summary download workbook not built.

@@ -10,7 +10,8 @@
     "pp:schema": "python3 scripts/pp_schema.py",
     "pp:plan": "python3 scripts/pp_deploy.py",
     "test:pp": "python3 -m unittest discover -s tests/pp -t tests/pp",
-    "pp:import:check": "python3 scripts/pp_import.py"
+    "pp:import:check": "python3 scripts/pp_import.py",
+    "pp:export": "python3 scripts/pp_export.py"
   },
   "devDependencies": {
     "htm": "3.1.1",
