@@ -48,3 +48,6 @@ Impersonation (prototype), unagreed scoring, wrong auto store types, data drift 
 
 ## Path 2 · Stage 1 assumptions (added 13 Oct 2026)
 See `docs/power-platform/STAGE1.md`: Visit ID created as text; two choice sets derived from inline labels; extra alternate keys; deploy script untested against a live Dataverse; Manager-cannot-edit-Administrators rule needs testing.
+
+## Path 2 · Stage 2 (added 13 Oct 2026)
+See `docs/power-platform/STAGE2.md`. Open: all 102 user emails blank; 8 VIC staff with no Reports To; 215 store types unconfirmed; import script untested against a live Dataverse.

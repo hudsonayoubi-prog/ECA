@@ -116,8 +116,10 @@ def build(pack=PACK):
                'primary': primary, 'default': parse_default(dflt), 'behaviour': dflt, 'notes': notes, **props}
         cur['columns'].append(col)
     # Alternate keys named in the build pack notes.
-    keys = {'eca_location': ['eca_name'], 'eca_leaderboardsnapshot': ['eca_name'], 'eca_campus': ['eca_name'],
-            'eca_institution': ['eca_name'], 'eca_state': ['eca_name']}
+    # Every imported table is keyed on its primary name so imports can upsert and lookups can bind by name.
+    keys = {t: ['eca_name'] for t in ['eca_state', 'eca_storelocationtype', 'eca_ecauser', 'eca_channellead', 'eca_institution',
+            'eca_campus', 'eca_location', 'eca_allocation', 'eca_competitor', 'eca_auditvisit', 'eca_scoringruleset',
+            'eca_distributionsettings', 'eca_leaderboardsnapshot']}
     for t in tables:
         t['alternateKey'] = keys.get(t['logicalName'])
     used = {c['choiceSet'] for t in tables for c in t['columns'] if c['kind'] == 'choice'}

@@ -5,7 +5,7 @@ Status: **generated and tested offline. Not yet applied to any environment** (ne
 ## What is here
 | File | What |
 |---|---|
-| `schema/eca-schema.json` | The build pack as data: 21 tables, 238 columns, 24 choice sets, 5 alternate keys |
+| `schema/eca-schema.json` | The build pack as data: 21 tables, 238 columns, 24 choice sets, 13 alternate keys |
 | `security/security-model.json` | Business Units, teams, role grants, column security, auditing |
 | `../../scripts/pp_schema.py` | Rebuilds the JSON from `ECA_Dataverse_Build_Pack.xlsx` (the workbook stays the source of truth) |
 | `../../scripts/pp_deploy.py` | Creates everything in Dataverse via the Web API. Dry run by default; safe to re-run |
@@ -23,6 +23,6 @@ Status: **generated and tested offline. Not yet applied to any environment** (ne
 - **Visit ID** is "Autonumber or text" in the pack. Created as text (50) so history and the app can write IDs like `MON-V0001`.
 - **Choice values** start at 100000000 in the order on the Choices sheet.
 - **Two choice sets** are not on the Choices sheet and were added from inline labels: Institution Status (Active/Removed) and Removal Status (Pending/Approved/Rejected).
-- **Alternate keys:** the pack names Location ID and Snapshot Month. State, Institution and Campus keys were added too because imports match on them.
+- **Alternate keys:** the pack names Location ID and Snapshot Month. Keys on every imported table's primary name were added so imports can upsert and lookups can bind by name (13 keys).
 - **Not verified against a live tenant.** The payloads follow the Dataverse Web API metadata format but no call has been made. Expect small fixes on first `--apply` (Dev only). Lookup logical names follow the pack; relationship names are generated.
 - **Manager can't edit Administrators** is a design note, not yet a tested rule. Check it in Test.

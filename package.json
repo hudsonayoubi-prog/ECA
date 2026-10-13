@@ -9,7 +9,8 @@
     "build:pack": "python3 scripts/build_pack.py docs/power-platform/state_dump.json docs/power-platform/ECA_Dataverse_Build_Pack.xlsx",
     "pp:schema": "python3 scripts/pp_schema.py",
     "pp:plan": "python3 scripts/pp_deploy.py",
-    "test:pp": "python3 -m unittest discover -s tests/pp"
+    "test:pp": "python3 -m unittest discover -s tests/pp",
+    "pp:import:check": "python3 scripts/pp_import.py"
   },
   "devDependencies": {
     "htm": "3.1.1",

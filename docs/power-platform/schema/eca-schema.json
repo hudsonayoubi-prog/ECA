@@ -584,7 +584,9 @@
      "max": null
     }
    ],
-   "alternateKey": null
+   "alternateKey": [
+    "eca_name"
+   ]
   },
   {
    "displayName": "ECA User",
@@ -741,7 +743,9 @@
      "notes": null
     }
    ],
-   "alternateKey": null
+   "alternateKey": [
+    "eca_name"
+   ]
   },
   {
    "displayName": "Channel Lead",
@@ -783,7 +787,9 @@
      "target": "State"
     }
    ],
-   "alternateKey": null
+   "alternateKey": [
+    "eca_name"
+   ]
   },
   {
    "displayName": "Institution",
@@ -1585,7 +1591,9 @@
      "choiceSet": "Active / Inactive"
     }
    ],
-   "alternateKey": null
+   "alternateKey": [
+    "eca_name"
+   ]
   },
   {
    "displayName": "Competitor",
@@ -1625,7 +1633,9 @@
      "notes": "Yes = typed in by a Student Marketeer via Add competitor; Admin to review"
     }
    ],
-   "alternateKey": null
+   "alternateKey": [
+    "eca_name"
+   ]
   },
   {
    "displayName": "Location Competitor",
@@ -2202,7 +2212,9 @@
      "max": null
     }
    ],
-   "alternateKey": null
+   "alternateKey": [
+    "eca_name"
+   ]
   },
   {
    "displayName": "Visit Competitor",
@@ -2558,7 +2570,9 @@
      "notes": null
     }
    ],
-   "alternateKey": null
+   "alternateKey": [
+    "eca_name"
+   ]
   },
   {
    "displayName": "Leaderboard Snapshot",
@@ -3064,7 +3078,9 @@
      "maxLength": 2000
     }
    ],
-   "alternateKey": null
+   "alternateKey": [
+    "eca_name"
+   ]
   },
   {
    "displayName": "Removal Request",
