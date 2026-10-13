@@ -51,3 +51,6 @@ See `docs/power-platform/STAGE1.md`: Visit ID created as text; two choice sets d
 
 ## Path 2 · Stage 2 (added 13 Oct 2026)
 See `docs/power-platform/STAGE2.md`. Open: all 102 user emails blank; 8 VIC staff with no Reports To; 215 store types unconfirmed; import script untested against a live Dataverse.
+
+## Path 2 · Scoring (added 13 Oct 2026)
+See `docs/power-platform/SCORING.md`. Open: store-type/activity board filters, snapshot finalise, 48 h edit window and self-approval rule are not ported; accented-name tie-breaks may differ from the app.
