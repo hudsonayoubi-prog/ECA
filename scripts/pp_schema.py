@@ -15,7 +15,8 @@ OUT = os.path.join(ROOT, 'docs/power-platform/schema/eca-schema.json')
 PREFIX = 'eca_'
 # Choice sets whose columns say "Choice (as X)" or whose inline label list does not match a set exactly.
 CHOICE_ALIAS = {'Choice (as Results Distribution)': 'Distribution Method'}
-INLINE_NAMES = {'Active / Removed': 'Institution Status', 'Pending / Approved / Rejected': 'Removal Status'}
+INLINE_NAMES = {'Active / Removed': 'Institution Status', 'Pending / Approved / Rejected': 'Removal Status', 'Distributor / Retail / Not sure': 'Buy Source'}
+EXTENSIONS = os.path.join(ROOT, 'docs/power-platform/schema/extensions.json')
 
 
 def slug(s):
@@ -116,6 +117,15 @@ def build(pack=PACK):
                'primary': primary, 'default': parse_default(dflt), 'behaviour': dflt, 'notes': notes, **props}
         cur['columns'].append(col)
     # Alternate keys named in the build pack notes.
+    # Columns added after the workbook was issued (docs/power-platform/schema/extensions.json).
+    if os.path.exists(EXTENSIONS):
+        ext = json.load(open(EXTENSIONS, encoding='utf-8'))['tables']
+        by_log = {t['logicalName']: t for t in tables}
+        for tlog, cols in ext.items():
+            for c in cols:
+                kind, props = parse_type(c['type'], sets)
+                by_log[tlog]['columns'].append({'displayName': c['name'], 'logicalName': c['logical'], 'kind': kind, 'required': c['required'] == 'Required',
+                                                'primary': False, 'default': None, 'behaviour': None, 'notes': c.get('notes'), **props})
     # Every imported table is keyed on its primary name so imports can upsert and lookups can bind by name.
     keys = {t: ['eca_name'] for t in ['eca_state', 'eca_storelocationtype', 'eca_ecauser', 'eca_channellead', 'eca_institution',
             'eca_campus', 'eca_location', 'eca_allocation', 'eca_competitor', 'eca_auditvisit', 'eca_scoringruleset',

@@ -1,4 +1,4 @@
-const { chromium } = require('playwright'); const { signIn } = require('./lib-login'); const fs = require('fs');
+const { chromium } = require('playwright'); const { signIn } = require('./lib-login'); const { answerHi5Step3 } = require('./lib-audit'); const fs = require('fs');
 (async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
  const ctx = await b.newContext({ viewport: { width: 1366, height: 900 } }); await ctx.addInitScript({ content: fs.readFileSync('fakedb.js', 'utf8') });
  const p = await ctx.newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type()==='error' && !m.text().includes('unique "key"') && errs.push(m.text().slice(0,200)));
@@ -13,7 +13,7 @@ const { chromium } = require('playwright'); const { signIn } = require('./lib-lo
  const locName = await p.locator('h1').innerText(); await p.click('button:has-text("Start Audit") >> nth=1').catch(async () => p.click('main button:has-text("Start Audit")'));
  await p.waitForTimeout(200);
  await p.fill("#a-cn", "Test Contact");
- for (let step = 0; step < 5; step++) { for (const y of await p.locator('section.card button:has-text("Yes")').all()) await y.click(); if (step === 3) await p.click('button[aria-label="Increase Distribution points added"]'); await p.click('.audit-foot button:has-text("Next")'); await p.waitForTimeout(120); }
+ for (let step = 0; step < 5; step++) { for (const y of await p.locator('section.card button:has-text("Yes")').all()) await y.click(); if (step === 2) await answerHi5Step3(p); if (step === 3) await p.click('button[aria-label="Increase Distribution points added"]'); await p.click('.audit-foot button:has-text("Next")'); await p.waitForTimeout(120); }
  await p.click('.audit-foot button.primary'); await p.waitForTimeout(300); console.log('toast:', await p.locator('.toast').innerText().catch(()=>'-'));
  let st = await S(); const vdoc = st.find(x => x.startsWith('visits/')); console.log('visit doc:', vdoc, '| loc:', locName);
  console.log('settle (no echo loop):', await settle());

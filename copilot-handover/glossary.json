@@ -228,6 +228,34 @@
     {
       "term": "htm",
       "definition": "Small library that lets the prototype write React markup with tagged template strings instead of JSX."
+    },
+    {
+      "term": "Hi5",
+      "definition": "The five Education Channel (Catering) KPIs: Availability, Perfect Placement, Perfect Visibility, Consumption Activation and Win vs Comp."
+    },
+    {
+      "term": "Key 3",
+      "definition": "Energy Drink, a low-cal (Sugarfree or Zero) and an Edition. Availability is met when all three are ranged."
+    },
+    {
+      "term": "Perfect Placement",
+      "definition": "Red Bull is in the main fridge, or where the purchase decision is made (grab & go fridge, beverage fridge near the till)."
+    },
+    {
+      "term": "Perfect Visibility",
+      "definition": "The Red Bull fridge placement in the store is easy for customers to see."
+    },
+    {
+      "term": "Consumption Activation",
+      "definition": "Activation in store (price tags, menu board, wobbler). It only counts when pricing is shown."
+    },
+    {
+      "term": "Win vs Comp",
+      "definition": "Red Bull has more front facings than the top competitor in the whole store."
+    },
+    {
+      "term": "Additional visibility tools",
+      "definition": "Extras that are not part of Hi5 but worth recording, e.g. can glorifier, window decals, ambient display."
     }
   ]
 }

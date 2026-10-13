@@ -497,6 +497,24 @@
      "value": 100000002
     }
    ]
+  },
+  {
+   "name": "Buy Source",
+   "logicalName": "eca_buysource",
+   "options": [
+    {
+     "label": "Distributor",
+     "value": 100000000
+    },
+    {
+     "label": "Retail",
+     "value": 100000001
+    },
+    {
+     "label": "Not sure",
+     "value": 100000002
+    }
+   ]
   }
  ],
  "tables": [
@@ -1522,6 +1540,74 @@
      "default": null,
      "behaviour": "Formula column: Last Completed Visit (or Date Added) + Visit Cycle",
      "notes": null
+    },
+    {
+     "displayName": "Perfect Placement",
+     "logicalName": "eca_placement",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "From the latest completed audit",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Perfect Visibility",
+     "logicalName": "eca_visibility",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "From the latest completed audit",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Consumption Activation Answer",
+     "logicalName": "eca_activation",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "From the latest completed audit",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Buys Red Bull From",
+     "logicalName": "eca_buysource",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "From the latest completed audit; prefills the next audit",
+     "choiceSet": "Buy Source"
+    },
+    {
+     "displayName": "Distributor",
+     "logicalName": "eca_distributor",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "From the latest completed audit",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Additional Visibility Tools",
+     "logicalName": "eca_vistools",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "From the latest completed audit, comma separated",
+     "maxLength": 400,
+     "format": "Text"
     }
    ],
    "alternateKey": [
@@ -2210,6 +2296,107 @@
      "notes": null,
      "min": null,
      "max": null
+    },
+    {
+     "displayName": "Perfect Placement",
+     "logicalName": "eca_placement",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Hi5: Red Bull is in the main fridge or where the purchase decision is made. Store audits only",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Perfect Visibility",
+     "logicalName": "eca_visibility",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Hi5: the Red Bull fridge placement in the store is easy to see. Store audits only",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Consumption Activation Answer",
+     "logicalName": "eca_activation",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Answer given. The KPI only counts when a Red Bull price is also recorded (see Hi5 Consumption Activation)",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Hi5 Availability",
+     "logicalName": "eca_hi5availability",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Set by app on submit: Energy Drink, a low-cal (Sugarfree or Zero) and an Edition are all ranged",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Hi5 Consumption Activation",
+     "logicalName": "eca_hi5activation",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Set by app on submit: activation answered Yes and Red Bull price > 0",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Hi5 Win vs Comp",
+     "logicalName": "eca_hi5win",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Set by app on submit: Red Bull front facings > the top competitor's, whole store",
+     "choiceSet": "Yes / No"
+    },
+    {
+     "displayName": "Buys Red Bull From",
+     "logicalName": "eca_buysource",
+     "kind": "choice",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Store audits only; a specific retail store is not recorded",
+     "choiceSet": "Buy Source"
+    },
+    {
+     "displayName": "Distributor",
+     "logicalName": "eca_distributor",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Distributor name when Buys Red Bull From = Distributor",
+     "maxLength": 200,
+     "format": "Text"
+    },
+    {
+     "displayName": "Additional Visibility Tools",
+     "logicalName": "eca_vistools",
+     "kind": "string",
+     "required": false,
+     "primary": false,
+     "default": null,
+     "behaviour": null,
+     "notes": "Comma separated, e.g. Can glorifier, Window decals. Not part of Hi5",
+     "maxLength": 400,
+     "format": "Text"
     }
    ],
    "alternateKey": [

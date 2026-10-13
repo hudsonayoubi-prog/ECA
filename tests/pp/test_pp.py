@@ -12,7 +12,7 @@ class T(unittest.TestCase):
 
     def test_counts_match_build_pack(self):
         self.assertEqual(len(self.schema['tables']), 21)
-        self.assertEqual(sum(len(t['columns']) for t in self.schema['tables']), 238)
+        self.assertEqual(sum(len(t['columns']) for t in self.schema['tables']), 253)  # 238 in the workbook + 15 in schema/extensions.json
 
     def test_committed_json_is_current(self):
         committed = json.load(open(os.path.join(ROOT, 'docs/power-platform/schema/eca-schema.json'), encoding='utf-8'))

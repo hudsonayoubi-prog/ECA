@@ -1,0 +1,24 @@
+{
+  "note": "Columns added after the build pack was issued (13 Oct 2026, Hi5 audit changes). Merged by scripts/pp_schema.py. Same type wording as the workbook. Delete an entry here once it is added to the workbook.",
+  "tables": {
+    "eca_auditvisit": [
+      {"name": "Perfect Placement", "logical": "eca_placement", "type": "Choice: Yes / No", "required": "Optional", "notes": "Hi5: Red Bull is in the main fridge or where the purchase decision is made. Store audits only"},
+      {"name": "Perfect Visibility", "logical": "eca_visibility", "type": "Choice: Yes / No", "required": "Optional", "notes": "Hi5: the Red Bull fridge placement in the store is easy to see. Store audits only"},
+      {"name": "Consumption Activation Answer", "logical": "eca_activation", "type": "Choice: Yes / No", "required": "Optional", "notes": "Answer given. The KPI only counts when a Red Bull price is also recorded (see Hi5 Consumption Activation)"},
+      {"name": "Hi5 Availability", "logical": "eca_hi5availability", "type": "Choice: Yes / No", "required": "Optional", "notes": "Set by app on submit: Energy Drink, a low-cal (Sugarfree or Zero) and an Edition are all ranged"},
+      {"name": "Hi5 Consumption Activation", "logical": "eca_hi5activation", "type": "Choice: Yes / No", "required": "Optional", "notes": "Set by app on submit: activation answered Yes and Red Bull price > 0"},
+      {"name": "Hi5 Win vs Comp", "logical": "eca_hi5win", "type": "Choice: Yes / No", "required": "Optional", "notes": "Set by app on submit: Red Bull front facings > the top competitor's, whole store"},
+      {"name": "Buys Red Bull From", "logical": "eca_buysource", "type": "Choice: Distributor / Retail / Not sure", "required": "Optional", "notes": "Store audits only; a specific retail store is not recorded"},
+      {"name": "Distributor", "logical": "eca_distributor", "type": "Text (200)", "required": "Optional", "notes": "Distributor name when Buys Red Bull From = Distributor"},
+      {"name": "Additional Visibility Tools", "logical": "eca_vistools", "type": "Text (400)", "required": "Optional", "notes": "Comma separated, e.g. Can glorifier, Window decals. Not part of Hi5"}
+    ],
+    "eca_location": [
+      {"name": "Perfect Placement", "logical": "eca_placement", "type": "Choice: Yes / No", "required": "Optional", "notes": "From the latest completed audit"},
+      {"name": "Perfect Visibility", "logical": "eca_visibility", "type": "Choice: Yes / No", "required": "Optional", "notes": "From the latest completed audit"},
+      {"name": "Consumption Activation Answer", "logical": "eca_activation", "type": "Choice: Yes / No", "required": "Optional", "notes": "From the latest completed audit"},
+      {"name": "Buys Red Bull From", "logical": "eca_buysource", "type": "Choice: Distributor / Retail / Not sure", "required": "Optional", "notes": "From the latest completed audit; prefills the next audit"},
+      {"name": "Distributor", "logical": "eca_distributor", "type": "Text (200)", "required": "Optional", "notes": "From the latest completed audit"},
+      {"name": "Additional Visibility Tools", "logical": "eca_vistools", "type": "Text (400)", "required": "Optional", "notes": "From the latest completed audit, comma separated"}
+    ]
+  }
+}

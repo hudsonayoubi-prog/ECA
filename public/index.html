@@ -340,6 +340,7 @@ const DEFAULT_REF = {
   vendingCompanies: ['AltaVend', 'Coke Vending', 'M&M', 'Melbourne Vending Co.', 'Provender', 'Snack Savy', 'Vendy', 'Other'],
   removalReasons: ['Closed permanently', 'No longer stocks Red Bull', 'Duplicate entry', 'Moved or renamed', 'Not accessible to staff', 'Other'],
   defaultCycle: 14, dueSoonDays: 3, reminderLeadDays: 3, notifyOverdue: true, dailySummaryTime: '18:00',
+  visTools: ['Can glorifier', 'Window decals', 'Ambient display'], // additional visibility tools (not part of Hi5)
   storeTypes: ['QSR', 'Vending', 'Student Bar', 'Convenience', 'NKA'].map(name => ({ name, active: true })),
   scoring: { weights: { ranging: 30, tdp: 25, editions: 20, pos: 15, coolers: 10 }, method: 'relative', targets: { tdp: 12, editions: 8, pos: 10, coolers: 2 }, minAudits: 3 },
   approvalMode: 'manager', adminPin: '2468',
@@ -536,7 +537,8 @@ function reducer(s, a) {
         rbFacings: f.status === 'Completed' ? +f.rbFacings || 0 : null, compFacings: f.status === 'Completed' ? Object.fromEntries(Object.entries(f.compFacings || {}).map(([c, n]) => [c, +n || 0])) : null,
         compDetail: f.status === 'Completed' ? normCompDetail(f) : null, compPos: f.status === 'Completed' ? compSum(normCompDetail(f), 'pos') : null, compCoolers: f.status === 'Completed' ? compSum(normCompDetail(f), 'coolers') : null,
         contactName: (f.contactName || '').trim() || null, contactRole: f.contactRole || null,
-        response: f.status === 'Completed' ? { ranging: f.ranging, price: f.price, comp: f.comp, compPrice: f.compPrice, pos: f.pos, cooler: f.cooler, bull: f.bull, channel: f.channel, classification: f.classification, vendCo: f.vendCo, machineId: f.machineId, vSku: f.vSku, vPrice: f.vPrice, mSku: f.mSku, mPrice: f.mPrice } : null,
+        response: f.status === 'Completed' ? { ranging: f.ranging, price: f.price, comp: f.comp, compPrice: f.compPrice, pos: f.pos, cooler: f.cooler, bull: f.bull, channel: f.channel, classification: f.classification, vendCo: f.vendCo, machineId: f.machineId, vSku: f.vSku, vPrice: f.vPrice, mSku: f.mSku, mPrice: f.mPrice, placement: yn01(f.placement), visibility: yn01(f.visibility), activation: yn01(f.activation), buySource: f.buySource || '', distributor: f.buySource === 'Distributor' ? (f.distributor || '').trim() : '', visTools: [...(f.visTools || [])] } : null,
+        hi5: f.status === 'Completed' && D_isQsr(s, f.loc) ? hi5Of(f) : null,
         submittedAt: new Date().toISOString(), submittedBy: s.me,
         staffId: (s.people.find(p => p.id === s.meId && p.name === f.staff) || s.people.find(p => p.name === f.staff))?.id || null,
       };
@@ -553,6 +555,7 @@ function reducer(s, a) {
           compPrice: f.compPrice === '' ? l.compPrice : +f.compPrice, pos: f.pos ?? l.pos, cooler: f.cooler ?? l.cooler, bull: f.bull || l.bull,
           channel: f.channel || l.channel, classification: f.classification || l.classification, vendCo: f.vendCo || l.vendCo, machineId: f.machineId || l.machineId,
           vSku: f.vSku || l.vSku, vPrice: f.vPrice || l.vPrice, mSku: f.mSku || l.mSku, mPrice: f.mPrice || l.mPrice, notes: f.nextStep || l.notes,
+          ...(l.type === 'Vending' ? {} : { placement: yn01(f.placement), visibility: yn01(f.visibility), activation: yn01(f.activation), buySource: f.buySource || '', distributor: f.buySource === 'Distributor' ? (f.distributor || '').trim() : '', visTools: [...(f.visTools || [])], hi5: hi5Of(f) }),
           rbFacings: +f.rbFacings || 0, compFacings: Object.fromEntries(Object.entries(f.compFacings || {}).map(([c, n]) => [c, +n || 0])), facingComps: Object.keys(f.compFacings || {}), compDetail: normCompDetail(f), facingsAt: f.date.slice(0, 10),
         });
       }
@@ -826,11 +829,26 @@ function withTopComp(f) { const cs = Object.entries(f.compFacings || {}); if (!c
   const [top] = cs.sort((a, b) => (+b[1] || 0) - (+a[1] || 0)); const pr = f.compDetail?.[top[0]]?.price; return { ...f, comp: top[0], compPrice: pr === undefined || pr === null ? '' : pr }; }
 const normCompDetail = f => Object.fromEntries(Object.keys(f.compFacings || {}).map(c => { const x = (f.compDetail || {})[c] || {}; const pr = x.price;
   return [c, { price: pr === undefined || pr === null || pr === '' ? null : +pr, pos: +x.pos || 0, coolers: +x.coolers || 0 }]; }));
+/* Hi5 KPIs (Education Channel, Catering). Each is 1 (met), 0 (not met) or null (not assessed).
+   Availability: the Key 3 are ranged: Energy Drink, a low-cal (Sugarfree or Zero) and an Edition. Listing is just ED, SF, Zero and Editions.
+   Perfect Placement and Perfect Visibility are answered Yes/No. Consumption Activation needs pricing. Win vs Comp: more Red Bull facings than the top competitor in the whole store. */
+const RB_KEYS = DEFAULT_REF.products.filter(p => !p.competitor).map(p => p.key);
+const HI5 = [['availability', 'Availability'], ['placement', 'Perfect Placement'], ['visibility', 'Perfect Visibility'], ['activation', 'Consumption Activation'], ['win', 'Win vs Comp']];
+const yn01 = v => (v === 1 || v === '1' ? 1 : v === 0 || v === '0' ? 0 : null);
+function hi5Of(f) {
+  const rg = f.ranging || {}; const asked = ['ed', 'sf', 'zero', 'editions'].some(k => yn01(rg[k]) !== null);
+  const availability = asked ? (yn01(rg.ed) === 1 && (yn01(rg.sf) === 1 || yn01(rg.zero) === 1) && yn01(rg.editions) === 1 ? 1 : 0) : null;
+  const act = yn01(f.activation); const activation = act === null ? null : act === 1 && f.price !== '' && f.price !== null && f.price !== undefined && +f.price > 0 ? 1 : 0;
+  const top = Math.max(0, ...Object.values(f.compFacings || {}).map(n => +n || 0)); const win = f.rbFacings === null || f.rbFacings === undefined || f.rbFacings === '' ? null : (+f.rbFacings || 0) > top ? 1 : 0;
+  return { availability, placement: yn01(f.placement), visibility: yn01(f.visibility), activation, win };
+}
+const BUY_SOURCES = ['Distributor', 'Retail', 'Not sure'];
 const compTotal = cf => Object.values(cf || {}).reduce((t, n) => t + (+n || 0), 0);
 const shelfShare = (rb, cf) => { const t = (+rb || 0) + compTotal(cf); return t ? (+rb || 0) / t : null; };
 const okPhone = v => /^[0-9 +()-]{8,20}$/.test(String(v).trim()) && String(v).replace(/\D/g, '').length >= 8;
 const okEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v).trim());
 const STEPS = ['Visit details', 'Ranging', 'Pricing & execution', 'Outcomes', 'Notes & follow-up', 'Review & submit'];
+const D_isQsr = (s, id) => (s.locations.find(l => l.id === id) || {}).type !== 'Vending';
 function nowLocal() { const n = new Date(); return `${isoOf(n)}T${pad(n.getHours())}:${pad(n.getMinutes())}`; }
 function blankForm(s, D, route) {
   const loc = route.loc ? D.locBy[route.loc] : null;
@@ -838,7 +856,8 @@ function blankForm(s, D, route) {
   const f = { draftId: 'D' + Date.now(), uni, campus: loc?.campus || '', loc: loc?.id || '', date: nowLocal(), staff: D.isAdmin ? '' : D.meP.name, status: 'Completed',
     ranging: {}, price: '', comp: '', compPrice: '', pos: null, cooler: null, posType: '', bull: '', channel: '', classification: '', vendCo: '', machineId: '', vSku: '', vPrice: '', mSku: '', mPrice: '',
     dpAdded: 0, dpLost: 0, editions: 0, flavours: '', posPlaced: 0, coolersIn: 0, coolersOut: 0, notes: '', nextStep: '', followUp: '', photos: [], issue: false, issueNote: '',
-    rbFacings: 0, compFacings: {}, compDetail: {}, contactName: '', contactRole: '', contactPhone: '', contactEmail: '' };
+    rbFacings: 0, compFacings: {}, compDetail: {}, contactName: '', contactRole: '', contactPhone: '', contactEmail: '',
+    placement: null, visibility: null, activation: null, buySource: '', distributor: '', visTools: [] };
   return loc ? prefill(f, loc, D) : f;
 }
 function prefill(f, l, D) {
@@ -846,7 +865,7 @@ function prefill(f, l, D) {
   const comps = l.facingComps || (l.compFacings ? Object.keys(l.compFacings) : (l.topComp && l.topComp !== 'None' ? [l.topComp] : []));
   return { ...f, contactName: l.contactName || '', contactRole: l.contactRole || '', contactPhone: seeAll ? l.contactPhone || '' : '', contactEmail: seeAll ? l.contactEmail || '' : '',
     _onFile: { phone: !!l.contactPhone, email: !!l.contactEmail }, rbFacings: 0, compFacings: Object.fromEntries(comps.map(c => [c, 0])),
-    compDetail: Object.fromEntries(comps.map(c => { const x = (l.compDetail || {})[c] || {}; return [c, { price: x.price ?? (c === l.topComp && l.compPrice ? l.compPrice : ''), pos: +x.pos || 0, coolers: +x.coolers || 0 }]; })), uni: l.uni, campus: l.campus, loc: l.id, ranging: { ...(l.ranging || {}) }, price: l.price ?? '', comp: l.topComp || '', compPrice: l.compPrice ?? '', pos: l.pos ?? null, cooler: l.cooler ?? null,
+    compDetail: Object.fromEntries(comps.map(c => { const x = (l.compDetail || {})[c] || {}; return [c, { price: x.price ?? (c === l.topComp && l.compPrice ? l.compPrice : ''), pos: +x.pos || 0, coolers: +x.coolers || 0 }]; })), uni: l.uni, campus: l.campus, loc: l.id, ranging: Object.fromEntries(RB_KEYS.map(k => [k, (l.ranging || {})[k]]).filter(([, v]) => v !== undefined)), placement: l.placement ?? null, visibility: l.visibility ?? null, activation: l.activation ?? null, buySource: l.buySource || '', distributor: l.distributor || '', visTools: [...(l.visTools || [])], price: l.price ?? '', comp: l.topComp || '', compPrice: l.compPrice ?? '', pos: l.pos ?? null, cooler: l.cooler ?? null,
     bull: l.bull || '', channel: l.channel || '', classification: l.classification || '', vendCo: l.vendCo || '', machineId: l.machineId || '', vSku: l.vSku ?? '', vPrice: l.vPrice ?? '', mSku: l.mSku ?? '', mPrice: l.mPrice ?? '', _prefilled: true };
 }
 function validate(f, s, D) {
@@ -861,7 +880,7 @@ function validate(f, s, D) {
   if ((f.contactPhone || '').trim() && !okPhone(f.contactPhone)) e.contactPhone = [0, 'Enter a phone number with at least 8 digits, e.g. 0412 345 678.'];
   if ((f.contactEmail || '').trim() && !okEmail(f.contactEmail)) e.contactEmail = [0, 'Enter a valid email address.'];
   if (f.status === 'Completed' && loc) {
-    const prods = s.ref.products.filter(p => (loc.type === 'Vending' ? p.vending : p.qsr));
+    const prods = s.ref.products.filter(p => !p.competitor && (loc.type === 'Vending' ? p.vending : p.qsr));
     const missing = prods.filter(p => f.ranging[p.key] !== 0 && f.ranging[p.key] !== 1);
     if (missing.length) e.ranging = [1, `Answer Yes or No for ${missing.map(p => p.label).join(', ')}.`];
     if (f.price !== '' && !(+f.price > 0 && +f.price < 20)) e.price = [2, 'Enter a price between $0.01 and $20, or leave it blank.'];
@@ -869,6 +888,14 @@ function validate(f, s, D) {
     if (badComp.length) e.compPrice = [2, `Check the price for ${badComp.join(', ')}: between $0.01 and $20, or leave it blank.`];
     if (loc.type === 'QSR' && (f.pos !== 0 && f.pos !== 1)) e.pos = [2, 'Is POS present?'];
     if (loc.type === 'QSR' && (f.cooler !== 0 && f.cooler !== 1)) e.cooler = [2, 'Is a cooler present?'];
+    if (loc.type === 'QSR') {
+      if (yn01(f.placement) === null) e.placement = [1, 'Answer Perfect Placement: is Red Bull in the main fridge?'];
+      if (yn01(f.visibility) === null) e.visibility = [1, 'Answer Perfect Visibility: is the Red Bull fridge easy to see?'];
+      if (yn01(f.activation) === null) e.activation = [1, 'Answer Consumption Activation.'];
+      else if (yn01(f.activation) === 1 && !(+f.price > 0)) e.activationPrice = [2, 'Consumption Activation needs pricing. Enter the Red Bull price.'];
+      if (!BUY_SOURCES.includes(f.buySource)) e.buySource = [2, 'Say where they buy Red Bull from: distributor, retail or not sure.'];
+      else if (f.buySource === 'Distributor' && !(f.distributor || '').trim()) e.distributor = [2, 'Enter the distributor name.'];
+    }
     if (+f.posPlaced > 0 && !f.posType) e.posType = [3, 'Choose the POS type you placed.'];
   }
   if (f.followUp && f.followUp < f.date.slice(0, 10)) e.followUp = [4, 'Follow-up must be on or after the visit date.'];
@@ -907,7 +934,7 @@ function Audit() {
   const locOpts = D.locs.filter(l => l.uni === f.uni && (l.locStatus === 'Active' || l.id === f.loc) && (!f.campus || l.campus === f.campus)).sort((a, b) => a.type.localeCompare(b.type) || a.name.localeCompare(b.name));
   const staffOpts = f.uni ? [...D.auditorsFor(D.uniBy[f.uni]?.state), ...(D.isAdmin ? [D.meP.name] : [])] : [];
   const staffList = f.staff && !staffOpts.includes(f.staff) ? [...staffOpts, f.staff] : staffOpts;
-  const prods = s.ref.products.filter(p => (isV ? p.vending : p.qsr));
+  const prods = s.ref.products.filter(p => !p.competitor && (isV ? p.vending : p.qsr)); // listing is Red Bull only; competitors are recorded with facings
   const needsAudit = f.status === 'Completed';
   const saveDraft = () => { const { photos, ...rest } = f; d({ type: 'saveDraft', draft: rest }); setDirty(false); d({ type: 'toast', msg: 'Draft saved' }); };
   const submit = () => {
@@ -924,7 +951,12 @@ function Audit() {
   const onPhotos = e => { const files = [...e.target.files].slice(0, 6); Promise.all(files.map(file => new Promise(res => { const rd = new FileReader(); rd.onload = () => res(rd.result); rd.readAsDataURL(file); }))).then(urls => set('photos', [...f.photos, ...urls].slice(0, 6))); };
   const YN = ({ k, label, comp }) => html`<div class="field" key=${k}><span class="label" id=${'yn-' + k}>${label}${comp ? html`<span class="xs muted"> · competitor</span>` : null}</span>
     <${Seg} big label=${label} value=${f.ranging[k]} onChange=${v => set('ranging', { ...f.ranging, [k]: v })} options=${[[1, 'Yes', 'yes'], [0, 'No', 'no']]} /></div>`;
-  const YNField = ({ k, label }) => html`<div class="field"><span class="label">${label}</span><${Seg} big label=${label} value=${f[k]} onChange=${v => set(k, v)} options=${[[1, 'Yes', 'yes'], [0, 'No', 'no']]} />${E(k) ? html`<span class="err">${E(k)}</span>` : null}</div>`;
+  const YNField = ({ k, label, id, hint }) => html`<div class="field"><span class="label" id=${id}>${label}</span><${Seg} big label=${label} value=${f[k]} onChange=${v => set(k, v)} options=${[[1, 'Yes', 'yes'], [0, 'No', 'no']]} />${hint ? html`<span class="hint">${hint}</span>` : null}${E(k) ? html`<span class="err">${E(k)}</span>` : null}</div>`;
+  const hi5 = needsAudit && loc && !isV ? hi5Of(f) : null;
+  const hi5Chip = (k, label) => { const v = hi5?.[k]; return html`<span key=${k} class=${'chip ' + (v === 1 ? 'good' : v === 0 ? 'plain' : 'muted')}>${v === 1 ? html`<${Icon} n="check" s=${12} w=${2.6} />` : null}${label}: ${v === 1 ? 'Met' : v === 0 ? 'Not met' : 'Not assessed'}</span>`; };
+  const tools = [...new Set([...(s.ref.visTools || []), ...(f.visTools || [])])];
+  const toggleTool = t => set('visTools', (f.visTools || []).includes(t) ? f.visTools.filter(x => x !== t) : [...(f.visTools || []), t]);
+  const [newTool, setNewTool] = useState('');
 
   const body = [
     html`<div class="form-grid">
@@ -951,12 +983,19 @@ function Audit() {
     !needsAudit ? html`<div class="banner info"><${Icon} n="clock" s=${18} /><div>Ranging isn’t recorded for ${f.status.toLowerCase()} visits. Skip to notes.</div></div>` : !loc ? html`<div class="banner warn">Choose a location in step 1 first.</div>` : html`
       ${f._prefilled ? html`<div class="banner info"><${Icon} n="copy" s=${18} /><div>Answers start from the last audit. Change anything that’s different today.</div></div>` : null}
       ${E('ranging') ? html`<div class="banner bad" role="alert"><${Icon} n="alert" s=${18} /><div>${E('ranging')}</div></div>` : null}
-      <h3>Red Bull</h3><div class="form-grid">${prods.filter(p => !p.competitor).map(p => YN({ k: p.key, label: p.label }))}</div>
-      <h3>Competitors</h3><div class="form-grid">${prods.filter(p => p.competitor).map(p => YN({ k: p.key, label: p.label, comp: true }))}</div>`,
+      <div><h3>Listing</h3><p class="xs muted" style="margin:2px 0 0">Which Red Bull products are on sale. Editions is one button: Yes if any Edition is listed. Competitors are recorded with front facings in step 3.</p></div>
+      <div class="form-grid">${prods.map(p => YN({ k: p.key, label: p.label }))}</div>
+      ${!isV ? html`<div style="border-top:1px solid var(--line);padding-top:12px"><h3>Hi5 KPIs</h3><p class="xs muted" style="margin:2px 0 0">Availability and Win vs Comp work themselves out from your answers.</p></div>
+        <div class="card flat" style="padding:12px 14px;display:flex;flex-direction:column;gap:6px"><span class="label">Availability: the Key 3</span><div class="chips">${hi5Chip('availability', 'Availability')}</div>
+          <span class="xs muted">Met when Energy Drink, a low-cal (Sugarfree or Zero) and an Edition are all listed.</span></div>
+        <div class="form-grid">
+          ${YNField({ k: 'placement', label: 'Perfect Placement', id: 'yn-placement', hint: 'Red Bull is in the main fridge, or where the purchase decision is made (e.g. grab & go fridge, beverage fridge near the till).' })}
+          ${YNField({ k: 'visibility', label: 'Perfect Visibility', id: 'yn-visibility', hint: 'The Red Bull fridge placement in the store is easy for customers to see.' })}
+          ${YNField({ k: 'activation', label: 'Consumption Activation', id: 'yn-activation', hint: 'Activation in store, e.g. price tags, menu board or wobbler. It only counts if pricing is shown: enter the Red Bull price in step 3.' })}</div>` : null}`,
     !needsAudit ? html`<div class="banner info"><${Icon} n="clock" s=${18} /><div>Not needed for ${f.status.toLowerCase()} visits.</div></div>` : !loc ? html`<div class="banner warn">Choose a location in step 1 first.</div>` : html`<div class="form-grid">
       <div class="span2" style="display:flex;flex-direction:column;gap:12px"><div><h3>Front facings</h3><p class="xs muted" style="margin:2px 0 0">Count the cans facing out on the shelf or in the fridge${isV ? ' (columns or spirals for vending)' : ''}.</p></div>
         <div class="form-grid"><${Stepper} id="a-rbf" label="Red Bull front facings (DPs)" value=${f.rbFacings} onChange=${v => set('rbFacings', v)} />
-          <div class="card flat" style="padding:12px 14px;display:flex;flex-direction:column;justify-content:center;gap:2px"><span class="label">Red Bull share of shelf</span><span class="net num">${shelfShare(f.rbFacings, f.compFacings) === null ? '—' : pct0(shelfShare(f.rbFacings, f.compFacings))}</span><span class="xs muted">${+f.rbFacings || 0} Red Bull · ${compTotal(f.compFacings)} competitor</span></div></div>
+          <div class="card flat" style="padding:12px 14px;display:flex;flex-direction:column;justify-content:center;gap:2px"><span class="label">Red Bull share of shelf</span><span class="net num">${shelfShare(f.rbFacings, f.compFacings) === null ? '—' : pct0(shelfShare(f.rbFacings, f.compFacings))}</span><span class="xs muted">${+f.rbFacings || 0} Red Bull · ${compTotal(f.compFacings)} competitor</span>${!isV ? html`<span style="margin-top:4px">${hi5Chip('win', 'Win vs Comp')}</span><span class="xs muted">More Red Bull facings than the top competitor in the whole store.</span>` : null}</div></div>
         <div class="field"><span class="label" id="a-cf-l">Competitors in ${isV ? 'the machine' : 'store'}</span><div class="chips" role="group" aria-labelledby="a-cf-l">${[...new Set([...facingComps(s), ...Object.keys(f.compFacings || {})])].map(c => { const on = c in (f.compFacings || {});
           return html`<button type="button" key=${c} class="fchip" aria-pressed=${String(on)} onClick=${() => { const n = { ...(f.compFacings || {}) }; const dt = { ...(f.compDetail || {}) }; if (on) { delete n[c]; delete dt[c]; } else { n[c] = 0; dt[c] = dt[c] || { price: '', pos: 0, coolers: 0 }; } setDirty(true); setF(x => ({ ...x, compFacings: n, compDetail: dt })); }}>${on ? '✓ ' : '+ '}${c}</button>`; })}</div>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px"><input class="input" id="a-newc" style="flex:1 1 180px;max-width:280px" placeholder="Another brand, e.g. Prime" value=${newComp} onInput=${e => setNewComp(e.target.value)} onKeyDown=${e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.nextSibling.click(); } }} />
@@ -978,6 +1017,14 @@ function Audit() {
         <${Text} id="a-msku" label="Monster SKU count" inputMode="numeric" value=${f.mSku} onChange=${v => set('mSku', v)} /><${Text} id="a-mp" label="Monster price ($)" type="number" step="0.01" value=${f.mPrice} onChange=${v => set('mPrice', v)} />`
       : html`
         ${YNField({ k: 'pos', label: 'Red Bull POS present' })}${YNField({ k: 'cooler', label: 'Red Bull cooler present' })}
+        ${E('activationPrice') ? html`<div class="span2 banner bad" role="alert"><${Icon} n="alert" s=${18} /><div>${E('activationPrice')}</div></div>` : null}
+        <div class="span2 field"><span class="label" id="a-src-l">Where do they buy Red Bull from?</span><${Seg} label="Where they buy Red Bull" value=${f.buySource} onChange=${v => set('buySource', v)} options=${BUY_SOURCES} />
+          <span class="hint">Distributor, or retail. A specific retail store isn’t needed.</span>${E('buySource') ? html`<span class="err">${E('buySource')}</span>` : null}</div>
+        ${f.buySource === 'Distributor' ? html`<div class="span2"><${Text} id="a-dist" label="Distributor name" value=${f.distributor} onChange=${v => set('distributor', v)} err=${E('distributor')} placeholder="e.g. the distributor’s trading name" autoComplete="off" /></div>` : null}
+        <div class="span2 field"><span class="label" id="a-vt-l">Additional visibility tools</span><div class="chips" role="group" aria-labelledby="a-vt-l">${tools.map(t => html`<button type="button" key=${t} class="fchip" aria-pressed=${String((f.visTools || []).includes(t))} onClick=${() => toggleTool(t)}>${(f.visTools || []).includes(t) ? '✓ ' : '+ '}${t}</button>`)}</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px"><input class="input" id="a-newtool" style="flex:1 1 180px;max-width:280px" placeholder="Another tool, e.g. A-frame" value=${newTool} onInput=${e => setNewTool(e.target.value)} onKeyDown=${e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.nextSibling.click(); } }} />
+            <button type="button" class="btn sm" onClick=${() => { const t = newTool.trim().replace(/\s+/g, ' '); if (!t) return; const hit = tools.find(x => x.toLowerCase() === t.toLowerCase()) || t; if (!(f.visTools || []).includes(hit)) set('visTools', [...(f.visTools || []), hit]); setNewTool(''); }}><${Icon} n="plus" s=${14} />Add tool</button></div>
+          <span class="hint">Not part of Hi5 but worth recording: can glorifier, window decals, ambient display and so on.</span></div>
         <${Select} id="a-bull" label="Bullring or Bull’s Eye" value=${f.bull} onChange=${v => set('bull', v)} options=${[['', 'Choose…'], ...s.ref.bull.map(x => [x, x === 'EYE' ? 'Bull’s Eye (EYE)' : 'Bullring (RING)'])]} />
         <${Select} id="a-ch" label="Channel" value=${f.channel} onChange=${v => set('channel', v)} options=${[['', 'Choose…'], ...s.ref.channels.map(x => [x, x === 'OnP' ? 'On-premise (OnP)' : 'Off-premise (OffP)'])]} />
         <${Select} id="a-cl" label="Classification" value=${f.classification} onChange=${v => set('classification', v)} options=${[['', 'Choose…'], ...s.ref.classifications.map(x => [x, x])]} />`}
@@ -1006,7 +1053,9 @@ function Audit() {
         <div style="margin-top:8px"><${Text} id="a-reason" label="Reason for correction" value=${f.reason || ''} onChange=${v => set('reason', v)} err=${tried && !(f.reason || '').trim() ? 'Give a reason for the correction.' : null} /></div></div></div>` : null}
       <div class="grid g2">
         <div class="card flat"><h3 style="margin-bottom:8px">Visit</h3><dl class="kv"><dt>Location</dt><dd>${loc ? `${loc.name} (${loc.id})` : '—'}</dd><dt>University</dt><dd>${D.uniBy[f.uni]?.name || '—'}</dd><dt>When</dt><dd>${f.date ? fmtDate(f.date.slice(0, 10)) + ' ' + f.date.slice(11) : '—'}</dd><dt>Staff</dt><dd>${f.staff || '—'}</dd><dt>Status</dt><dd>${f.status}</dd><dt>Contact</dt><dd>${f.contactName ? `${f.contactName}${f.contactRole ? ' · ' + f.contactRole : ''}` : '—'}${f.contactPhone ? html`<br />${f.contactPhone}` : null}${f.contactEmail ? html`<br />${f.contactEmail}` : null}</dd></dl></div>
-        ${needsAudit && loc ? html`<div class="card flat"><h3 style="margin-bottom:8px">Ranging</h3><div class="chips">${prods.map(p => html`<span key=${p.key} class=${'chip ' + (f.ranging[p.key] === 1 ? 'good' : f.ranging[p.key] === 0 ? 'plain' : 'bad')}>${p.short}: ${f.ranging[p.key] === 1 ? 'Yes' : f.ranging[p.key] === 0 ? 'No' : 'Missing'}</span>`)}</div></div>
+        ${needsAudit && loc ? html`<div class="card flat"><h3 style="margin-bottom:8px">Listing</h3><div class="chips">${prods.map(p => html`<span key=${p.key} class=${'chip ' + (f.ranging[p.key] === 1 ? 'good' : f.ranging[p.key] === 0 ? 'plain' : 'bad')}>${p.short}: ${f.ranging[p.key] === 1 ? 'Yes' : f.ranging[p.key] === 0 ? 'No' : 'Missing'}</span>`)}</div></div>
+        ${hi5 ? html`<div class="card flat"><h3 style="margin-bottom:8px">Hi5 KPIs</h3><div class="chips">${HI5.map(([k, l]) => hi5Chip(k, l))}</div>
+          <dl class="kv" style="margin-top:10px"><dt>Buys Red Bull from</dt><dd>${f.buySource ? f.buySource + (f.buySource === 'Distributor' && f.distributor ? ': ' + f.distributor : '') : '—'}</dd><dt>Visibility tools</dt><dd>${(f.visTools || []).length ? f.visTools.join(', ') : 'None recorded'}</dd></dl></div>` : null}
         <div class="card flat"><h3 style="margin-bottom:8px">Pricing & execution</h3><dl class="kv"><dt>Red Bull facings</dt><dd>${+f.rbFacings || 0}</dd><dt>Competitors</dt><dd>${Object.keys(f.compFacings || {}).length ? compDetailText(f.compFacings, f.compDetail, isV).map((t, i) => html`<div key=${i}>${t}</div>`) : 'None recorded'}</dd><dt>Share of shelf</dt><dd>${shelfShare(f.rbFacings, f.compFacings) === null ? '—' : pct0(shelfShare(f.rbFacings, f.compFacings))}</dd><dt>Red Bull price</dt><dd>${money(f.price)}</dd>${isV ? html`<dt>Machine</dt><dd>${f.vendCo || '—'} · ${f.machineId || '—'}</dd><dt>V / Monster SKUs</dt><dd>${f.vSku || '—'} / ${f.mSku || '—'}</dd>` : html`<dt>Red Bull POS / cooler</dt><dd>${f.pos === 1 ? 'Yes' : f.pos === 0 ? 'No' : '—'} / ${f.cooler === 1 ? 'Yes' : f.cooler === 0 ? 'No' : '—'}</dd>`}</dl></div>
         <div class="card flat"><h3 style="margin-bottom:8px">Outcomes</h3><dl class="kv"><dt>Net DPs</dt><dd class="num">${signed((+f.dpAdded || 0) - (+f.dpLost || 0))} (+${+f.dpAdded || 0} / −${+f.dpLost || 0})</dd><dt>Editions sold in</dt><dd>${+f.editions || 0}${f.flavours ? ' · ' + f.flavours : ''}</dd><dt>POS placed</dt><dd>${+f.posPlaced || 0}${f.posType ? ' · ' + f.posType : ''}</dd>${!isV ? html`<dt>Net coolers</dt><dd>${signed((+f.coolersIn || 0) - (+f.coolersOut || 0))}</dd>` : null}</dl></div>` : null}
         <div class="card flat"><h3 style="margin-bottom:8px">Follow-up</h3><dl class="kv"><dt>Next step</dt><dd>${f.nextStep || '—'}</dd><dt>Follow-up</dt><dd>${fmtDate(f.followUp)}</dd><dt>Photos</dt><dd>${f.photos.length}</dd><dt>Issue</dt><dd>${f.issue ? f.issueNote || 'Flagged' : 'None'}</dd></dl></div>
@@ -1500,6 +1549,8 @@ function LocationDetail() {
         : D.can.seeContacts && l.contact ? html`${dl([['Contact', l.contact]])}<p class="xs muted" style="margin:8px 0 0">From the workbook (masked). Updated at the next audit.</p>` : html`<p class="small muted" style="margin:0">Not recorded yet. Added at the next audit.</p>`}</div>` : null}</section>
     <section class="card"><h2 class="section-t">Product ranging</h2><div class="rgrid">${prods.map(p => { const v = l.ranging?.[p.key]; return html`<div class="rg" key=${p.key}><span>${p.label}</span>
       ${v === 1 ? html`<span class="chip good"><${Icon} n="check" s=${12} w=${2.6} />Yes</span>` : v === 0 ? html`<span class="chip plain">No</span>` : html`<span class="chip muted">Not checked</span>`}</div>`; })}</div></section></div>
+  ${!isV && l.hi5 ? html`<section class="card"><h2 class="section-t">Hi5 KPIs · latest audit</h2><div class="chips">${HI5.map(([k, lab]) => { const v = l.hi5[k]; return html`<span key=${k} class=${'chip ' + (v === 1 ? 'good' : v === 0 ? 'plain' : 'muted')}>${v === 1 ? html`<${Icon} n="check" s=${12} w=${2.6} />` : null}${lab}: ${v === 1 ? 'Met' : v === 0 ? 'Not met' : 'Not assessed'}</span>`; })}</div>
+    ${dl([['Buys Red Bull from', l.buySource ? l.buySource + (l.buySource === 'Distributor' && l.distributor ? ': ' + l.distributor : '') : null], ['Additional visibility tools', (l.visTools || []).length ? l.visTools.join(', ') : null]])}</section>` : null}
   <div class="grid g2">
     ${!isV ? html`<section class="card"><h2 class="section-t">Execution</h2>${dl([['Red Bull front facings', l.rbFacings ?? null], ['Competitors', l.compFacings && Object.keys(l.compFacings).length ? html`${compDetailText(l.compFacings, l.compDetail, l.type === 'Vending').map((t, i) => html`<div key=${i}>${t}</div>`)}` : null], ['Share of shelf', l.rbFacings !== undefined && shelfShare(l.rbFacings, l.compFacings) !== null ? pct0(shelfShare(l.rbFacings, l.compFacings)) + (l.facingsAt ? ` (${fmtShort(l.facingsAt)})` : '') : null], ['POS present', yn(l.pos)], ['Cooler present', yn(l.cooler)], ['Red Bull price', money(l.price)], ['Bullring / Bull’s Eye', l.bull]])}</section>`
       : html`<section class="card"><h2 class="section-t">Vending details</h2>${dl([['Red Bull front facings', l.rbFacings ?? null], ['Competitors', l.compFacings && Object.keys(l.compFacings).length ? html`${compDetailText(l.compFacings, l.compDetail, l.type === 'Vending').map((t, i) => html`<div key=${i}>${t}</div>`)}` : null], ['Vending company', l.vendCo], ['Machine ID', l.machineId], ['Red Bull price', money(l.price)], ['V SKUs', l.vSku], ['V price', money(l.vPrice)], ['Monster SKUs', l.mSku], ['Monster price', money(l.mPrice)]])}</section>`}
@@ -2233,7 +2284,7 @@ function ChangeMyPin() {
 }
 function Settings() {
   const { s, d, D } = useApp();
-  const [confirmReset, setConfirmReset] = useState(false); const [newPos, setNewPos] = useState(''); const [newComp, setNewComp] = useState(''); const [ns, setNs] = useState({ code: '', name: '' });
+  const [confirmReset, setConfirmReset] = useState(false); const [newPos, setNewPos] = useState(''); const [newComp, setNewComp] = useState(''); const [newTool, setNewTool] = useState(''); const [ns, setNs] = useState({ code: '', name: '' });
   const listEditor = (label, key, val, setVal) => html`<div class="field"><span class="label">${label}</span><div class="chips">${s.ref[key].map(x => html`<span key=${x} class="chip plain">${x}${D.isAdmin ? html`<button class="btn ghost sm" style="min-height:0;padding:0 0 0 4px" aria-label=${'Remove ' + x} onClick=${() => d({ type: 'ref', ref: { [key]: s.ref[key].filter(y => y !== x) } })}><${Icon} n="x" s=${12} /></button>` : null}</span>`)}</div>
     ${D.isAdmin ? html`<div style="display:flex;gap:8px;margin-top:6px"><input class="input" aria-label=${'Add to ' + label} value=${val} onInput=${e => setVal(e.target.value)} placeholder="Add a value" /><button class="btn" onClick=${() => { if (val.trim() && !s.ref[key].includes(val.trim())) d({ type: 'ref', ref: { [key]: [...s.ref[key], val.trim()] } }); setVal(''); }}>Add</button></div>` : null}</div>`;
   const groups = ['admin', 'manager', 'marketeer'].map(r => [ROLE_LABEL[r] + 's', s.people.filter(p => p.role === r && p.status === 'Active').sort((a, b) => a.name.localeCompare(b.name))]);
@@ -2254,7 +2305,7 @@ function Settings() {
     <${Text} id="set-lead" label="Remind this many days before due" type="number" value=${s.ref.reminderLeadDays} onChange=${v => d({ type: 'ref', ref: { reminderLeadDays: Math.max(0, +v || 0) } })} />
     <${Text} id="set-ds" label="Daily summary send time" type="time" value=${s.ref.dailySummaryTime} onChange=${v => d({ type: 'ref', ref: { dailySummaryTime: v } })} /></div>`}</section>
   <section class="card"><h2 class="section-t">Reference values</h2>${!D.isAdmin ? html`<p class="small muted" style="margin:0 0 10px">Administrators can edit these.</p>` : null}
-    <div style="display:flex;flex-direction:column;gap:14px">${listEditor('POS types', 'posTypes', newPos, setNewPos)}${listEditor('Competitors', 'competitors', newComp, setNewComp)}</div></section>
+    <div style="display:flex;flex-direction:column;gap:14px">${listEditor('POS types', 'posTypes', newPos, setNewPos)}${listEditor('Competitors', 'competitors', newComp, setNewComp)}${listEditor('Additional visibility tools', 'visTools', newTool, setNewTool)}</div></section>
   <${StoreTypesCard} />
   <${ScoringCard} />
   ${D.isAdmin ? html`<${ResultsSettingsCard} /><${AuditHistory} /><${LoginLog} />` : null}

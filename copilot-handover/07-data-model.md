@@ -37,7 +37,8 @@ All records are plain JSON. Keys used for shared storage are in brackets. Option
 | Contact | `contactName`, `contactRole` (phone/email are stored on the location only) |
 | Outcomes | `dpAdded`, `dpLost`, `editions`, `flavours`, `posPlaced`, `posType`, `coolersIn`, `coolersOut` |
 | Facings (Completed only, else null) | `rbFacings`, `compFacings` {brand: int}, `compDetail` {brand: {price, pos, coolers}}, `compPos`, `compCoolers` |
-| Response (Completed only) | `response` = { `ranging`, `price`, `comp` (derived top competitor), `compPrice`, `pos`, `cooler`, `bull`, `channel`, `classification`, `vendCo`, `machineId`, `vSku`, `vPrice`, `mSku`, `mPrice` } |
+| Response (Completed only) | `response` = { `ranging`, `price`, `comp` (derived top competitor), `compPrice`, `pos`, `cooler`, `bull`, `channel`, `classification`, `vendCo`, `machineId`, `vSku`, `vPrice`, `mSku`, `mPrice`, and for store audits `placement`, `visibility`, `activation` (1/0), `buySource` ('Distributor' \| 'Retail' \| 'Not sure'), `distributor`, `visTools` [] } |
+| Hi5 (Completed store audits, else null) | `hi5` = { `availability`, `placement`, `visibility`, `activation`, `win` }, each 1, 0 or null. Availability = ED and (SF or Zero) and Editions ranged; activation = answered Yes and Red Bull price > 0; win = Red Bull facings > top competitor facings |
 | Notes | `notes`, `nextStep`, `followUp`, `issue` (text or null), `photos` (count) |
 | Approval | `approval` ('Pending' \| 'Approved' \| 'Rejected' \| 'Duplicate'; absent = Approved), `approvedBy`, `approvedAt`, `rejectReason`, `dupOf` |
 | Audit | `submittedAt`, `submittedBy`, `imported` (workbook history), `demo` (prototype demo only). A correction reason for edits in a finalised month is written to the audit log (category Correction), not the visit |
@@ -87,6 +88,8 @@ All visit fields plus `uni`, `campus`, `loc`, `date` (datetime-local), `ranging`
 
 Generated from `project/docs/power-platform/ECA_Dataverse_Build_Pack.xlsx` ("Tables & columns"). Publisher prefix `eca_`. Choice sets are on the "Choices" sheet; import-ready data sheets 1–13 follow the import order on "Read me".
 
+
+> **Added 13 Oct 2026 (Hi5):** nine columns on Audit Visit and six on Location, listed in `docs/power-platform/schema/extensions.json` and merged by `scripts/pp_schema.py` (253 columns in total). They hold the Hi5 answers and results, where Red Bull is bought from, the distributor and the additional visibility tools.
 
 ### State (`eca_state`)
 One row per state. Business Unit of the same name owns the state’s records.

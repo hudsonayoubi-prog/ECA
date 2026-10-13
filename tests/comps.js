@@ -1,4 +1,4 @@
-const { chromium } = require('playwright'); const { signIn } = require('./lib-login');
+const { chromium } = require('playwright'); const { signIn } = require('./lib-login'); const { answerHi5Step3 } = require('./lib-audit');
 (async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
  const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type()==='error' && !/key/.test(m.text())) errs.push(m.text()); });
  await p.goto('file://' + process.cwd() + '/index.html'); await p.waitForTimeout(700);
@@ -11,7 +11,7 @@ const { chromium } = require('playwright'); const { signIn } = require('./lib-lo
    await p.fill('#a-cn', 'Sam Store');
    await p.locator('.stepper button').nth(1).click(); await p.waitForTimeout(150);
    for (const fld of await p.locator('.field').filter({ has: p.locator('[id^="yn-"]') }).all()) { const sel = await fld.locator('button[aria-pressed="true"]').count(); if (!sel) await fld.locator('button', { hasText: 'Yes' }).click(); }
-   await p.locator('.stepper button').nth(2).click(); await p.waitForTimeout(150);
+   await p.locator('.stepper button').nth(2).click(); await p.waitForTimeout(150); await answerHi5Step3(p);
  };
  // QSR
  await audit('MON', 'MON-004');

@@ -5,7 +5,7 @@ set -e
 cd "$(dirname "$0")/.." && python3 scripts/build.py
 cd tests && mkdir -p out
 fail=0
-for t in eca signin signinpin pin shared roll st milla step1 facings comps tafe wa logo monthly exec export permissions; do
+for t in eca signin signinpin pin hi5 shared roll st milla step1 facings comps tafe wa logo monthly exec export permissions; do
   printf '%-10s ' "$t"
   if out=$(node "$t.js" 2>&1) && echo "$out" | tail -1 | grep -q "NO ERRORS"; then echo PASS; else echo FAIL; echo "$out" | tail -5; fail=1; fi
 done

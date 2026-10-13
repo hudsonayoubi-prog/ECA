@@ -1,4 +1,4 @@
-const { chromium } = require('playwright'); const { signIn } = require('./lib-login');
+const { chromium } = require('playwright'); const { signIn } = require('./lib-login'); const { answerHi5Step2, answerHi5Step3 } = require('./lib-audit');
 (async () => { const b = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined, headless: !process.env.CHROMIUM_PATH, args: process.env.CHROMIUM_PATH ? ['--headless=new', '--no-sandbox'] : ['--no-sandbox'] });
  const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage(); const errs=[]; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => { if (m.type()==='error' && !/key/.test(m.text())) errs.push(m.text()); });
  await p.goto('file://' + process.cwd() + '/index.html'); await p.waitForTimeout(700);
@@ -18,12 +18,13 @@ const { chromium } = require('playwright'); const { signIn } = require('./lib-lo
  await p.locator('.stepper button').first().click(); await p.waitForTimeout(150);
  await p.fill('#a-cn', 'Frank Grafali'); await p.selectOption('#a-cr', 'Owner'); await p.fill('#a-cph', '0412 345 678'); await p.fill('#a-cem', 'frank@grafalis.com.au');
  await p.locator('.stepper button').nth(1).click(); await p.waitForTimeout(200);
- const segs = p.locator('[aria-labelledby], .seg'); await p.locator('.field', { has: p.locator('#yn-zero') }).locator('button', { hasText: 'Yes' }).click();
+ const segs = p.locator('[aria-labelledby], .seg'); await p.locator('.field', { has: p.locator('#yn-zero') }).locator('button', { hasText: 'Yes' }).click(); await answerHi5Step2(p);
  await p.locator('.stepper button').nth(2).click(); await p.waitForTimeout(200);
  console.log('preselected comps:', await p.locator('.fchip[aria-pressed=true]').allInnerTexts());
  await p.locator('#a-rbf').locator('..').locator('button').last().click(); for (let i=0;i<5;i++) await p.locator('#a-rbf').locator('..').locator('button').last().click();
  await p.locator('.fchip', { hasText: 'Monster' }).click(); await p.waitForTimeout(100);
  await p.fill('#a-cf-Monster', '4');
+ await answerHi5Step3(p);
  console.log('share:', await p.locator('.card.flat', { hasText: 'share of shelf' }).innerText());
  await p.screenshot({ path: 'out/f_step3.png', fullPage: true });
  await p.locator('.stepper button').nth(5).click(); await p.waitForTimeout(200);
