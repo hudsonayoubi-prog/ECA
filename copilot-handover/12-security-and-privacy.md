@@ -17,7 +17,7 @@ No payment data, government IDs or health data. Student Marketeers' own ages or 
 | Area | Prototype | Limit | Production requirement |
 |---|---|---|---|
 | Identity | Name typed at sign-in, matched to the approved list | Anyone with the link who knows a name can sign in as that person | Entra ID sign-in with MFA |
-| Admin step-up | Shared PIN; default is in the source (`DEFAULT_REF.adminPin`) and shown in the PIN field hint | Not a secret. Anyone reading the code or the hint knows the default | Entra ID MFA / PIM; no shared PIN. **Until then: change the PIN in Settings and fix the hint** (`13-known-issues.md`) |
+| Admin step-up | Shared PIN; default is in the source (`DEFAULT_REF.adminPin`) (no longer shown in the PIN field hint) | Not a secret. Anyone reading the code or the hint knows the default | Entra ID MFA / PIM; no shared PIN. **Until then: change the PIN in Settings and fix the hint** (`13-known-issues.md`) |
 | Authorisation | Enforced in the UI (`D.can`, scope filters) | In shared mode every record (incl. contact phone/email) is in the artifact database readable by anyone who can open the artifact; hiding is client-side only | Dataverse security roles, Business Units per state, column security on contact phone/email, row-level access |
 | Link sharing | Live artifact shared "Anyone with the link" | Unsigned visitors can open the page (cannot write) and read seeded store data | Share with the organisation only; production app shared to Entra groups |
 | Local storage | Full state copy in the browser's localStorage | Shared/kiosk devices keep data | Dataverse only; no local copy beyond app cache |
@@ -49,4 +49,4 @@ No payment data, government IDs or health data. Student Marketeers' own ages or 
 ## Known exposure to act on now
 1. Change the live admin PIN (Settings → Admin PIN) and share the new one only with Administrators.
 2. Set the live artifact's sharing to the organisation (not "Anyone with the link").
-3. Remove the PIN value from the PIN field hint in `ElevateSheet` (source change, then republish).
+3. ~~Remove the PIN value from the PIN field hint in `ElevateSheet`~~ Done 13 Oct 2026: the hint no longer prints the PIN. The default value is still in `DEFAULT_REF.adminPin`, so changing the live PIN (step 1) is still needed.

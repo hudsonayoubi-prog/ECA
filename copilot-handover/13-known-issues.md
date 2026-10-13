@@ -4,7 +4,7 @@
 
 | # | Issue | Impact | Fix / workaround |
 |---|---|---|---|
-| K1 | Admin PIN default is in the source and printed in the PIN field hint ("Prototype PIN: …") | Admin step-up gives no real protection | Change the PIN in Settings; remove the value from the hint in `ElevateSheet`; production uses Entra MFA |
+| K1 | Admin PIN default is in the source (the PIN field hint no longer prints it, fixed 13 Oct 2026) | Admin step-up gives no real protection | Change the PIN in Settings (the hint is already fixed); production uses Entra MFA |
 | K2 | Name-only sign-in | Impersonation possible | Production: Entra ID |
 | K3 | Authorisation is client-side; the shared database holds all records incl. contact phone/email | Technically capable viewers could read them | Production: Dataverse column/row security. Pilot: restrict artifact sharing to the organisation |
 | K4 | Shared storage needs each viewer signed in to claude.ai and to allow the page's data use | People without claude.ai accounts only get "This browser only" (their entries stay on their device) | Power Platform build; help sheet explains |
@@ -63,3 +63,6 @@ See `docs/power-platform/EXPORT.md`. Open: not opened in desktop Excel; chart st
 
 ## Path 2 · Summary workbooks (added 13 Oct 2026)
 See the second half of `docs/power-platform/EXPORT.md`. Same open items as the audit export: not opened in desktop Excel; SharePoint save and notices not built.
+
+## Flow design (added 13 Oct 2026)
+See `docs/power-platform/FLOWS.md`: seven decisions needed before building (calculation hosting, missing notification table, time zone, Teams vs email, settings with no Dataverse home, removal note column, step-up for Finalise and Distribute). `dailySummaries` and the reminder logic are not ported to Python.

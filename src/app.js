@@ -2205,9 +2205,9 @@ function ElevateSheet({ m, onClose }) {
     if (pin !== s.ref.adminPin) { tries.current++; d({ type: 'loginFail', name: s.me, reason: 'Wrong admin PIN' }); setErr(tries.current >= 3 ? 'Locked after 3 wrong attempts.' : 'That PIN isn’t right.'); return; }
     onClose(); d({ type: 'elevate' }); (m.then || []).forEach(x => d(x)); };
   return html`<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="el-h" style="width:min(460px,100%)"><div class="sheet-h"><h2 id="el-h">Confirm it’s you</h2><button class="iconbtn" aria-label="Close" onClick=${onClose}><${Icon} n="x" /></button></div>
-    <form class="sheet-b" onSubmit=${go}><div class="banner info"><${Icon} n="shield" s=${18} /><div>${m.msg || 'This is an administrator action.'} Name sign-in isn’t enough for it, so enter the admin PIN. Admin tools stay unlocked for 15 minutes.</div></div>
-      <${Text} id="el-pin" label="Admin PIN" type="password" inputMode="numeric" value=${pin} onChange=${setPin} err=${err} hint="Prototype PIN: 2468. In production this step is Microsoft Entra ID multi-factor sign-in." />
-      <div style="display:flex;justify-content:flex-end;gap:10px"><button type="button" class="btn" onClick=${onClose}>Cancel</button><button class="btn primary" type="submit">Unlock and continue</button></div></form></div>`;
+    <form class="sheet-b" onSubmit=${go} onKeyDown=${e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') go(e); }}><div class="banner info"><${Icon} n="shield" s=${18} /><div>${m.msg || 'This is an administrator action.'} Name sign-in isn’t enough for it, so enter the admin PIN. Admin tools stay unlocked for 15 minutes.</div></div>
+      <${Text} id="el-pin" label="Admin PIN" type="password" inputMode="numeric" value=${pin} onChange=${setPin} err=${err} hint="Ask an Administrator for the PIN. In production this step is Microsoft Entra ID multi-factor sign-in." />
+      <div style="display:flex;justify-content:flex-end;gap:10px"><button type="button" class="btn" onClick=${onClose}>Cancel</button><button class="btn primary" type="submit" onClick=${go}>Unlock and continue</button></div></form></div>`;
 }
 
 function Podium({ rows }) {
