@@ -45,3 +45,21 @@
 
 ## C. Risks
 Impersonation (prototype), unagreed scoring, wrong auto store types, data drift between Excel/prototype/Power App, Copilot output variability, pilot data stranded in claude.ai, licence cost, approval backlog, personal data exposure on a shared link. Mitigations: Power Platform as system of record, Microsoft sign-in, agree scoring before launch, confirm store types, export pilot data before cut-over, restrict sharing.
+
+## Path 2 · Stage 1 assumptions (added 13 Oct 2026)
+See `docs/power-platform/STAGE1.md`: Visit ID created as text; two choice sets derived from inline labels; extra alternate keys; deploy script untested against a live Dataverse; Manager-cannot-edit-Administrators rule needs testing.
+
+## Path 2 · Stage 2 (added 13 Oct 2026)
+See `docs/power-platform/STAGE2.md`. Open: all 102 user emails blank; 8 VIC staff with no Reports To; 215 store types unconfirmed; import script untested against a live Dataverse.
+
+## Path 2 · Scoring (added 13 Oct 2026)
+See `docs/power-platform/SCORING.md`. Open: store-type/activity board filters, snapshot finalise, 48 h edit window and self-approval rule are not ported; accented-name tie-breaks may differ from the app.
+
+## Path 2 · Monthly summaries (added 13 Oct 2026)
+See `docs/power-platform/MONTHLY.md`. Open: Excel workbook, schedule and notices not built; accented-name tie-breaks may differ.
+
+## Path 2 · Audit export (added 13 Oct 2026)
+See `docs/power-platform/EXPORT.md`. Open: not opened in desktop Excel; chart styling may differ slightly; SharePoint save, schedule and notice not built; BR-53 summary download workbook not built.
+
+## Path 2 · Summary workbooks (added 13 Oct 2026)
+See the second half of `docs/power-platform/EXPORT.md`. Same open items as the audit export: not opened in desktop Excel; SharePoint save and notices not built.

@@ -2186,14 +2186,14 @@ function Login() {
   return html`<div class="login-wrap"><main class="login" aria-labelledby="li-h">
     <div class="login-brand"><div class="lb-mark">ECA</div><div><div class="lb-t">Education Channel Audit Tool</div><div class="lb-s">Universities · TAFEs · National</div></div></div>
     <section class="card"><h1 id="li-h" style="font-size:26px;margin-bottom:4px">Sign in</h1><p class="small muted" style="margin:0 0 16px">Enter your first and last name as your manager set them up.</p>
-      <form onSubmit=${submit} style="display:flex;flex-direction:column;gap:14px" novalidate>
+      <form onSubmit=${submit} onKeyDown=${e => { if (e.key === 'Enter' && e.target.tagName === 'INPUT') submit(e); }} style="display:flex;flex-direction:column;gap:14px" novalidate>
         <div class="form-grid"><${Text} id="li-f" label="First name" value=${f.first} onChange=${v => setF({ ...f, first: v })} err=${tried ? fe.first : null} />
           <${Text} id="li-l" label="Last name" value=${f.last} onChange=${v => setF({ ...f, last: v })} err=${tried ? fe.last : null} /></div>
         ${err ? html`<div class="banner bad" role="alert"><${Icon} n="alert" s=${18} /><div>${err}</div></div>` : null}
         ${choices ? html`<div class="banner warn" role="status"><${Icon} n="people" s=${18} /><div style="flex:1"><b>More than one person has this name.</b> Choose your profile.
           <div class="list" style="margin-top:8px">${choices.map(p => html`<button type="button" key=${p.id} class="rowbtn" style="background:var(--surface);border:1px solid var(--line);margin-top:6px" onClick=${() => d({ type: 'login', person: p })}>
             <div class="main-c" style="flex:1;min-width:0"><div class="t" style="font-weight:700">${p.name}</div><div class="m">${personLabel(p)}</div></div><${Icon} n="chev" s=${16} /></button>`)}</div></div></div>` : null}
-        <button class="btn primary" type="submit" style="min-height:46px" disabled=${s.sync?.mode === 'shared' && !s.sharedLoaded}>${s.sync?.mode === 'shared' && !s.sharedLoaded ? 'Loading shared data…' : 'Continue'}</button></form></section>
+        <button class="btn primary" type="submit" onClick=${submit} style="min-height:46px" disabled=${s.sync?.mode === 'shared' && !s.sharedLoaded}>${s.sync?.mode === 'shared' && !s.sharedLoaded ? 'Loading shared data…' : 'Continue'}</button></form></section>
     <details class="card flat small"><summary style="cursor:pointer;font-weight:600">Prototype notes</summary>
       <p style="margin:8px 0 0">Names are checked against the approved user list in People. Try <b>Hudson Ayoubi</b> (administrator), <b>Charlotte Terrell</b> (manager) or <b>George Johnson</b> (Student Marketeer). Name-only sign-in isn’t proof of identity, so administrator changes ask for a step-up check.</p></details>
   </main></div>`;
