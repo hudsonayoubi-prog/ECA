@@ -549,7 +549,9 @@ function reducer(s, a) {
       if (visit.approval === 'Pending') { visit.approvedBy = null; visit.approvedAt = null; }
       const visits = isEdit ? s.visits.map(v => (v.id === id ? { ...v, ...visit } : v)) : [...s.visits, visit];
       let locations = s.locations;
-      if (f.status === 'Completed') {
+      // Only the store's newest Completed audit sets its latest picture, so editing or backdating an older audit never overwrites newer details.
+      const newerAudit = s.visits.some(v => v.id !== id && v.loc === f.loc && v.status === 'Completed' && (v.date + (v.time || '')) > (visit.date + (visit.time || '')));
+      if (f.status === 'Completed' && !newerAudit) {
         locations = s.locations.map(l => l.id !== f.loc ? l : {
           ...l, ranging: { ...l.ranging, ...f.ranging }, price: f.price === '' ? l.price : +f.price, topComp: f.comp || l.topComp,
           compPrice: f.compPrice === '' ? l.compPrice : +f.compPrice, pos: f.pos ?? l.pos, cooler: f.cooler ?? l.cooler, bull: f.bull || l.bull,
@@ -560,7 +562,8 @@ function reducer(s, a) {
         });
       }
       if ((f.contactName || '').trim()) {
-        locations = locations.map(l => l.id !== f.loc ? l : { ...l, contactName: f.contactName.trim(), contactRole: f.contactRole || l.contactRole || null,
+        // The contact on file is the one recorded most recently: an older visit (edited or backdated) leaves it alone.
+        locations = locations.map(l => l.id !== f.loc || (l.contactAt && f.date.slice(0, 10) < l.contactAt) ? l : { ...l, contactName: f.contactName.trim(), contactRole: f.contactRole || l.contactRole || null,
           contactPhone: (f.contactPhone || '').trim() || l.contactPhone || null, contactEmail: (f.contactEmail || '').trim() || l.contactEmail || null, contactAt: f.date.slice(0, 10), contactBy: f.staff });
       }
       let notifications = s.notifications;

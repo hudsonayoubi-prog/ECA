@@ -84,7 +84,7 @@ Each requirement has an ID (BR-xx), the rule, where the prototype implements it 
 **BR-34 Step 5 — Notes & follow-up.** Notes ("Contact details go in step 1, not here"), next step, follow-up date (≥ visit date), photos (up to 6; prototype keeps them for the session only), flag an issue (+ description required).
 **BR-35 Step 6 — Review & submit.** Lists every validation problem with a link to its step; shows the next due date; Submit.
 **BR-36 Drafts.** Save as Draft at any step; leaving with unsaved changes asks to keep editing, save draft, or leave.
-**BR-37 On submit.** Visit saved with an ID `CODE-V0001-xxxx`; location updated with the latest ranging, prices, execution, facings, competitor detail and contact (blank phone/email keep existing values); Managers of the state notified; approval set (see BR-40).
+**BR-37 On submit.** Visit saved with an ID `CODE-V0001-xxxx`; location updated with the latest ranging, prices, execution, facings, competitor detail and contact (blank phone/email keep existing values); Managers of the state notified; approval set (see BR-40). **Only the store's newest Completed audit updates the location's latest picture, and the contact on file only changes if this visit is not older than the contact already recorded**: editing an older audit, or entering a backdated one, saves the visit but leaves the store as it is (fixed 23 Oct 2026). *Tests:* latest.
 
 ## E. Approval, leaderboard and months
 
